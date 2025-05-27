@@ -18,12 +18,12 @@ local function open_from_alpha(cmd)
 end
 
 dashboard.section.buttons.val = {
-	dashboard.button("f", "  Find file", open_from_alpha("FzfLua files")),
+	dashboard.button("f", "󰍉  Find file", open_from_alpha("FzfLua files")),
 	dashboard.button("r", "  Recent files", open_from_alpha("FzfLua oldfiles")),
 	dashboard.button("g", "  Live grep", open_from_alpha("FzfLua live_grep")),
 	dashboard.button("b", "  Bookmarks", open_from_alpha("FzfLua marks")),
 	dashboard.button("c", "  Configuration", open_from_alpha("edit ~/.config/nvim/init.lua")),
-	dashboard.button("q", "  Quit NVIM", ":qa<CR>"),
+	dashboard.button("q", "󰗼  Quit NVIM", ":qa<CR>"),
 }
 
 dashboard.config.opts.noautocmd = true

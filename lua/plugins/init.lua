@@ -8,6 +8,8 @@ require("lazy").setup({
 			require("config.colorscheme")
 		end,
 	},
+	-- Quick scope
+	{ "unblevable/quick-scope" },
 
 	-- LSP & Mason
 	{ "neovim/nvim-lspconfig" },
