@@ -17,3 +17,7 @@ vim.keymap.set("n", "<leader>cp", function()
 	vim.cmd(copilot_enabled and "Copilot enable" or "Copilot disable")
 	print("Copilot " .. (copilot_enabled and "enabled" or "disabled"))
 end, { desc = "Toggle Copilot" })
+
+-- Go to next/previous buffer (like tab switching)
+vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
