@@ -87,6 +87,8 @@ require("lazy").setup({
 		end,
 	},
 
+	{ "nanotee/zoxide.vim" },
+
 	-- Status line
 	{
 		"nvim-lualine/lualine.nvim",
@@ -106,7 +108,21 @@ require("lazy").setup({
 			require("config.alpha")
 		end,
 	},
-
+	{
+		"gelguy/wilder.nvim",
+		config = function()
+			require("config.wilder")
+		end,
+	},
+	{
+		"akinsho/bufferline.nvim",
+		version = "*",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		config = function()
+			vim.opt.termguicolors = true
+			require("bufferline").setup({})
+		end,
+	},
 	-- Copilot
 	{
 		"zbirenbaum/copilot-cmp",
@@ -146,7 +162,6 @@ require("lazy").setup({
 		"jbyuki/nabla.nvim",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
-			"nvim-neo-tree/neo-tree.nvim",
 			"williamboman/mason.nvim",
 		},
 	},
