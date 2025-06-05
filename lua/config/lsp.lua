@@ -28,3 +28,17 @@ lspconfig.ltex.setup({
 lspconfig.texlab.setup({
 	capabilities = capabilities,
 })
+
+require("lspsaga").setup({
+	ui = {
+		border = "rounded",
+		winblend = 10,
+		colors = {
+			normal_bg = "#1e1e2e", -- Catppuccin Macchiato base
+		},
+		kind = require("catppuccin.groups.integrations.lsp_saga").custom_kind(),
+	},
+	symbol_in_winbar = {
+		enable = false,
+	},
+})

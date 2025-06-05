@@ -2,7 +2,6 @@ require("lazy").setup({
 	-- Theme
 	{
 		"catppuccin/nvim",
-		name = "catppuccin",
 		priority = 1000,
 		config = function()
 			require("config.colorscheme")
@@ -10,6 +9,24 @@ require("lazy").setup({
 	},
 	-- Quick scope
 	{ "unblevable/quick-scope" },
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+	},
 
 	-- LSP & Mason
 	{ "neovim/nvim-lspconfig" },
@@ -21,7 +38,16 @@ require("lazy").setup({
 		end,
 	},
 	{ "williamboman/mason-lspconfig.nvim" },
-
+	{
+		"nvimdev/lspsaga.nvim",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter", -- You already have this
+			"neovim/nvim-lspconfig",
+		},
+		config = function()
+			require("lspsaga").setup({})
+		end,
+	},
 	-- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -60,7 +86,7 @@ require("lazy").setup({
 	{ "saadparwaiz1/cmp_luasnip" },
 	{ "hrsh7th/cmp-buffer" },
 	{ "hrsh7th/cmp-path" },
-
+	{ "tpope/vim-commentary" },
 	-- Formatter
 	{
 		"stevearc/conform.nvim",
@@ -89,14 +115,6 @@ require("lazy").setup({
 
 	{ "nanotee/zoxide.vim" },
 
-	-- Status line
-	{
-		"nvim-lualine/lualine.nvim",
-		config = function()
-			require("config.lualine")
-		end,
-	},
-
 	-- Git
 	{ "tpope/vim-fugitive" },
 	{ "lewis6991/gitsigns.nvim", config = true },
@@ -108,10 +126,17 @@ require("lazy").setup({
 			require("config.alpha")
 		end,
 	},
+	-- UI
 	{
 		"gelguy/wilder.nvim",
 		config = function()
 			require("config.wilder")
+		end,
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		config = function()
+			require("config.lualine")
 		end,
 	},
 	{
@@ -124,25 +149,6 @@ require("lazy").setup({
 		end,
 	},
 
-	{
-		"nyngwang/NeoTerm.lua",
-		config = function()
-			require("neo-term").setup({
-				exclude_filetypes = { "oil" },
-				-- exclude_buftypes = {}, -- 'terminal' will always be added by NeoTerm.lua
-				-- enabled by default!
-				-- presets = {
-				--   'vim-test',
-				-- }
-			})
-			vim.keymap.set("n", "<M-Tab>", function()
-				vim.cmd("NeoTermToggle")
-			end)
-			vim.keymap.set("t", "<M-Tab>", function()
-				vim.cmd("NeoTermEnterNormal")
-			end)
-		end,
-	},
 	-- Copilot
 	{
 		"zbirenbaum/copilot-cmp",
