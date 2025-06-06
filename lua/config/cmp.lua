@@ -7,6 +7,10 @@ cmp.setup({
 			luasnip.lsp_expand(args.body)
 		end,
 	},
+	window = {
+		completion = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered(),
+	},
 	mapping = cmp.mapping.preset.insert({
 		["<Tab>"] = cmp.mapping.select_next_item(),
 		["<S-Tab>"] = cmp.mapping.select_prev_item(),
@@ -19,8 +23,26 @@ cmp.setup({
 		{ name = "path" },
 		{ name = "copilot" },
 	}),
-})
 
+	formatting = {
+		format = require("lspkind").cmp_format({
+			maxwidth = {
+				-- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+				-- can also be a function to dynamically calculate max width such as
+				menu = function()
+					return math.floor(0.45 * vim.o.columns)
+				end,
+				abbr = 50, -- actual suggestion item
+			},
+			mode = "symbol", -- show symbol + text
+			ellipsis_char = "...",
+			symbol_map = {
+				Copilot = "",
+				-- add other kinds here if customizing
+			},
+		}),
+	},
+})
 -- Show hover doc on completion selection change
 cmp.event:on("menu_changed", function(event)
 	local entry = event.entry

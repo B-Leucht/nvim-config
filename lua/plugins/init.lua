@@ -27,7 +27,6 @@ require("lazy").setup({
 			},
 		},
 	},
-
 	-- LSP & Mason
 	{ "neovim/nvim-lspconfig" },
 	{
@@ -47,6 +46,16 @@ require("lazy").setup({
 		config = function()
 			require("lspsaga").setup({})
 		end,
+	},
+	{
+		"onsails/lspkind.nvim",
+		lazy = true,
+	},
+	{
+		"j-hui/fidget.nvim",
+		opts = {
+			-- options
+		},
 	},
 	-- Treesitter
 	{
@@ -144,8 +153,7 @@ require("lazy").setup({
 		version = "*",
 		dependencies = "nvim-tree/nvim-web-devicons",
 		config = function()
-			vim.opt.termguicolors = true
-			require("bufferline").setup({})
+			require("config.bufferline")
 		end,
 	},
 
