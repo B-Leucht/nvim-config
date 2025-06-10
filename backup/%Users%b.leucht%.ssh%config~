@@ -1,0 +1,14 @@
+Host svm1902.net.in.tum.de
+    HostName svm1902.net.in.tum.de
+    User root
+
+Host itsec
+    HostName sandkasten.sec.in.tum.de
+    User team-609
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_ed25519
+
+Host *
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+

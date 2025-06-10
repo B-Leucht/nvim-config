@@ -1,0 +1,20 @@
+# Title
+
+```lua
+require("all")
+```
+
+[^1]
+
+## Test
+
+$\sum_{n=1}^{\infty} a_n z^n$
+
+The equation is $a^2 + b^2 = $.
+My favorite search engine is [Duck Duck Go](https://duckduckgo.com).
+[^1]: this is my reference
+In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends
+of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to
+eat: it was a [hobbit-hole][1], and that means comfort.
+
+[1]: https://en.wikipedia.org/wiki/Hobbit#Lifestyle "Hobbit lifestyles"

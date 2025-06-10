@@ -54,10 +54,10 @@ vim.keymap.set("n", "<leader>p", ToggleNablaMarkView, { desc = "Toggle Nabla / M
 
 --Fzf keymaps
 vim.keymap.set("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Find files", silent = true })
-vim.keymap.set("n", "<leader>fg", "<cmd>FzfLua live_grep<CR>", { desc = "Live grep", silent = true })
-vim.keymap.set("n", "<leader>fb", "<cmd>FzfLua buffers<CR>", { desc = "Buffers", silent = true })
+vim.keymap.set("n", "<leader>fg", "<cmd>FufLua live_grep<CR>", { desc = "Live grep", silent = true })
+vim.keymap.set("n", "<leader>fb", "<cmd>FzfLua old_files<CR>", { desc = "Buffers", silent = true })
 vim.keymap.set("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Help tags", silent = true })
-vim.keymap.set("n", "<leader>fr", "<cmd>FzfLua oldfiles<CR>", { desc = "Resume", silent = true })
+vim.keymap.set("n", "<leader>fr", "<cmd>FzfLua old_files<CR>", { desc = "Resume", silent = true })
 
 function _G.set_terminal_keymaps()
 	local opts = { buffer = 0 }

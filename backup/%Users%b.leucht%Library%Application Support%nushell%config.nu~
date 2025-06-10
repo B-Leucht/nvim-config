@@ -1,0 +1,67 @@
+# ~/.config/nushell/config.nu
+
+# ------------------------------------------------
+# ENVIRONMENT
+# ------------------------------------------------
+let pyenv_root = ($env.HOME | path join ".pyenv" | path expand)
+$env.PYENV_ROOT = $pyenv_root 
+$env.PATH = ($env.PATH | split row (char esep) | prepend  ($pyenv_root | path join "bin" | path expand) )
+ 
+$env.PATH = ($env.PATH | split row (char esep) | prepend  ($pyenv_root | path join "shims" | path expand) )
+$env.PATH ++= [
+  ~/.local/bin
+  ~/.cabal/bin
+  ~/.ghcup/bin
+  ~/bin
+  /usr/local/bin
+  /System/Cryptexes/App/usr/bin
+  /usr/bin
+  /bin
+  /usr/sbin
+  /sbin
+  /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin
+  /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin
+  /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin
+  /Library/TeX/texbin
+  /Applications/iTerm.app/Contents/Resources/utilities
+  ~/Library/Python/3.9/bin
+]
+
+$env.config.buffer_editor = 'nvim'
+$env.config.edit_mode = "vi"
+
+# Begrüßung deaktivieren
+$env.config.show_banner = false
+
+source ~/.config/nushell/starship.nu
+
+# ------------------------------------------------
+# HISTORY & SHELL BEHAVIOR
+# ------------------------------------------------
+
+$env.config.history = {
+  max_size: 10000
+  sync_on_enter: true
+  file_format: "plaintext"
+}
+
+# ------------------------------------------------
+# ALIASES
+# ------------------------------------------------
+
+alias ll = ls -la
+alias la = ls -a
+alias grep = grep --color=auto
+alias g = git
+alias v = nvim
+
+
+# ------------------------------------------------
+# PLUGINS
+# ------------------------------------------------
+source ~/.zoxide.nu
+
+source ~/.cache/carapace/init.nu
+
+
+use ai *

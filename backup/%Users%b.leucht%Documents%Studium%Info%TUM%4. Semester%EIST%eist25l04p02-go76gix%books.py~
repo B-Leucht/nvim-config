@@ -1,0 +1,75 @@
+import json
+
+
+# DO NOT EDIT
+# function used for hashing the strings
+def fnv1a_hash(key):
+    prime = 16777619
+    hash_val = 2166136261
+    for char in key.encode():
+        hash_val ^= char
+        hash_val *= prime
+    return hash_val
+
+
+ERROR_MESSAGE = "The key already exists"
+
+
+class ChordHash:
+
+    def __init__(self, size=8):
+        self.size = size
+        self.nodes = {}
+        for i in range(size):
+            self.add_node(i)
+
+    def add_node(self, node_id):
+        if node_id in self.nodes:
+            raise ValueError(ERROR_MESSAGE)
+        self.nodes[node_id] = []
+
+    def hash_key(self, key):
+        if not isinstance(key, str):
+            raise TypeError("Key must be a string")
+        return fnv1a_hash(key) % self.size
+
+    def find_successor(self, key):
+        key_hash = self.hash_key(key)
+        suprema = self.size + 1
+        for node_id in self.nodes:
+            if key_hash < node_id and node_id < suprema:
+                suprema = node_id
+
+        if suprema == self.size + 1:
+            return min(self.nodes)
+        else:
+            return suprema
+
+    def insert_key(self, key):
+        succ = self.find_successor(key)
+        self.nodes[succ].append(key)
+        return succ
+
+    # helper function for displaying the chord ring
+    def print_ring(self):
+        # Print the Chord ring
+        print("Chord Ring:")
+        for node_id in sorted(self.nodes.keys()):
+            print(f"Node {node_id}: {self.nodes[node_id]}")
+
+
+with open("books.json", "r") as json_file:
+    books_data = json.load(json_file)
+
+# Extract books list from JSON data
+books = books_data["books"]
+
+# Example usage
+chord = ChordHash(size=8)
+
+# Insert keys into the Chord ring
+for book in books:
+    chord.insert_key(book)
+
+# Print the Chord ring
+chord.print_ring()

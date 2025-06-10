@@ -1,0 +1,49 @@
+import click as click
+import struct
+import sys
+
+from grnvs_raw import GRNVSRaw, GRNVSSocket, Timeout
+
+
+def run(sock: GRNVSRaw, num_frame: int, timeout: int):
+
+    # TODO: Put some initialization here
+    my_mac = sock.mac()
+    t = Timeout(timeout)
+
+    """Indicate you are ready to receive some packets"""
+    print("I am ready!")
+
+    # TODO: update loop condition
+    while True:
+        """This is the receive loop, "packet" will contain the raw bytes received by the network interface"""
+        try:
+            frame = sock.read(t)
+        except TimeoutError as e:
+            sys.stderr.write("Timed out, no more frames available.\n")
+            break
+
+        """You can access specific parts of a frame through slicing"""
+        first_two_bytes = frame[0:2]
+
+        """or use the struct library to parse the frame https://docs.python.org/3/library/struct.html"""
+        # a, b = struct.unpack('magic')
+
+        # TODO: Do some magic
+
+
+@click.command()
+@click.option("-i", "--interface", type=str, default="eth0")
+@click.option("-t", "--timeout", type=int, default=10)
+@click.argument("NUM", type=int, default=10)
+def main(interface: str, num: int, timeout: int):
+    if num < 0:
+        raise SystemExit("number of frames cannot be negative")
+    if timeout < 0:
+        raise SystemExit("timeout cannot be negative")
+    with GRNVSRaw(interface, GRNVSSocket.ETHERNET) as sock:
+        run(sock, num, timeout)
+
+
+if __name__ == "__main__":
+    main()

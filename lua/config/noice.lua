@@ -1,0 +1,56 @@
+require("noice").setup({
+	cmdline = {
+		view = "cmdline_popup", -- Use floating cmdline
+		format = {
+			cmdline = { icon = "", title = "" },
+			search_down = { icon = " " },
+			search_up = { icon = " " },
+			filter = { icon = "$", title = "" },
+		},
+	},
+	messages = {
+		enabled = true,
+		view = "notify", -- Use `nvim-notify` backend for messages
+	},
+	popupmenu = {
+		enabled = true, -- Enable wildmenu/popupmenu UI
+	},
+	lsp = {
+		progress = {
+			enabled = true,
+			format = "lsp_progress",
+			throttle = 1000 / 30,
+			view = "mini",
+		},
+		override = {
+			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+			["vim.lsp.util.stylize_markdown"] = true,
+			["cmp.entry.get_documentation"] = true,
+		},
+		signature = {
+			enabled = true,
+			auto_open = {
+				enabled = true,
+				trigger = true,
+				luasnip = true,
+			},
+		},
+		hover = {
+			enabled = true,
+		},
+	},
+	notify = {
+		enabled = true,
+	},
+	presets = {
+		bottom_search = true, -- Replace `/` and `?`
+		command_palette = true, -- Command mode overlay
+		long_message_to_split = true, -- Send long messages to split
+		inc_rename = false,
+		lsp_doc_border = true,
+	},
+})
+
+require("notify").setup({
+	background_colour = "#1e1e2e", -- or any hex color that matches your theme
+})

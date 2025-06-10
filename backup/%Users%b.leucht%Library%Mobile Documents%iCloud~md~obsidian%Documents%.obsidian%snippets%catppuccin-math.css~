@@ -1,0 +1,13 @@
+
+/* .obsidian/snippets/catppuccin-math.css */
+.katex-display {
+  background-color: #1e1e2e; /* Mocha base */
+  color: #cdd6f4; /* Mocha text */
+  border-radius: 8px;
+  padding: 0.75em;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.katex .mord {
+  color: #f38ba8; /* Example for math expressions */
+}
