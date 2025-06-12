@@ -8,14 +8,17 @@ require("lazy").setup({
 		end,
 	},
 	-- Quick scope
-	{ "unblevable/quick-scope" },
+	{
+		"unblevable/quick-scope",
+		config = function()
+			vim.g.qs_highlight_on_keys = { "f", "F", "t", "T" }
+		end,
+	},
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		opts = {
-			-- your configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
+			preset = "helix",
 		},
 		keys = {
 			{
@@ -57,7 +60,7 @@ require("lazy").setup({
 			-- options
 		},
 	},
-	-- Treesitter
+	-- Tree sinter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
@@ -92,10 +95,20 @@ require("lazy").setup({
 			require("luasnip").config.setup({ enable_autosnippets = true })
 		end,
 	},
+	{ "petertriho/cmp-git" },
 	{ "saadparwaiz1/cmp_luasnip" },
 	{ "hrsh7th/cmp-buffer" },
 	{ "hrsh7th/cmp-path" },
-	{ "tpope/vim-commentary" },
+	{ "hrsh7th/cmp-cmdline" },
+	{
+		"numToStr/Comment.nvim",
+		config = function()
+			require("Comment").setup()
+		end,
+		opts = {
+			-- add any options here
+		},
+	},
 	-- Formatter
 	{
 		"stevearc/conform.nvim",
@@ -145,6 +158,13 @@ require("lazy").setup({
 		end,
 	},
 	-- UI
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		main = "ibl",
+		---@module "ibl"
+		---@type ibl.config
+		opts = {},
+	},
 	{
 		"akinsho/toggleterm.nvim",
 		config = function()
