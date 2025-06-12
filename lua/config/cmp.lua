@@ -22,12 +22,13 @@ cmp.setup({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
 		{ name = "copilot" },
+		{ name = "buffer" },
+		{ name = "path" },
+		{ name = "git" },
 	}),
 	formatting = {
 		format = require("lspkind").cmp_format({
 			maxwidth = {
-				-- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-				-- can also be a function to dynamically calculate max width such as
 				menu = function()
 					return math.floor(0.45 * vim.o.columns)
 				end,
@@ -42,13 +43,6 @@ cmp.setup({
 		}),
 	},
 })
-cmp.setup.filetype("gitcommit", {
-	sources = cmp.config.sources({
-		{ name = "git" },
-	}, {
-		{ name = "buffer" },
-	}),
-})
 require("cmp_git").setup()
 cmp.setup.cmdline({ "/", "?" }, {
 	mapping = cmp.mapping.preset.cmdline(),
@@ -57,15 +51,6 @@ cmp.setup.cmdline({ "/", "?" }, {
 	},
 })
 
-cmp.setup.cmdline(":", {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = cmp.config.sources({
-		{ name = "path" },
-	}, {
-		{ name = "cmdline" },
-	}),
-	matching = { disallow_symbol_nonprefix_matching = false },
-})
 -- Show hover doc on completion selection change
 cmp.event:on("menu_changed", function(event)
 	local entry = event.entry
