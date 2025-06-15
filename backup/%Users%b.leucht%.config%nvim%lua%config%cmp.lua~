@@ -1,5 +1,6 @@
 local cmp = require("cmp")
 local lsp = vim.lsp
+local lspkind = require("lspkind")
 local luasnip = require("luasnip")
 cmp.setup({
 	snippet = {
@@ -12,37 +13,51 @@ cmp.setup({
 		documentation = cmp.config.window.bordered(),
 	},
 	mapping = cmp.mapping.preset.insert({
-		["<Tab>"] = cmp.mapping.select_next_item(),
-		["<S-Tab>"] = cmp.mapping.select_prev_item(),
-		["<CR>"] = cmp.mapping.confirm({ select = true }),
+		["<C-b>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		["<C-Space>"] = cmp.mapping.complete(),
+		["<C-e>"] = cmp.mapping.abort(),
+		["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 	}),
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
+		{ name = "copilot" },
 		{ name = "buffer" },
 		{ name = "path" },
-		{ name = "copilot" },
+		{ name = "git" },
 	}),
-
 	formatting = {
-		format = require("lspkind").cmp_format({
-			maxwidth = {
-				-- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-				-- can also be a function to dynamically calculate max width such as
-				menu = function()
-					return math.floor(0.45 * vim.o.columns)
-				end,
-				abbr = 50, -- actual suggestion item
-			},
-			mode = "symbol", -- show symbol + text
-			ellipsis_char = "...",
-			symbol_map = {
-				Copilot = "",
-				-- add other kinds here if customizing
-			},
-		}),
+		format = {
+			function(entry, vim_item)
+				vim_item.menu = entry.source.name
+				return lspkind.cmp_format({})(entry, vim_item)
+			end,
+		},
+		--       require("lspkind").cmp_format({
+		-- 	maxwidth = {
+		-- 		menu = function()
+		-- 			return math.floor(0.45 * vim.o.columns)
+		-- 		end,
+		-- 		abbr = 50, -- actual suggestion item
+		-- 	},
+		-- 	mode = "symbol", -- show symbol + text
+		-- 	ellipsis_char = "...",
+		-- 	symbol_map = {
+		-- 		Copilot = "",
+		-- 		-- add other kinds here if customizing
+		-- 	},
+		-- }),
 	},
 })
+require("cmp_git").setup()
+cmp.setup.cmdline({ "/", "?" }, {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = {
+		{ name = "buffer" },
+	},
+})
+
 -- Show hover doc on completion selection change
 cmp.event:on("menu_changed", function(event)
 	local entry = event.entry

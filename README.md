@@ -1,0 +1,125 @@
+# Neovim Configuration
+
+Welcome to my custom Neovim configuration! This setup is designed to elevate your coding experience with carefully chosen plugins, optimized settings, and seamless integration.
+
+---
+
+## Features
+
+### General Setup
+- **Plugin Management:** Uses `lazy.nvim` for managing plugins.
+- **VS Code Detection:** Automatically loads lightweight configurations for Neovim in VS Code.
+- **Keymaps:** Intuitive shortcuts for efficient navigation and editing.
+- **Core Configuration:** Predefined options for a smooth and productive development environment.
+
+---
+
+## Keymaps
+
+### General Keymaps
+- `<leader>d`: Show line diagnostics.
+- `<leader>cp`: Toggle Copilot.
+- `<Tab>`/`<S-Tab>`: Navigate buffers.
+- `<leader>e`: Toggle NvimTree.
+
+### LSP Keymaps
+- `K`: Show hover documentation.
+- `gh`: Find LSP references.
+- `<leader>ca`: Apply code actions.
+- `gr`: Rename symbols.
+- `[e` & `]e`: Jump to previous/next diagnostic.
+
+### Terminal Keymaps
+- `<esc>`: Toggle terminal mode.
+- `<C-h/j/k/l>`: Navigate terminal windows.
+- `jk`: Exit terminal mode.
+
+### Dial Keymaps
+- `<C-a>`: Increment.
+- `<C-x>`: Decrement.
+- `g<C-a>`/`g<C-x>`: Visual increment/decrement.
+
+### Fzf Keymaps
+- `<leader>ff`: Find files.
+- `<leader>fg`: Live grep.
+- `<leader>fb`: Show buffers.
+- `<leader>fh`: Help tags.
+- `<leader>fr`: Resume search.
+
+---
+
+## Plugins
+
+### Themes
+- **catppuccin/nvim:** Beautiful color scheme.
+
+### Motion Plugins
+- **ggandor/leap.nvim:** Enhanced motion with support for repeating.
+- **ggandor/flit.nvim:** Adds focused motion functionality.
+- **monaqa/dial.nvim:** Advanced manipulation of numbers and dates.
+
+### LSP
+- **neovim/nvim-lspconfig:** Configurations for built-in LSP.
+- **williamboman/mason.nvim:** Automates LSP server installation and updates.
+- **williamboman/mason-lspconfig.nvim:** Extends Mason for LSP.
+- **nvimdev/lspsaga.nvim:** UI improvements for LSP functionalities.
+- **onsails/lspkind.nvim:** Adds icons to completion items.
+
+### CMP and Snippets
+- **hrsh7th/nvim-cmp:** Completion framework.
+- **hrsh7th/cmp-nvim-lsp:** LSP completion source.
+- **rafamadriz/friendly-snippets:** Predefined snippets.
+- **iurimateus/luasnip-latex-snippets.nvim:** Latex snippets for LuaSnip.
+
+### File Explorer
+- **nvim-tree/nvim-tree.lua:** File browsing.
+- **nvim-tree/nvim-web-devicons:** Icons for files.
+
+### UI Enhancements
+- **lukas-reineke/indent-blankline.nvim:** Indent guides.
+- **akinsho/toggleterm.nvim:** Terminal management.
+- **folke/noice.nvim:** Improved notifications.
+- **rcarriga/nvim-notify:** Notification system.
+
+### Start Screen
+- **goolord/alpha-nvim:** Customizable start screen.
+
+### Git Integration
+- **tpope/vim-fugitive:** Git commands in Neovim.
+- **lewis6991/gitsigns.nvim:** Git signs and diffs.
+
+### Copilot Support
+- **zbirenbaum/copilot-cmp:** Copilot integration with completion.
+- **zbirenbaum/copilot.lua:** Copilot plugin.
+
+### Tex Support
+- **lervag/vimtex:** Comprehensive Tex support.
+
+---
+
+## Installation
+1. Clone this repository into your Neovim configuration directory:
+
+   ```bash
+   git clone https://github.com/your/repo ~/.config/nvim
+   ```
+
+2. Open Neovim and let the `lazy.nvim` plugin manager install everything.
+
+---
+
+## Usage
+
+### Keymaps
+Navigate using the intuitive shortcuts listed above.
+
+---
+
+### Troubleshooting
+If you encounter any issues:
+- Ensure `lazy.nvim` is installed correctly.
+- Check the logs for errors in the configuration.
+- Review plugin-specific documentation for further guidance.
+
+---
+

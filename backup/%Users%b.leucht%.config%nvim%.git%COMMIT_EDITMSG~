@@ -7,15 +7,14 @@
 #
 # Changes to be committed:
 #	modified:   lua/config/cmp.lua
-#	modified:   lua/config/colorscheme.lua
-#	modified:   lua/config/keymaps.lua
-#	modified:   lua/config/lsp.lua
 #	modified:   lua/plugins/init.lua
 #
 # Changes not staged for commit:
-#	modified:   .gitignore
+#	modified:   backup/%Users%b.leucht%.config%nvim%lua%config%cmp.lua~
+#	modified:   backup/%Users%b.leucht%.config%nvim%lua%plugins%init.lua~
+#	modified:   backup/%Users%b.leucht%Library%Application Support%nushell%config.nu~
+#	modified:   lazy-lock.json
 #
 # Untracked files:
-#	backup/
-#	lazy-lock.json
+#	backup/%Users%b.leucht%Documents%fun%catppuccin-startpage%userconfig.js~
 #

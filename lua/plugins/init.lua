@@ -9,9 +9,18 @@ require("lazy").setup({
 	},
 	-- Quick scope
 	{
-		"unblevable/quick-scope",
+		"ggandor/leap.nvim",
+		dependencies = { "tpope/vim-repeat" },
 		config = function()
-			vim.g.qs_highlight_on_keys = { "f", "F", "t", "T" }
+			require("leap").set_default_mappings()
+		end,
+	},
+	{ "monaqa/dial.nvim" },
+	{
+		"ggandor/flit.nvim",
+		dependencies = { "ggandor/leap.nvim" },
+		config = function()
+			require("flit").setup()
 		end,
 	},
 	{
@@ -229,27 +238,31 @@ require("lazy").setup({
 		cmd = "Copilot",
 		build = ":Copilot auth",
 	},
+
 	{
 		"yetone/avante.nvim",
+		event = "VeryLazy",
+		version = false,
+		opts = {
+			provider = "copilot",
+			providers = {
+				ollama = {
+					endpoint = "http://localhost:11434",
+					model = "devstral:24b-small-2505-q4_K_M",
+				},
+			},
+		},
+		build = "make",
 		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-			"stevearc/dressing.nvim",
+			"nvim-treesitter/nvim-treesitter",
 			"nvim-lua/plenary.nvim",
 			"MunifTanjim/nui.nvim",
 			{
 				"MeanderingProgrammer/render-markdown.nvim",
-				opts = { file_types = { "markdown", "Avante" } },
-				ft = { "markdown", "Avante" },
-			},
-		},
-		build = "make",
-		opts = {
-			provider = "copilot",
-			PROVIDERS = {
-				ollama = {
-					endpoint = "http://localhost:11434",
-					model = "codellama",
+				opts = {
+					file_types = { "markdown", "Avante" },
 				},
+				ft = { "markdown", "Avante" },
 			},
 		},
 	},

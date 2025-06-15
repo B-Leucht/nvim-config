@@ -63,5 +63,3 @@ source ~/.zoxide.nu
 
 source ~/.cache/carapace/init.nu
 
-
-use ai *

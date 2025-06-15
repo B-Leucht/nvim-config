@@ -1,0 +1,57 @@
+# Neovim Configuration
+
+Welcome to my custom Neovim configuration! This setup is designed to elevate your coding experience with carefully chosen plugins, optimized settings, and seamless integration.
+
+---
+
+## Features
+
+### General Setup
+- **Plugin Management:** Uses `lazy.nvim` for managing plugins.
+- **VS Code Detection:** Automatically loads lightweight configurations for Neovim in VS Code.
+- **Keymaps:** Intuitive shortcuts for efficient navigation and editing.
+- **Core Configuration:** Predefined options for a smooth and productive development environment.
+
+### Plugins Overview
+
+#### Motion Plugins
+- **leap.nvim:** Enhanced motion with support for repeating.
+- **flit.nvim:** Adds focused motion functionality.
+
+#### Code Editing
+- **dial.nvim:** Advanced manipulation of numbers and dates.
+- **Comment.nvim:** Easy commenting.
+
+#### LSP (Language Server Protocol)
+- **nvim-lspconfig:** Configurations for built-in LSP.
+- **mason.nvim:** Automates LSP server installation and updates.
+- **mason-lspconfig.nvim:** Extends Mason for LSP.
+- **lspsaga.nvim:** UI improvements for LSP functionalities.
+- **lspkind.nvim:** Adds icons to completion items.
+
+#### UI Enhancements
+- **alpha-nvim:** Dashboard for Neovim.
+- **toggleterm.nvim:** Terminal management.
+
+---
+
+## Installation
+1. Clone this repository into your Neovim configuration directory:
+
+   ```bash
+   git clone https://github.com/your/repo ~/.config/nvim
+   ```
+
+2. Open Neovim and let the `lazy.nvim` plugin manager install everything.
+
+---
+
+## Usage
+
+### Keymaps
+Navigate using intuitive shortcuts:
+- `<leader>d`: Diagnostics.
+- `<leader>cp`: Copilot toggle.
+
+---
+
