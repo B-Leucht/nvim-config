@@ -1,3 +1,0 @@
-#if "ISTERM" not-in $env and $nu.is-interactive and "VSCODE_RESOLVING_ENVIRONMENT" not-in $env {
-#    if $nu.is-login { nu --login ; exit } else { is -s nu ; exit }
-#}

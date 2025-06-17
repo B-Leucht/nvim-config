@@ -1,9 +1,0 @@
-package de.tum.in.ase.eist;
-
-import java.util.List;
-
-/** SearchStrategy */
-public interface SearchStrategy {
-
-  public int performSearch(List<Chapter> chapters, String name);
-}

@@ -1,8 +1,0 @@
-server {
-    listen 80;
-    server_name bleucht.duckdns.org;
-    location / {
-        root /usr/local/var/www;
-        index index.html;
-    }
-}

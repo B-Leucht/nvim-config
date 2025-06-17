@@ -1,6 +1,0 @@
-require("nvim-treesitter.configs").setup({
-	ensure_installed = { "nu", "python", "java", "json", "bash", "yaml", "cpp", "haskell", "markdown" },
-	highlight = {
-		enable = true,
-	},
-})
