@@ -15,8 +15,9 @@ vim.opt.rtp:prepend(lazypath)
 -- VS Code Neovim detection and early exit
 if vim.g.vscode then
 	-- Load minimal VS Code specific config
-	require("config.vscode")
-	require("config.options")
+	require("plugins.vscode")
+	require("config.vscode-options")
+	require("config.vscode-keymaps")
 	return
 end
 -- Load core config

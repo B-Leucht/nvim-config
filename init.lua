@@ -16,7 +16,8 @@ vim.opt.rtp:prepend(lazypath)
 if vim.g.vscode then
 	-- Load minimal VS Code specific config
 	require("plugins.vscode")
-	require("config.options")
+	require("config.vscode-options")
+	require("config.vscode-keymaps")
 	return
 end
 -- Load core config

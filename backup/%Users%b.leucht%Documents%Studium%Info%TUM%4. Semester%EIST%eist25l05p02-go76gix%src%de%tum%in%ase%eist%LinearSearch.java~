@@ -1,0 +1,27 @@
+package de.tum.in.ase.eist;
+
+import java.util.List;
+
+/** LinearSearch */
+public class LinearSearch implements SearchStrategy {
+
+  @Override
+  public int performSearch(List<Chapter> chapters, String name) {
+    int i = this.linearSearch(chapters, name);
+    if (i != -1) {
+      Chapter chapter = chapters.get(i);
+      return chapter.getPageNumber();
+    }
+    return -1;
+  }
+
+  private int linearSearch(List<Chapter> chapters, String name) {
+    for (int i = 0; i < chapters.size(); i++) {
+      Chapter chapter = chapters.get(i);
+      if (chapter.getName().equals(name)) {
+        return i;
+      }
+    }
+    return -1; // Not found
+  }
+}

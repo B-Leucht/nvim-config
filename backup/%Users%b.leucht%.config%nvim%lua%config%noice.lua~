@@ -19,8 +19,8 @@ require("noice").setup({
 		progress = {
 			enabled = true,
 			format = "lsp_progress",
-			throttle = 1000 / 30,
-			view = "mini",
+			throttle = 10000 / 30,
+			view = "mini", -- Adjusted view size to smaller
 		},
 		override = {
 			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
