@@ -28,14 +28,6 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - `<leader>cp`: Toggle Copilot.
 - `<Tab>`/`<S-Tab>`: Navigate buffers.
 - `<leader>e`: Open Oil file manager.
-- `<leader>w`: Quick save.
-- `<leader>q`: Quick quit.
-- `<leader>Q`: Force quit.
-- `<leader>x`: Save and quit.
-- `<leader>o`: New line above without entering insert mode.
-- `<leader>O`: New line below without entering insert mode.
-- `<leader>y`: Yank to system clipboard.
-- `<leader>P`: Paste from system clipboard.
 
 ### LSP Keymaps
 - `K`: Show hover documentation.
@@ -43,16 +35,11 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - `<leader>ca`: Apply code actions.
 - `gr`: Rename symbols.
 - `[e` & `]e`: Jump to previous/next diagnostic.
-- `<leader>f`: Format the code.
 
 ### Terminal Keymaps
 - `<esc>`: Toggle terminal mode.
 - `<C-h/j/k/l>`: Navigate terminal windows.
 - `jk`: Exit terminal mode.
-- `<leader>tt`: Toggle Terminal.
-- `<leader>tf`: Open terminal in float mode.
-- `<leader>th`: Open terminal in horizontal split.
-- `<leader>tv`: Open terminal in vertical split.
 
 ### Dial Keymaps
 - `<C-a>`: Increment.
@@ -65,42 +52,6 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - `<leader>fb`: Show buffers.
 - `<leader>fh`: Help tags.
 - `<leader>fr`: Resume search.
-- `<leader>fc`: Select colorscheme.
-- `<leader>fk`: Show keymaps.
-- `<leader>fs`: Search current word.
-- `<leader>fS`: Search current WORD.
-
-### Git Keymaps
-- `<leader>gb`: Git branches.
-- `<leader>gc`: Git commits.
-- `<leader>gs`: Git status.
-
-### Oil Keymaps
-- `-`: Open parent directory.
-- `<CR>`: Select file or directory.
-- `<C-s>`: Open in vertical split.
-- `<C-h>`: Open in horizontal split.
-- `<C-t>`: Open in new tab.
-- `<C-p>`: Preview file.
-
-### Flash Keymaps
-- `s`: Flash jump.
-- `S`: Flash treesitter.
-- `R`: Treesitter search.
-- `<c-s>`: Toggle flash search.
-
-### Todo Comments Keymaps
-- `[t`: Jump to previous TODO comment.
-- `]t`: Jump to next TODO comment.
-- `<leader>ft`: Find TODOs.
-
-### Vimtex Keymaps
-- `<leader>ll`: Compile document.
-- `<leader>lv`: View compiled output.
-- `<leader>lt`: Toggle table of contents.
-
-### Copilot Keymaps
-- `<C-J>`: Accept Copilot suggestion.
 
 ---
 
