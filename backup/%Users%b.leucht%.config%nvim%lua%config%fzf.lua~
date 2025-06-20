@@ -44,6 +44,10 @@ require("fzf-lua").setup({
 		},
 	},
 	previewers = {
+		cat = {
+			cmd = "cat",
+			args = "--number",
+		},
 		bat = {
 			cmd = "bat",
 			args = "--style=numbers,changes --color always",

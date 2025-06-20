@@ -1,0 +1,22 @@
+package eist.shippingmicroservice;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(value = "/shipping/")
+public class ShippingController {
+  List<String> shippingList = new ArrayList<>();
+
+  @PostMapping("makeShipping")
+  public String makeShipping(@RequestParam String shipping) {
+    shippingList.add(shipping);
+    return "Added shipping: " + shipping;
+  }
+
+  @GetMapping("shippingRecord")
+  public List<String> shippingRecord() {
+    return shippingList;
+  }
+}
