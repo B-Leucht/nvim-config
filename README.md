@@ -24,10 +24,18 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 ## Keymaps
 
 ### General Keymaps
-- `<leader>d`: Show line diagnostics.
-- `<leader>cp`: Toggle Copilot.
-- `<Tab>`/`<S-Tab>`: Navigate buffers.
-- `<leader>e`: Open Oil file manager.
+
+- `<leader>ec`: Edit main configuration file.
+- `<leader>ek`: Edit keymaps configuration.
+- `<leader>ep`: Edit plugins configuration.
+- `<leader>er`: Reload configuration.
+- `<C-h>`/`<C-j>`/`<C-k>`/`<C-l>`: Navigate windows.
+- `<C-Up>`/`<C-Down>`/`<C-Left>`/`<C-Right>`: Resize windows.
+- `<Tab>`/`<S-Tab>`: Navigate buffers using BufferLine.
+- `<leader>bd`: Delete buffer (keep window).
+- `<leader>bD`: Force delete buffer.
+- `<leader>bc`: Close other buffers.
+- `<leader>h`: Clear highlights.
 - `<leader>w`: Quick save.
 - `<leader>q`: Quick quit.
 - `<leader>Q`: Force quit.

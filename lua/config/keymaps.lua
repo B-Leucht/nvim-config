@@ -146,7 +146,6 @@ keymap("n", "<leader>ld", "<cmd>FzfLua lsp_definitions<cr>", { desc = "LSP defin
 keymap("n", "<leader>li", "<cmd>FzfLua lsp_implementations<cr>", { desc = "LSP implementations" })
 -- Git with FZF
 keymap("n", "<leader>gb", "<cmd>FzfLua git_branches<CR>", opts)
-keymap("n", "<leader>gc", "<cmd>FzfLua git_commits<CR>", opts)
 keymap("n", "<leader>gs", "<cmd>FzfLua git_status<CR>", opts)
 
 -- ===============================================
@@ -218,7 +217,6 @@ keymap("n", "<leader>o", "<cmd>Lspsaga outline<CR>", opts)
 -- ===============================================
 
 -- Vim Fugitive
-keymap("n", "<leader>gg", "<cmd>Git<CR>", opts)
 keymap("n", "<leader>gj", "<cmd>diffget //3<CR>", opts)
 keymap("n", "<leader>gf", "<cmd>diffget //2<CR>", opts)
 
@@ -242,9 +240,9 @@ end, opts)
 keymap("n", "<leader>gtd", "<cmd>Gitsigns toggle_deleted<CR>", opts)
 
 -- Diffview (if using)
--- keymap("n", "<leader>gdo", "<cmd>DiffviewOpen<CR>", opts)
--- keymap("n", "<leader>gdc", "<cmd>DiffviewClose<CR>", opts)
--- keymap("n", "<leader>gdh", "<cmd>DiffviewFileHistory<CR>", opts)
+keymap("n", "<leader>gdo", "<cmd>DiffviewOpen<CR>", opts)
+keymap("n", "<leader>gdc", "<cmd>DiffviewClose<CR>", opts)
+keymap("n", "<leader>gdh", "<cmd>DiffviewFileHistory<CR>", opts)
 
 -- ===============================================
 -- TERMINAL (TOGGLETERM)

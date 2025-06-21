@@ -9,7 +9,7 @@ function _G.get_oil_winbar()
 		return vim.api.nvim_buf_get_name(0)
 	end
 end
-
+local detail = false
 require("oil").setup({
 	keymaps = {
 		["gd"] = {

@@ -22,7 +22,6 @@ require("lazy").setup({
 	-- Number increment/decrement
 	{ "monaqa/dial.nvim" },
 	-- Zoxide integration
-	{ "nanotee/zoxide.vim" },
 	{
 		"karb94/neoscroll.nvim",
 		config = function()
@@ -265,13 +264,13 @@ require("lazy").setup({
 	-- 		require("config.nvimtree")
 	-- 	end,
 	-- },
-	{
-		"chipsenkbeil/distant.nvim",
-		branch = "v0.3",
-		config = function()
-			require("distant"):setup()
-		end,
-	},
+	-- {
+	-- 	"chipsenkbeil/distant.nvim",
+	-- 	branch = "v0.3",
+	-- 	config = function()
+	-- 		require("distant"):setup()
+	-- 	end,
+	-- },
 	{
 		"stevearc/oil.nvim",
 		opts = {},
@@ -324,6 +323,30 @@ require("lazy").setup({
 	-- GIT INTEGRATION
 	-- ===============================================
 	{ "tpope/vim-fugitive" },
+	-- Modern Git interface
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"sindrets/diffview.nvim",
+			"ibhagwan/fzf-lua",
+		},
+		config = function()
+			require("neogit").setup({
+				integrations = {
+					telescope = false,
+					diffview = true,
+					fzf_lua = true,
+				},
+			})
+		end,
+		keys = {
+			{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Open Neogit" },
+			{ "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Neogit Commit" },
+			{ "<leader>gp", "<cmd>Neogit push<cr>", desc = "Neogit Push" },
+			{ "<leader>gl", "<cmd>Neogit pull<cr>", desc = "Neogit Pull" },
+		},
+	},
 	{ "lewis6991/gitsigns.nvim", config = true },
 	-- Enhanced git diffs
 	{
