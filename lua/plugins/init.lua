@@ -96,7 +96,13 @@ require("lazy").setup({
 			require("config.treesitter")
 		end,
 	},
-
+	{
+		"RRethy/vim-illuminate",
+		event = { "BufReadPost", "BufNewFile" },
+		config = function()
+			require("config.illuminate")
+		end,
+	},
 	-- TODO comment highlighting
 	{
 		"folke/todo-comments.nvim",
@@ -117,6 +123,18 @@ require("lazy").setup({
 	{ "hrsh7th/cmp-buffer" },
 	{ "hrsh7th/cmp-path" },
 	{ "hrsh7th/cmp-cmdline" },
+	{ "hrsh7th/cmp-nvim-lua", lazy = true },
+	{ "hrsh7th/cmp-nvim-lsp-signature-help" },
+	{ "hrsh7th/cmp-nvim-lsp-document-symbol" },
+	{
+		"lukas-reineke/cmp-rg",
+		lazy = true,
+		enabled = function()
+			return vim.fn.executable("rg") == 1
+		end,
+	},
+	{ "SergioRibera/cmp-dotenv" },
+	{ "davidsierradz/cmp-conventionalcommits" },
 	{ "petertriho/cmp-git" },
 	{ "saadparwaiz1/cmp_luasnip" },
 
@@ -148,6 +166,31 @@ require("lazy").setup({
 			require("Comment").setup()
 		end,
 		opts = {},
+	},
+
+	-- Code execution
+	{
+		"michaelb/sniprun",
+		branch = "master",
+		build = "sh install.sh",
+		dependencies = { "rcarriga/nvim-notify" },
+		config = function()
+			require("sniprun").setup({
+				display = { "NvimNotify" },
+				display_options = {
+					notification_timeout = 1500, -- matches your notify config
+				},
+				-- Optional: specify interpreters if you want
+				selected_interpreters = {}, -- use default for filetype
+				-- Show output even when empty
+				show_no_output = { "NvimNotify" },
+			})
+		end,
+		keys = {
+			{ "<leader>r", "<Plug>SnipRun", mode = { "n", "v" }, desc = "Run code snippet" },
+			{ "<leader>rc", "<Plug>SnipClose", desc = "Close sniprun" },
+			{ "<leader>rt", "<Plug>SnipTerminate", desc = "Terminate sniprun" },
+		},
 	},
 	-- Search and replace across project
 	{
@@ -215,25 +258,26 @@ require("lazy").setup({
 	-- ===============================================
 	-- BUILD & COMPILATION
 	-- ===============================================
-	{
-		"Zeioth/compiler.nvim",
-		cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-		dependencies = { "stevearc/overseer.nvim", "nvim-telescope/telescope.nvim" },
-		opts = {},
-	},
-	{
-		"stevearc/overseer.nvim",
-		commit = "6271cab7ccc4ca840faa93f54440ffae3a3918bd",
-		cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-		opts = {
-			task_list = {
-				direction = "bottom",
-				min_height = 25,
-				max_height = 25,
-				default_detail = 1,
-			},
-		},
-	},
+
+	-- {
+	-- 	"Zeioth/compiler.nvim",
+	-- 	cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+	-- 	dependencies = { "stevearc/overseer.nvim" },
+	-- 	opts = {},
+	-- },
+	-- {
+	-- 	"stevearc/overseer.nvim",
+	-- 	commit = "6271cab7ccc4ca840faa93f54440ffae3a3918bd",
+	-- 	cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+	-- 	opts = {
+	-- 		task_list = {
+	-- 			direction = "bottom",
+	-- 			min_height = 25,
+	-- 			max_height = 25,
+	-- 			default_detail = 1,
+	-- 		},
+	-- 	},
+	-- },
 
 	-- ===============================================
 	-- CODE FORMATTING
@@ -322,7 +366,6 @@ require("lazy").setup({
 	-- ===============================================
 	-- GIT INTEGRATION
 	-- ===============================================
-	{ "tpope/vim-fugitive" },
 	-- Modern Git interface
 	{
 		"NeogitOrg/neogit",
@@ -333,6 +376,8 @@ require("lazy").setup({
 		},
 		config = function()
 			require("neogit").setup({
+				graph_style = "kitty", -- Best visuals for Ghostty
+				sort_branches = "-committerdate",
 				integrations = {
 					telescope = false,
 					diffview = true,

@@ -40,8 +40,6 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate buffers (using BufferLine)
 keymap("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 keymap("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
-keymap("n", "<leader>bd", ":bdelete<CR>", opts)
-
 -- Better buffer deletion with bufdelete.nvim
 keymap("n", "<leader>bd", function()
 	require("bufdelete").bufdelete(0, true)
@@ -57,10 +55,6 @@ keymap("n", "<leader>bl", "<cmd>BufferLineCloseLeft<CR>", { desc = "Close buffer
 keymap("n", "<leader>br", "<cmd>BufferLineCloseRight<CR>", { desc = "Close buffers to right" })
 keymap("n", "<leader>bp", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
 
--- Go to specific buffers (BufferLine numbers)
-for i = 1, 9 do
-	keymap("n", "<leader>" .. i, "<cmd>BufferLineGoToBuffer " .. i .. "<CR>", { desc = "Go to buffer " .. i })
-end
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
@@ -123,6 +117,14 @@ keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]])
 
 keymap("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 keymap("n", "<leader>E", "<cmd>Oil --float<cr>", { desc = "Open Oil in floating window" })
+local open_remote = function()
+	vim.ui.input({ prompt = "Remote path (ssh://user@host/path): " }, function(input)
+		if input then
+			vim.cmd("Oil " .. input)
+		end
+	end)
+end
+keymap("n", "<leader>Er", open_remote, { desc = "Open remote directory in Oil" })
 
 -- ===============================================
 -- FUZZY FINDER (FZF-LUA)
@@ -216,9 +218,6 @@ keymap("n", "<leader>o", "<cmd>Lspsaga outline<CR>", opts)
 -- GIT KEYMAPS
 -- ===============================================
 
--- Vim Fugitive
-keymap("n", "<leader>gj", "<cmd>diffget //3<CR>", opts)
-keymap("n", "<leader>gf", "<cmd>diffget //2<CR>", opts)
 
 -- Gitsigns
 keymap("n", "<leader>ghs", "<cmd>Gitsigns stage_hunk<CR>", opts)
@@ -401,7 +400,7 @@ end, { desc = "Next todo comment" })
 keymap("n", "[t", function()
 	require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
-keymap("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
+keymap("n", "<leader>ft", "<cmd>FzfLua grep_project search=TODO\\ \\|FIXME\\ \\|HACK\\ \\|WARN\\ \\|PERF\\ \\|NOTE<cr>", { desc = "Find todos" })
 
 -- ===============================================
 -- VIMTEX

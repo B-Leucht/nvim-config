@@ -53,5 +53,5 @@ opt.timeoutlen = 400 -- Time to wait for mapped sequence
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax enable") -- Use `enable` instead of `on` (more standard)
 vim.diagnostic.config({
-  virtual_text = false,
+	virtual_text = false,
 })
