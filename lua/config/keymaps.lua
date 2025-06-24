@@ -40,13 +40,13 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate buffers (using BufferLine)
 keymap("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 keymap("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
--- Better buffer deletion with bufdelete.nvim
+-- Better buffer deletion with mini.bufremove
 keymap("n", "<leader>bd", function()
-	require("bufdelete").bufdelete(0, true)
+	require("mini.bufremove").delete(0, false)
 end, { desc = "Delete buffer (keep window)" })
 
 keymap("n", "<leader>bD", function()
-	require("bufdelete").bufdelete(0, false)
+	require("mini.bufremove").delete(0, true)
 end, { desc = "Force delete buffer" })
 
 -- BufferLine specific commands
@@ -115,7 +115,14 @@ keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]])
 -- NvimTree
 --keymap("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle NvimTree", noremap = true, silent = true })
 
-keymap("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+-- Smart Oil keymap - disabled in terminals/special buffers
+keymap("n", "-", function()
+	local ft = vim.bo.filetype
+	if ft == "toggleterm" or ft == "terminal" or ft:match("neogit") or ft == "claude" or ft == "trouble" then
+		return
+	end
+	vim.cmd("Oil")
+end, { desc = "Open parent directory" })
 keymap("n", "<leader>E", "<cmd>Oil --float<cr>", { desc = "Open Oil in floating window" })
 local open_remote = function()
 	vim.ui.input({ prompt = "Remote path (ssh://user@host/path): " }, function(input)
@@ -130,25 +137,45 @@ keymap("n", "<leader>Er", open_remote, { desc = "Open remote directory in Oil" }
 -- FUZZY FINDER (FZF-LUA)
 -- ===============================================
 
+-- File finding
 keymap("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Find files", silent = true })
-keymap("n", "<leader>fg", "<cmd>FzfLua live_grep<CR>", { desc = "Live grep", silent = true })
+keymap("n", "<leader>fF", "<cmd>FzfLua git_files<CR>", { desc = "Find git files", silent = true })
+keymap("n", "<leader>fr", "<cmd>FzfLua oldfiles<CR>", { desc = "Recent files", silent = true })
 keymap("n", "<leader>fb", "<cmd>FzfLua buffers<CR>", { desc = "Buffers", silent = true })
-keymap("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Help tags", silent = true })
-keymap("n", "<leader>fr", "<cmd>FzfLua oldfiles<CR>", { desc = "Resume", silent = true })
-keymap("n", "<leader>fk", "<cmd>FzfLua keymaps<CR>", opts)
-keymap("n", "<leader>fs", "<cmd>FzfLua grep_cword<CR>", opts)
-keymap("n", "<leader>fS", "<cmd>FzfLua grep_cWORD<CR>", opts)
-keymap("n", "<leader>fc", "<cmd>FzfLua commands<cr>", { desc = "Find commands" })
 
--- LSP integration with FZF-Lua
+-- Text searching
+keymap("n", "<leader>fg", "<cmd>FzfLua live_grep<CR>", { desc = "Live grep", silent = true })
+keymap("n", "<leader>fw", "<cmd>FzfLua grep_cword<CR>", { desc = "Grep word under cursor", silent = true })
+keymap("n", "<leader>fW", "<cmd>FzfLua grep_cWORD<CR>", { desc = "Grep WORD under cursor", silent = true })
+keymap("n", "<leader>fl", "<cmd>FzfLua grep_last<CR>", { desc = "Repeat last grep", silent = true })
+keymap("v", "<leader>fg", "<cmd>FzfLua grep_visual<CR>", { desc = "Grep selection", silent = true })
+
+-- LSP integration
 keymap("n", "<leader>ls", "<cmd>FzfLua lsp_document_symbols<cr>", { desc = "Document symbols" })
 keymap("n", "<leader>lS", "<cmd>FzfLua lsp_workspace_symbols<cr>", { desc = "Workspace symbols" })
 keymap("n", "<leader>lr", "<cmd>FzfLua lsp_references<cr>", { desc = "LSP references" })
 keymap("n", "<leader>ld", "<cmd>FzfLua lsp_definitions<cr>", { desc = "LSP definitions" })
 keymap("n", "<leader>li", "<cmd>FzfLua lsp_implementations<cr>", { desc = "LSP implementations" })
--- Git with FZF
-keymap("n", "<leader>gb", "<cmd>FzfLua git_branches<CR>", opts)
-keymap("n", "<leader>gs", "<cmd>FzfLua git_status<CR>", opts)
+keymap("n", "<leader>lt", "<cmd>FzfLua lsp_typedefs<cr>", { desc = "LSP type definitions" })
+keymap("n", "<leader>la", "<cmd>FzfLua lsp_code_actions<cr>", { desc = "LSP code actions" })
+keymap("n", "<leader>lx", "<cmd>FzfLua diagnostics_document<cr>", { desc = "Document diagnostics" })
+keymap("n", "<leader>lX", "<cmd>FzfLua diagnostics_workspace<cr>", { desc = "Workspace diagnostics" })
+
+-- Git integration
+keymap("n", "<leader>gb", "<cmd>FzfLua git_branches<CR>", { desc = "Git branches", silent = true })
+keymap("n", "<leader>gs", "<cmd>FzfLua git_status<CR>", { desc = "Git status", silent = true })
+keymap("n", "<leader>gc", "<cmd>FzfLua git_commits<CR>", { desc = "Git commits", silent = true })
+keymap("n", "<leader>gC", "<cmd>FzfLua git_bcommits<CR>", { desc = "Buffer commits", silent = true })
+
+-- Utility
+keymap("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Help tags", silent = true })
+keymap("n", "<leader>fk", "<cmd>FzfLua keymaps<CR>", { desc = "Keymaps", silent = true })
+keymap("n", "<leader>fc", "<cmd>FzfLua commands<cr>", { desc = "Commands", silent = true })
+keymap("n", "<leader>fq", "<cmd>FzfLua quickfix<cr>", { desc = "Quickfix", silent = true })
+keymap("n", "<leader>fl", "<cmd>FzfLua loclist<cr>", { desc = "Location list", silent = true })
+keymap("n", "<leader>fm", "<cmd>FzfLua marks<cr>", { desc = "Marks", silent = true })
+keymap("n", "<leader>fj", "<cmd>FzfLua jumps<cr>", { desc = "Jumps", silent = true })
+keymap("n", "<leader>fz", "<cmd>FzfLua resume<cr>", { desc = "Resume last search", silent = true })
 
 -- ===============================================
 -- LSP KEYMAPS
@@ -218,26 +245,6 @@ keymap("n", "<leader>o", "<cmd>Lspsaga outline<CR>", opts)
 -- GIT KEYMAPS
 -- ===============================================
 
-
--- Gitsigns
-keymap("n", "<leader>ghs", "<cmd>Gitsigns stage_hunk<CR>", opts)
-keymap("n", "<leader>ghr", "<cmd>Gitsigns reset_hunk<CR>", opts)
-keymap("v", "<leader>ghs", ":Gitsigns stage_hunk<CR>", opts)
-keymap("v", "<leader>ghr", ":Gitsigns reset_hunk<CR>", opts)
-keymap("n", "<leader>ghS", "<cmd>Gitsigns stage_buffer<CR>", opts)
-keymap("n", "<leader>ghu", "<cmd>Gitsigns undo_stage_hunk<CR>", opts)
-keymap("n", "<leader>ghR", "<cmd>Gitsigns reset_buffer<CR>", opts)
-keymap("n", "<leader>ghp", "<cmd>Gitsigns preview_hunk<CR>", opts)
-keymap("n", "<leader>ghb", function()
-	require("gitsigns").blame_line({ full = true })
-end, opts)
-keymap("n", "<leader>gtb", "<cmd>Gitsigns toggle_current_line_blame<CR>", opts)
-keymap("n", "<leader>ghd", "<cmd>Gitsigns diffthis<CR>", opts)
-keymap("n", "<leader>ghD", function()
-	require("gitsigns").diffthis("~")
-end, opts)
-keymap("n", "<leader>gtd", "<cmd>Gitsigns toggle_deleted<CR>", opts)
-
 -- Diffview (if using)
 keymap("n", "<leader>gdo", "<cmd>DiffviewOpen<CR>", opts)
 keymap("n", "<leader>gdc", "<cmd>DiffviewClose<CR>", opts)
@@ -285,7 +292,7 @@ keymap("n", "<leader>cs", "<cmd>CompilerStop<CR>", opts)
 -- COMMENT
 -- ===============================================
 
--- Comment.nvim keymaps are set automatically:
+-- mini.comment keymaps are set automatically:
 -- gcc - toggle line comment
 -- gbc - toggle block comment
 -- gc{motion} - line comment with motion
@@ -309,23 +316,6 @@ keymap("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
 	replace_keycodes = false,
 })
 vim.g.copilot_no_tab_map = true
-
--- ===============================================
--- AVANTE AI
--- ===============================================
-
-keymap("n", "<leader>aa", function()
-	require("avante.api").ask()
-end, { desc = "avante: ask" })
-keymap("v", "<leader>aa", function()
-	require("avante.api").ask()
-end, { desc = "avante: ask" })
-keymap("n", "<leader>ar", function()
-	require("avante.api").refresh()
-end, { desc = "avante: refresh" })
-keymap("n", "<leader>ae", function()
-	require("avante.api").edit()
-end, { desc = "avante: edit" })
 
 -- ===============================================
 -- MARKDOWN & MATH PREVIEW (YOUR TOGGLE SETUP)
@@ -400,7 +390,12 @@ end, { desc = "Next todo comment" })
 keymap("n", "[t", function()
 	require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
-keymap("n", "<leader>ft", "<cmd>FzfLua grep_project search=TODO\\ \\|FIXME\\ \\|HACK\\ \\|WARN\\ \\|PERF\\ \\|NOTE<cr>", { desc = "Find todos" })
+keymap(
+	"n",
+	"<leader>ft",
+	"<cmd>FzfLua grep_project search=TODO\\ \\|FIXME\\ \\|HACK\\ \\|WARN\\ \\|PERF\\ \\|NOTE<cr>",
+	{ desc = "Find todos" }
+)
 
 -- ===============================================
 -- VIMTEX

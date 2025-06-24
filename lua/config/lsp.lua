@@ -27,4 +27,17 @@ lspconfig.ltex.setup({
 lspconfig.texlab.setup({
 	capabilities = capabilities,
 })
--- Add this to your LSP configuration file (e.g., config/lsp.lua)
+
+lspconfig.rust_analyzer.setup({
+	capabilities = capabilities,
+	settings = {
+		["rust-analyzer"] = {
+			cargo = {
+				allFeatures = true,
+			},
+			checkOnSave = {
+				command = "clippy",
+			},
+		},
+	},
+})

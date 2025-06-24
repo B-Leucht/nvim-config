@@ -20,22 +20,22 @@ require("bufferline").setup({
 		-- Updated offsets for Oil.nvim instead of NvimTree
 		offsets = {
 			{
-				filetype = "oil",
-				text = "File Explorer",
-				highlight = "Directory",
-				text_align = "center",
-				separator = true, -- Add separator line
-			},
-			{
-				filetype = "Avante",
-				text = "",
+				filetype = "toggleterm",
+				text = "Terminal",
 				highlight = "Directory",
 				text_align = "center",
 				separator = true,
 			},
 			{
-				filetype = "toggleterm",
-				text = "Terminal",
+				filetype = "NeogitStatus",
+				text = "Neogit",
+				highlight = "Directory",
+				text_align = "center",
+				separator = true,
+			},
+			{
+				filetype = "snacks_terminal",
+				text = "Claude",
 				highlight = "Directory",
 				text_align = "center",
 				separator = true,

@@ -7,6 +7,7 @@ require("mason-lspconfig").setup({
 		"jdtls",
 		"texlab",
 		"hls",
+		"rust_analyzer",
 	},
 })
 

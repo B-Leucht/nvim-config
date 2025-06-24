@@ -1,16 +1,25 @@
 local dashboard = require("alpha.themes.dashboard")
 
-dashboard.section.header.val = {
-	"              _         _",
-	"  __   ___.--'_`.     .'_`--.___   __",
-	" ( _`.'. -   'o` )   ( 'o`   - .`.'_ )",
-	" _\\.'_'      _.-'     `-._      `_`./_",
-	"( \\`. )    //\\`         '/\\\\    ( .'/ )",
-	" \\_`-'`---'\\\\__,       ,__//`---'`-'_/",
-	"  \\`        `-\\         /-'        '/'",
-	"   `                               '",
-}
+local mocha = require("catppuccin.palettes").get_palette("mocha")
 
+vim.api.nvim_set_hl(0, "AlphaHeaderGreen", { fg = mocha.green, bg = "NONE", bold = true })
+vim.api.nvim_set_hl(0, "AlphaHeaderRed", { fg = mocha.red, bg = "NONE", bold = true })
+
+dashboard.section.header.val = {
+	[[                                                     ]],
+	[[  ███▄    █ ▓█████  ▒█████   ██▒   █▓ ██▓ ███▄ ▄███▓ ]],
+	[[  ██ ▀█   █ ▓█   ▀ ▒██▒  ██▒▓██░   █▒▓██▒▓██▒▀█▀ ██▒ ]],
+	[[ ▓██  ▀█ ██▒▒███   ▒██░  ██▒ ▓██  █▒░▒██▒▓██    ▓██░ ]],
+	[[ ▓██▒  ▐▌██▒▒▓█  ▄ ▒██   ██░  ▒██ █░░░██░▒██    ▒██  ]],
+	[[ ▒██░   ▓██░░▒████▒░ ████▓▒░   ▒▀█░  ░██░▒██▒   ░██▒ ]],
+	[[ ░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒░▒░▒░    ░ ▐░  ░▓  ░ ▒░   ░  ░ ]],
+	[[ ░ ░░   ░ ▒░ ░ ░  ░  ░ ▒ ▒░    ░ ░░   ▒ ░░  ░      ░ ]],
+	[[    ░   ░ ░    ░   ░ ░ ░ ▒       ░░   ▒ ░░      ░    ]],
+	[[          ░    ░  ░    ░ ░        ░   ░         ░    ]],
+	[[                                 ░                   ]],
+	[[                                                     ]],
+}
+dashboard.section.header.opts.hl = "AlphaHeaderGreen"
 -- Helper function to open files from alpha with flag set
 local function open_from_alpha(cmd)
 	-- Set the flag, then run the cmd

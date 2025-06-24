@@ -7,17 +7,22 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 ## Features
 
 ### General Setup
+
 - **Plugin Management:** Uses `lazy.nvim` for managing plugins.
 - **VS Code Detection:** Automatically loads lightweight configurations for Neovim in VS Code.
 - **Keymaps:** Intuitive shortcuts for efficient navigation and editing.
 - **Core Configuration:** Predefined options for a smooth and productive development environment.
 
 ### Unique Features
-- **AI Assistance:** Includes Copilot and Avante AI for code suggestions and chat-based coding assistance.
-- **Enhanced Git Integration:** Tools like `vim-fugitive`, `gitsigns.nvim`, and `diffview.nvim`.
-- **Latex Support:** Comprehensive Latex editing with `vimtex` and `luasnip-latex-snippets.nvim`.
+
+- **AI Assistance:** Includes Copilot and Claude Code TUI integration for code suggestions and chat-based coding assistance.
+- **Enhanced Git Integration:** Modern Git interface with `neogit`, `gitsigns.nvim`, and `diffview.nvim`.
+- **LaTeX Support:** Comprehensive LaTeX editing with `vimtex` and `luasnip-latex-snippets.nvim`.
 - **Terminal Management:** Seamless terminal integration with `toggleterm.nvim`.
 - **Fuzzy Finder:** Blazing fast file and text search with `fzf-lua`.
+- **Rust Development:** Enhanced Rust support with `rustaceanvim` and `crates.nvim`.
+- **Code Execution:** Run code snippets directly with `sniprun`.
+- **Markdown Rendering:** Beautiful markdown rendering with `markview.nvim` and mathematical notation with `nabla.nvim`.
 
 ---
 
@@ -35,6 +40,9 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - `<leader>bd`: Delete buffer (keep window).
 - `<leader>bD`: Force delete buffer.
 - `<leader>bc`: Close other buffers.
+- `<leader>bl`: Close buffers to left.
+- `<leader>br`: Close buffers to right.
+- `<leader>bp`: Pick buffer.
 - `<leader>h`: Clear highlights.
 - `<leader>w`: Quick save.
 - `<leader>q`: Quick quit.
@@ -46,14 +54,25 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - `<leader>P`: Paste from system clipboard.
 
 ### LSP Keymaps
-- `K`: Show hover documentation.
-- `gh`: Find LSP references.
-- `<leader>ca`: Apply code actions.
-- `gr`: Rename symbols.
-- `[e` & `]e`: Jump to previous/next diagnostic.
+
+- `K`: Show hover documentation (Lspsaga).
+- `gh`: Find LSP references (Lspsaga).
+- `<leader>ca`: Apply code actions (Lspsaga).
+- `gr`: Rename symbols (Lspsaga).
+- `[e` & `]e`: Jump to previous/next diagnostic (Lspsaga).
 - `<leader>f`: Format the code.
+- `gD`: Go to declaration.
+- `gd`: Go to definition.
+- `gi`: Go to implementation.
+- `gt`: Go to type definition.
+- `<leader>gd`: Peek definition (Lspsaga).
+- `<leader>gt`: Peek type definition (Lspsaga).
+- `<leader>o`: Toggle outline (Lspsaga).
+- `<leader>d`: Show line diagnostics.
+- `[d` & `]d`: Jump to previous/next diagnostic.
 
 ### Terminal Keymaps
+
 - `<esc>`: Toggle terminal mode.
 - `<C-h/j/k/l>`: Navigate terminal windows.
 - `jk`: Exit terminal mode.
@@ -61,107 +80,234 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - `<leader>tf`: Open terminal in float mode.
 - `<leader>th`: Open terminal in horizontal split.
 - `<leader>tv`: Open terminal in vertical split.
+- `<leader>tc`: Toggle Claude (float).
+- `<leader>tC`: Toggle Claude (horizontal).
+- `<leader>tcv`: Toggle Claude (vertical).
 
 ### Dial Keymaps
+
 - `<C-a>`: Increment.
 - `<C-x>`: Decrement.
 - `g<C-a>`/`g<C-x>`: Visual increment/decrement.
 
-### Fzf Keymaps
+### FZF-Lua Keymaps
+
 - `<leader>ff`: Find files.
 - `<leader>fg`: Live grep.
 - `<leader>fb`: Show buffers.
 - `<leader>fh`: Help tags.
-- `<leader>fr`: Resume search.
-- `<leader>fc`: Select colorscheme.
+- `<leader>fr`: Old files.
+- `<leader>fc`: Find commands.
 - `<leader>fk`: Show keymaps.
 - `<leader>fs`: Search current word.
 - `<leader>fS`: Search current WORD.
+- `<leader>ft`: Find TODOs.
+- `<leader>ls`: Document symbols.
+- `<leader>lS`: Workspace symbols.
+- `<leader>lr`: LSP references.
+- `<leader>ld`: LSP definitions.
+- `<leader>li`: LSP implementations.
 
 ### Git Keymaps
-- `<leader>gb`: Git branches.
-- `<leader>gc`: Git commits.
-- `<leader>gs`: Git status.
+
+- `<leader>gg`: Open Neogit.
+- `<leader>gc`: Neogit commit.
+- `<leader>gp`: Neogit push.
+- `<leader>gl`: Neogit pull.
+- `<leader>gb`: Git branches (FZF).
+- `<leader>gs`: Git status (FZF).
+- `<leader>ghs`: Stage hunk.
+- `<leader>ghr`: Reset hunk.
+- `<leader>ghS`: Stage buffer.
+- `<leader>ghu`: Undo stage hunk.
+- `<leader>ghR`: Reset buffer.
+- `<leader>ghp`: Preview hunk.
+- `<leader>ghb`: Blame line.
+- `<leader>gtb`: Toggle current line blame.
+- `<leader>ghd`: Diff this.
+- `<leader>gdo`: Open Diffview.
+- `<leader>gdc`: Close Diffview.
+- `<leader>gdh`: Diffview file history.
 
 ### Oil Keymaps
+
 - `-`: Open parent directory.
-- `<CR>`: Select file or directory.
-- `<C-s>`: Open in vertical split.
-- `<C-h>`: Open in horizontal split.
-- `<C-t>`: Open in new tab.
-- `<C-p>`: Preview file.
+- `<leader>E`: Open Oil in floating window.
+- `<leader>Er`: Open remote directory in Oil.
 
 ### Flash Keymaps
+
 - `s`: Flash jump.
 - `S`: Flash treesitter.
+- `r`: Remote flash (operator mode).
 - `R`: Treesitter search.
 - `<c-s>`: Toggle flash search.
 
 ### Todo Comments Keymaps
+
 - `[t`: Jump to previous TODO comment.
 - `]t`: Jump to next TODO comment.
 - `<leader>ft`: Find TODOs.
 
-### Vimtex Keymaps
-- `<leader>ll`: Compile document.
-- `<leader>lv`: View compiled output.
-- `<leader>lt`: Toggle table of contents.
+### VimTeX Keymaps
 
-### Copilot Keymaps
+- `<leader>vtl`: Compile document.
+- `<leader>vtv`: View compiled output.
+- `<leader>vts`: Stop compilation.
+- `<leader>vtc`: Clean auxiliary files.
+- `<leader>vtC`: Clean all files.
+- `<leader>vte`: Show errors.
+- `<leader>vto`: Show compilation output.
+- `<leader>vtg`: Show status.
+- `<leader>vtG`: Show status for all.
+- `<leader>vtt`: Toggle table of contents.
+
+### AI Assistance Keymaps
+
 - `<C-J>`: Accept Copilot suggestion.
+- `<leader>cp`: Toggle Copilot.
+- `<leader>ac`: Toggle Claude Code.
+- `<leader>af`: Focus Claude Code.
+- `<leader>ar`: Resume Claude Code.
+- `<leader>aC`: Continue Claude Code.
+- `<leader>ab`: Add current buffer to Claude.
+- `<leader>as`: Send to Claude (visual mode).
+- `<leader>aa`: Accept Claude diff.
+- `<leader>ad`: Deny Claude diff.
+
+### Additional Keymaps
+
+- `<leader>r`: Run code snippet (Sniprun).
+- `<leader>rc`: Close Sniprun.
+- `<leader>rt`: Terminate Sniprun.
+- `<leader>sr`: Toggle Spectre (Search & Replace).
+- `<leader>sw`: Search current word.
+- `<leader>sf`: Search in current file.
+- `<leader>co`: Open compiler.
+- `<leader>cr`: Redo compilation.
+- `<leader>ct`: Toggle compilation results.
+- `<leader>cs`: Stop compilation.
+- `<leader>p`: Toggle Nabla/MarkView preview.
+- `<leader>xx`: Toggle Trouble diagnostics.
+- `<leader>xX`: Buffer diagnostics (Trouble).
+- `<leader>cl`: LSP definitions/references (Trouble).
+- `<leader>?`: Show which-key help.
 
 ---
 
 ## Plugins
 
 ### Themes
-- **catppuccin/nvim:** Beautiful color scheme.
+
+- **catppuccin/nvim:** Beautiful Catppuccin color scheme.
 
 ### Navigation and Movement
-- **folke/flash.nvim:** Quick scope navigation.
+
+- **folke/flash.nvim:** Quick scope navigation and jumping.
 - **monaqa/dial.nvim:** Advanced manipulation of numbers and dates.
-- **nanotee/zoxide.vim:** Zoxide integration for faster directory navigation.
+- **karb94/neoscroll.nvim:** Smooth scrolling animations.
+- **folke/which-key.nvim:** Key binding helper with visual guide.
 
 ### LSP and Language Support
-- **neovim/nvim-lspconfig:** Configurations for built-in LSP.
-- **williamboman/mason.nvim:** Automates LSP server installation and updates.
-- **williamboman/mason-lspconfig.nvim:** Extends Mason for LSP.
-- **nvimdev/lspsaga.nvim:** UI improvements for LSP functionalities.
-- **onsails/lspkind.nvim:** Adds icons to completion items.
 
-### Syntax Highlighting
-- **nvim-treesitter/nvim-treesitter:** Advanced syntax highlighting.
+- **neovim/nvim-lspconfig:** Configurations for built-in LSP.
+- **williamboman/mason.nvim:** LSP server, formatter, and linter installer.
+- **williamboman/mason-lspconfig.nvim:** Mason integration for LSP.
+- **WhoIsSethDaniel/mason-tool-installer.nvim:** Automatic tool installation.
+- **nvimdev/lspsaga.nvim:** Enhanced LSP UI with beautiful interface.
+- **onsails/lspkind.nvim:** VSCode-like pictograms for completion.
+
+### Syntax Highlighting and Parsing
+
+- **nvim-treesitter/nvim-treesitter:** Advanced syntax highlighting and parsing.
+- **RRethy/vim-illuminate:** Highlight word under cursor throughout buffer.
 - **folke/todo-comments.nvim:** Highlight and manage TODO comments.
 
-### CMP and Snippets
-- **hrsh7th/nvim-cmp:** Completion framework.
+### Autocompletion and Snippets
+
+- **hrsh7th/nvim-cmp:** Powerful completion framework.
 - **hrsh7th/cmp-nvim-lsp:** LSP completion source.
-- **rafamadriz/friendly-snippets:** Predefined snippets.
-- **iurimateus/luasnip-latex-snippets.nvim:** Latex snippets for LuaSnip.
+- **hrsh7th/cmp-buffer:** Buffer completion source.
+- **hrsh7th/cmp-path:** Path completion source.
+- **hrsh7th/cmp-cmdline:** Command line completion.
+- **hrsh7th/cmp-nvim-lua:** Lua completion for Neovim config.
+- **hrsh7th/cmp-nvim-lsp-signature-help:** Function signature help.
+- **lukas-reineke/cmp-rg:** Ripgrep completion source.
+- **SergioRibera/cmp-dotenv:** Environment variable completion.
+- **davidsierradz/cmp-conventionalcommits:** Conventional commit completion.
+- **petertriho/cmp-git:** Git completion source.
+- **L3MON4D3/LuaSnip:** Powerful snippet engine.
+- **rafamadriz/friendly-snippets:** Collection of useful snippets.
+- **iurimateus/luasnip-latex-snippets.nvim:** LaTeX snippets for LuaSnip.
 
-### File Management
-- **stevearc/oil.nvim:** Modern file explorer.
-- **nvim-tree/nvim-web-devicons:** Icons for files.
+### Code Editing and Utilities
 
-### UI Enhancements
-- **lukas-reineke/indent-blankline.nvim:** Indent guides.
-- **akinsho/toggleterm.nvim:** Terminal management.
-- **folke/noice.nvim:** Improved notifications.
-- **rcarriga/nvim-notify:** Notification system.
-- **goolord/alpha-nvim:** Customizable start screen.
+- **numToStr/Comment.nvim:** Smart commenting functionality.
+- **michaelb/sniprun:** Run code snippets directly in Neovim.
+- **nvim-pack/nvim-spectre:** Advanced search and replace.
+- **kylechui/nvim-surround:** Surround text objects with ease.
+- **windwp/nvim-autopairs:** Automatic bracket and quote pairing.
+- **kevinhwang91/nvim-hlslens:** Enhanced search highlighting.
+- **nacro90/numb.nvim:** Peek line numbers while using :goto.
+
+### Build and Compilation
+
+- **Zeioth/compiler.nvim:** Compile and run code with ease.
+- **stevearc/overseer.nvim:** Task runner and job management.
+
+### Code Formatting and Linting
+
+- **stevearc/conform.nvim:** Lightweight formatter with support for multiple tools.
+- **mfussenegger/nvim-lint:** Asynchronous linting framework.
+
+### File Management and Search
+
+- **stevearc/oil.nvim:** Edit your filesystem like a buffer.
+- **refractalize/oil-git-status.nvim:** Git status integration for Oil.
+- **JezerM/oil-lsp-diagnostics.nvim:** LSP diagnostics in Oil.
+- **nvim-tree/nvim-web-devicons:** File type icons.
+- **ibhagwan/fzf-lua:** Blazing fast fuzzy finder using FZF.
+- **nvim-telescope/telescope.nvim:** Extensible fuzzy finder (used by compiler.nvim).
 
 ### Git Integration
-- **tpope/vim-fugitive:** Git commands in Neovim.
-- **lewis6991/gitsigns.nvim:** Git signs and diffs.
-- **sindrets/diffview.nvim:** Enhanced git diffs.
+
+- **NeogitOrg/neogit:** Modern Git interface inspired by Magit.
+- **lewis6991/gitsigns.nvim:** Git signs and hunks in the gutter.
+- **sindrets/diffview.nvim:** Tabpage interface for cycling through diffs.
+
+### UI Enhancements
+
+- **goolord/alpha-nvim:** Customizable greeter/start screen.
+- **lukas-reineke/indent-blankline.nvim:** Indentation guides.
+- **akinsho/toggleterm.nvim:** Terminal management and integration.
+- **folke/noice.nvim:** Enhanced UI for messages, cmdline, and popupmenu.
+- **rcarriga/nvim-notify:** Beautiful notification system.
+- **nvim-lualine/lualine.nvim:** Fast and customizable statusline.
+- **akinsho/bufferline.nvim:** Snazzy buffer line with tabpage integration.
+- **famiu/bufdelete.nvim:** Delete buffers without messing up window layout.
+- **folke/trouble.nvim:** Diagnostics, references, and more in a pretty list.
 
 ### AI Assistance
-- **zbirenbaum/copilot-cmp:** Copilot integration with completion.
-- **zbirenbaum/copilot.lua:** Copilot plugin.
-- **yetone/avante.nvim:** AI-powered coding assistance.
 
-### Tex Support
-- **lervag/vimtex:** Comprehensive Tex support.
+- **zbirenbaum/copilot.lua:** GitHub Copilot integration.
+- **zbirenbaum/copilot-cmp:** Copilot completion source for nvim-cmp.
+- **coder/claudecode.nvim:** Claude Code TUI integration.
+
+### Language-Specific Support
+
+#### Rust
+
+- **mrcjkb/rustaceanvim:** Supercharge your Rust experience.
+- **saecki/crates.nvim:** Crates.io dependency management.
+
+#### LaTeX
+
+- **lervag/vimtex:** Comprehensive LaTeX support.
+
+### Markdown and Documentation
+
+- **OXY2DEV/markview.nvim:** Beautiful markdown rendering.
+- **jbyuki/nabla.nvim:** Mathematical notation rendering.
 
 ---
 
@@ -180,15 +326,17 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 ## Usage
 
 ### Keymaps
+
 Navigate using the intuitive shortcuts listed above.
 
 ---
 
 ### Troubleshooting
+
 If you encounter any issues:
+
 - Ensure `lazy.nvim` is installed correctly.
 - Check the logs for errors in the configuration.
 - Review plugin-specific documentation for further guidance.
 
 ---
-

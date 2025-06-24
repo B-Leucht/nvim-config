@@ -1,4 +1,6 @@
-require("fzf-lua").setup({
+local fzf = require("fzf-lua")
+
+fzf.setup({
 	"default-title",
 	winopts = {
 		height = 0.85,
@@ -6,6 +8,7 @@ require("fzf-lua").setup({
 		row = 0.35,
 		col = 0.50,
 		border = "rounded",
+		backdrop = 60,
 		preview = {
 			default = "bat",
 			border = "border",
@@ -15,6 +18,7 @@ require("fzf-lua").setup({
 			horizontal = "right:60%",
 			layout = "flex",
 			flip_columns = 120,
+			scrollbar = "float",
 		},
 	},
 	keymap = {
@@ -28,6 +32,8 @@ require("fzf-lua").setup({
 			["<S-down>"] = "preview-page-down",
 			["<S-up>"] = "preview-page-up",
 			["<S-left>"] = "preview-page-reset",
+			["<C-d>"] = "preview-page-down",
+			["<C-u>"] = "preview-page-up",
 		},
 		fzf = {
 			["ctrl-z"] = "abort",
@@ -41,12 +47,13 @@ require("fzf-lua").setup({
 			["f4"] = "toggle-preview",
 			["shift-down"] = "preview-page-down",
 			["shift-up"] = "preview-page-up",
+			["ctrl-q"] = "select-all+accept",
 		},
 	},
 	previewers = {
 		bat = {
 			cmd = "bat",
-			args = "--style=numbers,changes --color always",
+			args = "--style=numbers,changes --color=always --line-range :500",
 			theme = "Catppuccin Mocha",
 		},
 		head = {
@@ -58,6 +65,12 @@ require("fzf-lua").setup({
 			cmd_modified = "git diff HEAD -- ",
 			cmd_untracked = "git diff --no-index /dev/null -- ",
 		},
+		builtin = {
+			syntax = true,
+			syntax_limit_l = 0,
+			syntax_limit_b = 1024 * 1024,
+			limit_b = 1024 * 1024 * 10,
+		},
 	},
 	files = {
 		prompt = "Files❯ ",
@@ -66,8 +79,61 @@ require("fzf-lua").setup({
 		file_icons = true,
 		color_icons = true,
 		find_opts = [[-type f -not -path '*/\.git/*' -printf '%P\n']],
-		rg_opts = "--color=never --files --hidden --follow -g '!.git'",
-		fd_opts = "--color=never --type f --hidden --follow --exclude .git",
+		rg_opts = "--color=never --files --hidden --follow -g '!.git' -g '!node_modules' -g '!.DS_Store'",
+		fd_opts = "--color=never --type f --hidden --follow --exclude .git --exclude node_modules --exclude .DS_Store",
+		cwd_prompt = false,
+		cwd_prompt_shorten_len = 32,
+		cwd_prompt_shorten_val = 1,
+	},
+	git = {
+		files = {
+			prompt = "GitFiles❯ ",
+			cmd = "git ls-files --exclude-standard",
+			multiprocess = true,
+			git_icons = true,
+			file_icons = true,
+			color_icons = true,
+		},
+		status = {
+			prompt = "GitStatus❯ ",
+			preview_pager = "delta --side-by-side --width=$FZF_PREVIEW_COLUMNS",
+			cmd = "git -c color.status=false status -s",
+			multiprocess = true,
+			git_icons = true,
+			file_icons = true,
+			color_icons = true,
+			actions = {
+				["right"] = { fn = fzf.actions.git_unstage, reload = true },
+				["left"] = { fn = fzf.actions.git_stage, reload = true },
+			},
+		},
+		commits = {
+			prompt = "Commits❯ ",
+			cmd = "git log --color=never --pretty=format:'%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(green)%an%C(reset) %s' --date=short",
+			preview = "git show --color=always {1}",
+			actions = {
+				["default"] = fzf.actions.git_checkout,
+			},
+		},
+		bcommits = {
+			prompt = "BCommits❯ ",
+			cmd = "git log --color=never --pretty=format:'%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(green)%an%C(reset) %s' --date=short <file>",
+			preview = "git show --color=always {1} -- <file>",
+			actions = {
+				["default"] = fzf.actions.git_buf_edit,
+				["ctrl-s"] = fzf.actions.git_buf_split,
+				["ctrl-v"] = fzf.actions.git_buf_vsplit,
+				["ctrl-t"] = fzf.actions.git_buf_tabedit,
+			},
+		},
+		branches = {
+			prompt = "Branches❯ ",
+			cmd = "git branch --all --color=never",
+			preview = "git log --oneline --graph --date=short --color=always --pretty='format:%C(auto)%cd %h%d %s' {2}",
+			actions = {
+				["default"] = fzf.actions.git_switch,
+			},
+		},
 	},
 	grep = {
 		prompt = "Rg❯ ",
@@ -77,10 +143,110 @@ require("fzf-lua").setup({
 		file_icons = true,
 		color_icons = true,
 		grep_opts = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
-		rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+		rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden -g '!.git' -g '!node_modules' -e",
 		rg_glob = true,
 		glob_flag = "--iglob",
 		glob_separator = "%s%-%-",
+		actions = {
+			["ctrl-g"] = { fn = fzf.actions.grep_lgrep },
+		},
+	},
+	lsp = {
+		prompt_postfix = "❯ ",
+		cwd_only = false,
+		async_or_timeout = 5000,
+		file_icons = true,
+		git_icons = false,
+		color_icons = true,
+		includeDeclaration = false,
+		symbols = {
+			async_or_timeout = true,
+			symbol_style = 1,
+			symbol_icons = {
+				File = "󰈙",
+				Module = "",
+				Namespace = "󰦮",
+				Package = "",
+				Class = "󰆧",
+				Method = "󰊕",
+				Property = "",
+				Field = "",
+				Constructor = "",
+				Enum = "",
+				Interface = "",
+				Function = "󰊕",
+				Variable = "󰀫",
+				Constant = "󰏿",
+				String = "",
+				Number = "",
+				Boolean = "◩",
+				Array = "󰅪",
+				Object = "󰅩",
+				Key = "󰌋",
+				Null = "󰟢",
+				EnumMember = "",
+				Struct = "󰆼",
+				Event = "",
+				Operator = "󰆕",
+				TypeParameter = "󰊄",
+			},
+		},
+	},
+	diagnostics = {
+		prompt = "Diagnostics❯ ",
+		cwd_only = false,
+		file_icons = true,
+		git_icons = false,
+		color_icons = true,
+		diag_icons = true,
+		signs = {
+			["Error"] = { text = "", texthl = "DiagnosticError" },
+			["Warn"] = { text = "", texthl = "DiagnosticWarn" },
+			["Info"] = { text = "", texthl = "DiagnosticInfo" },
+			["Hint"] = { text = "", texthl = "DiagnosticHint" },
+		},
+	},
+	buffers = {
+		prompt = "Buffers❯ ",
+		file_icons = true,
+		color_icons = true,
+		sort_lastused = true,
+		show_unloaded = true,
+		cwd_only = false,
+		actions = {
+			["ctrl-x"] = { fn = fzf.actions.buf_del, reload = true },
+		},
+	},
+	oldfiles = {
+		prompt = "History❯ ",
+		cwd_only = false,
+		stat_file = true,
+		include_current_session = false,
+	},
+	quickfix = {
+		file_icons = true,
+		git_icons = false,
+	},
+	loclist = {
+		file_icons = true,
+		git_icons = false,
+	},
+	helptags = {
+		actions = {
+			["default"] = fzf.actions.help,
+			["ctrl-s"] = fzf.actions.help,
+			["ctrl-v"] = fzf.actions.help_vert,
+			["ctrl-t"] = fzf.actions.help_tab,
+		},
+	},
+	manpages = {
+		actions = {
+			["default"] = fzf.actions.man,
+			["ctrl-s"] = fzf.actions.man,
+			["ctrl-v"] = fzf.actions.man_vert,
+			["ctrl-t"] = fzf.actions.man_tab,
+		},
 	},
 })
-require("fzf-lua").register_ui_select()
+
+fzf.register_ui_select()

@@ -161,11 +161,10 @@ require("lazy").setup({
 	-- CODE EDITING & UTILITIES
 	-- ===============================================
 	{
-		"numToStr/Comment.nvim",
+		"echasnovski/mini.comment",
 		config = function()
-			require("Comment").setup()
+			require("mini.comment").setup()
 		end,
-		opts = {},
 	},
 
 	-- Code execution
@@ -199,7 +198,24 @@ require("lazy").setup({
 			"nvim-lua/plenary.nvim",
 		},
 		config = function()
-			-- require("config.spectre")
+			require("spectre").setup({
+				open_cmd = "noswapfile vnew",
+				live_update = false,
+				line_sep_start = "┌-----------------------------------------",
+				result_padding = "¦  ",
+				line_sep = "└-----------------------------------------",
+				highlight = {
+					ui = "String",
+					search = "DiffChange",
+					replace = "DiffDelete",
+				},
+				is_insert_mode = true,
+				default = {
+					replace = {
+						cmd = "oxi",
+					},
+				},
+			})
 		end,
 		keys = {
 			{
@@ -226,18 +242,17 @@ require("lazy").setup({
 		},
 	},
 	{
-		"kylechui/nvim-surround",
-		version = "*",
+		"echasnovski/mini.surround",
 		event = "VeryLazy",
 		config = function()
-			require("nvim-surround").setup({})
+			require("mini.surround").setup()
 		end,
 	},
 	{
-		"windwp/nvim-autopairs",
+		"echasnovski/mini.pairs",
 		event = "InsertEnter",
 		config = function()
-			require("nvim-autopairs").setup({})
+			require("mini.pairs").setup()
 		end,
 	},
 
@@ -259,25 +274,44 @@ require("lazy").setup({
 	-- BUILD & COMPILATION
 	-- ===============================================
 
-	-- {
-	-- 	"Zeioth/compiler.nvim",
-	-- 	cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-	-- 	dependencies = { "stevearc/overseer.nvim" },
-	-- 	opts = {},
-	-- },
-	-- {
-	-- 	"stevearc/overseer.nvim",
-	-- 	commit = "6271cab7ccc4ca840faa93f54440ffae3a3918bd",
-	-- 	cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-	-- 	opts = {
-	-- 		task_list = {
-	-- 			direction = "bottom",
-	-- 			min_height = 25,
-	-- 			max_height = 25,
-	-- 			default_detail = 1,
-	-- 		},
-	-- 	},
-	-- },
+	{
+		"Zeioth/compiler.nvim",
+		cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+		dependencies = { "stevearc/overseer.nvim", "nvim-telescope/telescope.nvim" },
+		opts = {},
+	},
+	{
+		"stevearc/overseer.nvim",
+		commit = "6271cab7ccc4ca840faa93f54440ffae3a3918bd",
+		cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+		opts = {
+			task_list = {
+				direction = "bottom",
+				min_height = 15,
+				max_height = 25,
+				default_detail = 1,
+				-- Better integration with terminal panel
+				bindings = {
+					["<C-l>"] = false,
+					["<C-h>"] = false,
+					["<C-j>"] = false,
+					["<C-k>"] = false,
+				},
+			},
+			-- Auto-close when build completes successfully
+			task_runner = {
+				on_output_parse = true,
+			},
+			component_aliases = {
+				default = {
+					{ "display_duration", detail_level = 2 },
+					"on_output_summarize",
+					"on_exit_set_status",
+					{ "on_complete_notify", system = "unfocused" },
+				},
+			},
+		},
+	},
 
 	-- ===============================================
 	-- CODE FORMATTING
@@ -302,19 +336,6 @@ require("lazy").setup({
 	-- ===============================================
 	-- FILE MANAGEMENT & SEARCH
 	-- ===============================================
-	-- {
-	-- 	"nvim-tree/nvim-tree.lua",
-	-- 	config = function()
-	-- 		require("config.nvimtree")
-	-- 	end,
-	-- },
-	-- {
-	-- 	"chipsenkbeil/distant.nvim",
-	-- 	branch = "v0.3",
-	-- 	config = function()
-	-- 		require("distant"):setup()
-	-- 	end,
-	-- },
 	{
 		"stevearc/oil.nvim",
 		opts = {},
@@ -351,17 +372,17 @@ require("lazy").setup({
 			require("config.fzf")
 		end,
 	},
-	-- Telescope (commented out in favor of FZF)
-	--{
-	--	"nvim-telescope/telescope.nvim",
-	--	dependencies = {
-	--		"nvim-lua/plenary.nvim",
-	--		"nvim-tree/nvim-web-devicons",
-	--	},
-	--	config = function()
-	--		require("config.telescope")
-	--	end,
-	--},
+	-- Telescope (for compiler.nvim)
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("telescope").setup({})
+		end,
+	},
 
 	-- ===============================================
 	-- GIT INTEGRATION
@@ -378,6 +399,11 @@ require("lazy").setup({
 			require("neogit").setup({
 				graph_style = "kitty", -- Best visuals for Ghostty
 				sort_branches = "-committerdate",
+				-- Always use floating windows for better layout
+				kind = "floating",
+				popup = {
+					kind = "floating",
+				},
 				integrations = {
 					telescope = false,
 					diffview = true,
@@ -386,13 +412,12 @@ require("lazy").setup({
 			})
 		end,
 		keys = {
-			{ "<leader>gg", "<cmd>Neogit<cr>", desc = "Open Neogit" },
-			{ "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Neogit Commit" },
-			{ "<leader>gp", "<cmd>Neogit push<cr>", desc = "Neogit Push" },
-			{ "<leader>gl", "<cmd>Neogit pull<cr>", desc = "Neogit Pull" },
+			{ "<leader>gg", "<cmd>Neogit kind=floating <cr>", desc = "Open Neogit" },
+			{ "<leader>gc", "<cmd>Neogit kind=floating commit<cr>", desc = "Neogit Commit" },
+			{ "<leader>gp", "<cmd>Neogit kind=floating push<cr>", desc = "Neogit Push" },
+			{ "<leader>gl", "<cmd>Neogit kind=floating pull<cr>", desc = "Neogit Pull" },
 		},
 	},
-	{ "lewis6991/gitsigns.nvim", config = true },
 	-- Enhanced git diffs
 	{
 		"sindrets/diffview.nvim",
@@ -425,7 +450,32 @@ require("lazy").setup({
 	{
 		"akinsho/toggleterm.nvim",
 		config = function()
-			require("toggleterm").setup({})
+			require("toggleterm").setup({
+				-- Smart sizing for bottom panel integration
+				size = function(term)
+					if term.direction == "horizontal" then
+						return 20 -- 20% of screen height
+					elseif term.direction == "vertical" then
+						return vim.o.columns * 0.3
+					end
+				end,
+				open_mapping = [[<C-\>]],
+				direction = "horizontal", -- Default to bottom panel
+				float_opts = {
+					border = "curved",
+					width = function()
+						return math.floor(vim.o.columns * 0.8)
+					end,
+					height = function()
+						return math.floor(vim.o.lines * 0.8)
+					end,
+				},
+				-- Integrate with compiler panel
+				on_create = function()
+					vim.opt_local.foldcolumn = "0"
+					vim.opt_local.signcolumn = "no"
+				end,
+			})
 		end,
 	},
 
@@ -473,8 +523,10 @@ require("lazy").setup({
 	},
 
 	{
-		"famiu/bufdelete.nvim",
-		cmd = { "Bdelete", "Bwipeout" },
+		"echasnovski/mini.bufremove",
+		config = function()
+			require("mini.bufremove").setup()
+		end,
 	},
 
 	{
@@ -483,15 +535,6 @@ require("lazy").setup({
 		opts = {},
 		cmd = "Trouble",
 	},
-
-	-- Command line enhancements (commented out)
-	--{
-	--	"gelguy/wilder.nvim",
-	--	event = "CmdlineEnter",
-	--	config = function()
-	--		require("config.wilder")
-	--	end,
-	--},
 
 	-- ===============================================
 	-- AI ASSISTANCE
@@ -510,37 +553,65 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Avante AI chat
+	-- Claude Code TUI integration
 	{
-		"yetone/avante.nvim",
-		event = "VeryLazy",
-		version = false,
-		opts = {
-			provider = "copilot",
-			providers = {
-				ollama = {
-					endpoint = "http://localhost:11434",
-					model = "devstral:24b-small-2505-q4_K_M",
-				},
+		"coder/claudecode.nvim",
+		dependencies = { "folke/snacks.nvim" },
+		config = true,
+		keys = {
+			{ "<leader>a", nil, desc = "AI/Claude Code" },
+			{ "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+			{ "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+			{ "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+			{ "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+			{ "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+			{ "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+			{
+				"<leader>as",
+				"<cmd>ClaudeCodeTreeAdd<cr>",
+				desc = "Add file",
+				ft = { "NvimTree", "neo-tree", "oil" },
 			},
-		},
-		build = "make",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
+			-- Diff management
+			{ "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+			{ "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
 		},
 	},
 
-	-- CopilotChat (commented out in favor of Avante)
-	--{
-	--	"CopilotC-Nvim/CopilotChat.nvim",
-	--	dependencies = {
-	--		{ "zbirenbaum/copilot.lua" },
-	--		{ "nvim-lua/plenary.nvim" },
-	--	},
-	--	build = "make tiktoken", -- Only on macOS or Linux
-	--},
+	-- ===============================================
+	-- RUST SUPPORT
+	-- ===============================================
+	{
+		"mrcjkb/rustaceanvim",
+		version = "^5",
+		lazy = false,
+		init = function()
+			vim.g.rustaceanvim = {
+				server = {
+					cmd = function()
+						local mason_registry = require("mason-registry")
+						local ra_binary = mason_registry.is_installed("rust-analyzer")
+								and mason_registry.get_package("rust-analyzer"):get_install_path() .. "/rust-analyzer"
+							or "rust-analyzer"
+						return { ra_binary }
+					end,
+				},
+			}
+		end,
+	},
+	{
+		"saecki/crates.nvim",
+		event = { "BufRead Cargo.toml" },
+		config = function()
+			require("crates").setup({
+				completion = {
+					cmp = {
+						enabled = true,
+					},
+				},
+			})
+		end,
+	},
 
 	-- ===============================================
 	-- LATEX SUPPORT
@@ -553,7 +624,7 @@ require("lazy").setup({
 	},
 
 	-- ===============================================
-	-- MARKDOWN & DOCUMENTATION (COMMENTED OUT)
+	-- MARKDOWN & DOCUMENTATION
 	-- ===============================================
 	-- Markdown preview
 	{
