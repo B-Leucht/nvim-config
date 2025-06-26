@@ -6,10 +6,32 @@ require("lazy").setup({
 		"catppuccin/nvim",
 		priority = 1000,
 		config = function()
-			require("config.colorscheme")
+			require("config.ui.colorscheme")
+		end,
+	},
+	-- ===============================================
+	-- Libraries
+	-- ===============================================
+
+	{
+		"echasnovski/mini.nvim",
+		version = false,
+		config = function()
+			require("mini.comment").setup()
+			require("mini.pairs").setup()
+			require("mini.surround").setup()
+			require("mini.icons").setup()
 		end,
 	},
 
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		config = function()
+			require("config.snacks")
+		end,
+	},
 	-- ===============================================
 	-- NAVIGATION & MOVEMENT
 	-- ===============================================
@@ -21,19 +43,7 @@ require("lazy").setup({
 	},
 	-- Number increment/decrement
 	{ "monaqa/dial.nvim" },
-	-- Zoxide integration
-	{
-		"karb94/neoscroll.nvim",
-		config = function()
-			require("neoscroll").setup({
-				mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
-				hide_cursor = true,
-				stop_eof = true,
-				respect_scrolloff = false,
-				cursor_scrolls_alone = true,
-			})
-		end,
-	},
+	-- Smooth scrolling replaced by snacks.scroll
 
 	-- ===============================================
 	-- KEYBINDING HELPER
@@ -43,15 +53,6 @@ require("lazy").setup({
 		event = "VeryLazy",
 		opts = {
 			preset = "helix",
-		},
-		keys = {
-			{
-				"<leader>?",
-				function()
-					require("which-key").show({ global = false })
-				end,
-				desc = "Buffer Local Keymaps (which-key)",
-			},
 		},
 	},
 
@@ -63,14 +64,10 @@ require("lazy").setup({
 		"williamboman/mason.nvim",
 		build = ":MasonUpdate",
 		config = function()
-			require("config.mason")
+			require("config.lsp.mason")
 		end,
 	},
 	{ "williamboman/mason-lspconfig.nvim" },
-	{
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		dependencies = { "williamboman/mason.nvim" },
-	},
 	{
 		"nvimdev/lspsaga.nvim",
 		dependencies = {
@@ -78,7 +75,7 @@ require("lazy").setup({
 			"neovim/nvim-lspconfig",
 		},
 		config = function()
-			require("lspsaga").setup({})
+			require("config.lsp.lspsaga")
 		end,
 	},
 	{
@@ -93,16 +90,10 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		config = function()
-			require("config.treesitter")
+			require("config.editor.treesitter")
 		end,
 	},
-	{
-		"RRethy/vim-illuminate",
-		event = { "BufReadPost", "BufNewFile" },
-		config = function()
-			require("config.illuminate")
-		end,
-	},
+	-- Word highlighting replaced by snacks.words
 	-- TODO comment highlighting
 	{
 		"folke/todo-comments.nvim",
@@ -116,7 +107,7 @@ require("lazy").setup({
 	{
 		"hrsh7th/nvim-cmp",
 		config = function()
-			require("config.cmp")
+			require("config.editor.cmp")
 		end,
 	},
 	{ "hrsh7th/cmp-nvim-lsp" },
@@ -124,8 +115,6 @@ require("lazy").setup({
 	{ "hrsh7th/cmp-path" },
 	{ "hrsh7th/cmp-cmdline" },
 	{ "hrsh7th/cmp-nvim-lua", lazy = true },
-	{ "hrsh7th/cmp-nvim-lsp-signature-help" },
-	{ "hrsh7th/cmp-nvim-lsp-document-symbol" },
 	{
 		"lukas-reineke/cmp-rg",
 		lazy = true,
@@ -143,17 +132,14 @@ require("lazy").setup({
 	{
 		"rafamadriz/friendly-snippets",
 		config = function()
-			require("luasnip.loaders.from_vscode").lazy_load()
+			require("config.editor.friendly-snippets")
 		end,
 	},
 	{
 		"iurimateus/luasnip-latex-snippets.nvim",
 		dependencies = { "L3MON4D3/LuaSnip", "lervag/vimtex" },
 		config = function()
-			require("luasnip-latex-snippets").setup({
-				use_treesitter = false,
-			})
-			require("luasnip").config.setup({ enable_autosnippets = true })
+			require("config.editor.latex-snippets")
 		end,
 	},
 
@@ -161,112 +147,43 @@ require("lazy").setup({
 	-- CODE EDITING & UTILITIES
 	-- ===============================================
 	{
-		"echasnovski/mini.comment",
-		config = function()
-			require("mini.comment").setup()
-		end,
+		"folke/persistence.nvim",
+		event = "BufReadPre", -- this will only start session saving when an actual file was opened
+		opts = {
+			-- add any custom options here
+		},
 	},
-
 	-- Code execution
 	{
 		"michaelb/sniprun",
 		branch = "master",
 		build = "sh install.sh",
-		dependencies = { "rcarriga/nvim-notify" },
+		dependencies = { "folke/snacks.nvim" },
 		config = function()
-			require("sniprun").setup({
-				display = { "NvimNotify" },
-				display_options = {
-					notification_timeout = 1500, -- matches your notify config
-				},
-				-- Optional: specify interpreters if you want
-				selected_interpreters = {}, -- use default for filetype
-				-- Show output even when empty
-				show_no_output = { "NvimNotify" },
-			})
+			require("config.tools.sniprun")
 		end,
-		keys = {
-			{ "<leader>r", "<Plug>SnipRun", mode = { "n", "v" }, desc = "Run code snippet" },
-			{ "<leader>rc", "<Plug>SnipClose", desc = "Close sniprun" },
-			{ "<leader>rt", "<Plug>SnipTerminate", desc = "Terminate sniprun" },
-		},
 	},
 	-- Search and replace across project
-	{
-		"nvim-pack/nvim-spectre",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		config = function()
-			require("spectre").setup({
-				open_cmd = "noswapfile vnew",
-				live_update = false,
-				line_sep_start = "┌-----------------------------------------",
-				result_padding = "¦  ",
-				line_sep = "└-----------------------------------------",
-				highlight = {
-					ui = "String",
-					search = "DiffChange",
-					replace = "DiffDelete",
-				},
-				is_insert_mode = true,
-				default = {
-					replace = {
-						cmd = "oxi",
-					},
-				},
-			})
-		end,
-		keys = {
-			{
-				"<leader>sr",
-				'<cmd>lua require("spectre").toggle()<CR>',
-				desc = "Toggle Spectre (Search & Replace)",
-			},
-			{
-				"<leader>sw",
-				'<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
-				desc = "Search current word",
-			},
-			{
-				"<leader>sw",
-				'<esc><cmd>lua require("spectre").open_visual()<CR>',
-				desc = "Search selected text",
-				mode = "v",
-			},
-			{
-				"<leader>sf",
-				'<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
-				desc = "Search in current file",
-			},
-		},
-	},
-	{
-		"echasnovski/mini.surround",
-		event = "VeryLazy",
-		config = function()
-			require("mini.surround").setup()
-		end,
-	},
-	{
-		"echasnovski/mini.pairs",
-		event = "InsertEnter",
-		config = function()
-			require("mini.pairs").setup()
-		end,
-	},
-
-	{
-		"kevinhwang91/nvim-hlslens",
-		config = function()
-			require("hlslens").setup()
-		end,
-	},
+	-- {
+	-- 	"nvim-pack/nvim-spectre",
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 	},
+	-- 	config = function()
+	-- 		require("config.tools.spectre")
+	-- 	end,
+	-- },
+	-- {
+	-- 	"kevinhwang91/nvim-hlslens",
+	-- 	config = function()
+	-- 		require("config.ui.hlslens")
+	-- 	end,
+	-- },
 
 	{
 		"nacro90/numb.nvim",
 		config = function()
-			require("numb").setup()
+			require("config.ui.numb")
 		end,
 	},
 
@@ -284,33 +201,9 @@ require("lazy").setup({
 		"stevearc/overseer.nvim",
 		commit = "6271cab7ccc4ca840faa93f54440ffae3a3918bd",
 		cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-		opts = {
-			task_list = {
-				direction = "bottom",
-				min_height = 15,
-				max_height = 25,
-				default_detail = 1,
-				-- Better integration with terminal panel
-				bindings = {
-					["<C-l>"] = false,
-					["<C-h>"] = false,
-					["<C-j>"] = false,
-					["<C-k>"] = false,
-				},
-			},
-			-- Auto-close when build completes successfully
-			task_runner = {
-				on_output_parse = true,
-			},
-			component_aliases = {
-				default = {
-					{ "display_duration", detail_level = 2 },
-					"on_output_summarize",
-					"on_exit_set_status",
-					{ "on_complete_notify", system = "unfocused" },
-				},
-			},
-		},
+		config = function()
+			require("config.tools.overseer")
+		end,
 	},
 
 	-- ===============================================
@@ -319,7 +212,7 @@ require("lazy").setup({
 	{
 		"stevearc/conform.nvim",
 		config = function()
-			require("config.conform")
+			require("config.editor.conform")
 		end,
 	},
 	{
@@ -329,7 +222,7 @@ require("lazy").setup({
 			"BufNewFile",
 		},
 		config = function()
-			require("config.nvim-lint")
+			require("config.editor.nvim-lint")
 		end,
 	},
 
@@ -340,13 +233,20 @@ require("lazy").setup({
 		"stevearc/oil.nvim",
 		opts = {},
 		-- Optional dependencies
-		dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+		dependencies = { "echasnovski/mini.icons" }, -- use for file icons
 		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 		lazy = false,
 		config = function()
-			require("config.oil")
+			require("config.tools.oil")
 		end,
 	},
+	-- {
+	-- 	"echasnovski/mini.files",
+	-- 	version = "*",
+	-- 	config = function()
+	-- 		require("mini.files").setup()
+	-- 	end,
+	-- },
 
 	{
 		"refractalize/oil-git-status.nvim",
@@ -362,122 +262,39 @@ require("lazy").setup({
 		dependencies = { "stevearc/oil.nvim" },
 		opts = {},
 	},
-	{ "nvim-tree/nvim-web-devicons" },
-
-	-- Fuzzy finder (FZF instead of Telescope)
-	{
-		"ibhagwan/fzf-lua",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = function()
-			require("config.fzf")
-		end,
-	},
+	-- Fuzzy finder with snacks.picker
+	-- (configured in snacks-dashboard.lua)
 	-- Telescope (for compiler.nvim)
 	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons",
+			"echasnovski/mini.icons",
 		},
 		config = function()
-			require("telescope").setup({})
+			require("config.tools.telescope")
 		end,
 	},
 
 	-- ===============================================
 	-- GIT INTEGRATION
 	-- ===============================================
-	-- Modern Git interface
-	{
-		"NeogitOrg/neogit",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"sindrets/diffview.nvim",
-			"ibhagwan/fzf-lua",
-		},
-		config = function()
-			require("neogit").setup({
-				graph_style = "kitty", -- Best visuals for Ghostty
-				sort_branches = "-committerdate",
-				-- Always use floating windows for better layout
-				kind = "floating",
-				popup = {
-					kind = "floating",
-				},
-				integrations = {
-					telescope = false,
-					diffview = true,
-					fzf_lua = true,
-				},
-			})
-		end,
-		keys = {
-			{ "<leader>gg", "<cmd>Neogit kind=floating <cr>", desc = "Open Neogit" },
-			{ "<leader>gc", "<cmd>Neogit kind=floating commit<cr>", desc = "Neogit Commit" },
-			{ "<leader>gp", "<cmd>Neogit kind=floating push<cr>", desc = "Neogit Push" },
-			{ "<leader>gl", "<cmd>Neogit kind=floating pull<cr>", desc = "Neogit Pull" },
-		},
-	},
 	-- Enhanced git diffs
 	{
 		"sindrets/diffview.nvim",
 		cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
 		config = function()
-			require("diffview").setup({})
+			require("config.tools.diffview")
 		end,
 	},
 	-- ===============================================
 	-- UI ENHANCEMENTS
 	-- ===============================================
-	-- Start screen
-	{
-		"goolord/alpha-nvim",
-		config = function()
-			require("config.alpha")
-		end,
-	},
 
-	-- Indentation guides
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		---@module "ibl"
-		---@type ibl.config
-		opts = {},
-	},
+	-- Indentation guides replaced by snacks.indent
 
-	-- Terminal integration
-	{
-		"akinsho/toggleterm.nvim",
-		config = function()
-			require("toggleterm").setup({
-				-- Smart sizing for bottom panel integration
-				size = function(term)
-					if term.direction == "horizontal" then
-						return 20 -- 20% of screen height
-					elseif term.direction == "vertical" then
-						return vim.o.columns * 0.3
-					end
-				end,
-				open_mapping = [[<C-\>]],
-				direction = "horizontal", -- Default to bottom panel
-				float_opts = {
-					border = "curved",
-					width = function()
-						return math.floor(vim.o.columns * 0.8)
-					end,
-					height = function()
-						return math.floor(vim.o.lines * 0.8)
-					end,
-				},
-				-- Integrate with compiler panel
-				on_create = function()
-					vim.opt_local.foldcolumn = "0"
-					vim.opt_local.signcolumn = "no"
-				end,
-			})
-		end,
-	},
+	-- Terminal integration with snacks.nvim
+	-- (configured in snacks-dashboard.lua)
 
 	-- Enhanced UI messages
 	{
@@ -485,30 +302,19 @@ require("lazy").setup({
 		event = "VeryLazy",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
+			"folke/snacks.nvim",
 		},
 		config = function()
-			require("config.noice")
+			require("config.ui.noice")
 		end,
 	},
-	{
-		"rcarriga/nvim-notify",
-		config = function()
-			require("notify").setup({
-				stages = "fade",
-				timeout = 1500,
-				background_colour = "#1E1E2E",
-				render = "minimal",
-				top_down = false,
-			})
-		end,
-	},
+	-- snacks.notifier replaces nvim-notify
 
 	-- Status line
 	{
 		"nvim-lualine/lualine.nvim",
 		config = function()
-			require("config.lualine")
+			require("config.ui.lualine")
 		end,
 	},
 
@@ -516,23 +322,28 @@ require("lazy").setup({
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
-		dependencies = "nvim-tree/nvim-web-devicons",
+		dependencies = "echasnovski/mini.icons",
 		config = function()
-			require("config.bufferline")
+			require("config.ui.bufferline")
 		end,
 	},
 
-	{
-		"echasnovski/mini.bufremove",
-		config = function()
-			require("mini.bufremove").setup()
-		end,
-	},
+	-- Buffer removal replaced by snacks.bufdelete
 
 	{
 		"folke/trouble.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {},
+		dependencies = { "echasnovski/mini.icons" },
+		opts = function()
+			local constants = require("core.constants")
+			return {
+				win = {
+					size = {
+						height = constants.UI.PANEL_HEIGHT,
+						width = constants.UI.SIDEBAR_WIDTH,
+					},
+				},
+			}
+		end,
 		cmd = "Trouble",
 	},
 
@@ -549,7 +360,7 @@ require("lazy").setup({
 		"zbirenbaum/copilot-cmp",
 		dependencies = { "zbirenbaum/copilot.lua" },
 		config = function()
-			require("config.copilot")
+			require("config.editor.copilot")
 		end,
 	},
 
@@ -557,25 +368,9 @@ require("lazy").setup({
 	{
 		"coder/claudecode.nvim",
 		dependencies = { "folke/snacks.nvim" },
-		config = true,
-		keys = {
-			{ "<leader>a", nil, desc = "AI/Claude Code" },
-			{ "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
-			{ "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
-			{ "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
-			{ "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
-			{ "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
-			{ "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
-			{
-				"<leader>as",
-				"<cmd>ClaudeCodeTreeAdd<cr>",
-				desc = "Add file",
-				ft = { "NvimTree", "neo-tree", "oil" },
-			},
-			-- Diff management
-			{ "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-			{ "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-		},
+		config = function()
+			require("config.tools.claudecode")
+		end,
 	},
 
 	-- ===============================================
@@ -603,13 +398,7 @@ require("lazy").setup({
 		"saecki/crates.nvim",
 		event = { "BufRead Cargo.toml" },
 		config = function()
-			require("crates").setup({
-				completion = {
-					cmp = {
-						enabled = true,
-					},
-				},
-			})
+			require("config.lang.crates")
 		end,
 	},
 
@@ -619,7 +408,7 @@ require("lazy").setup({
 	{
 		"lervag/vimtex",
 		config = function()
-			require("config.vimtex")
+			require("config.lang.vimtex")
 		end,
 	},
 
@@ -631,7 +420,7 @@ require("lazy").setup({
 		"OXY2DEV/markview.nvim",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		config = function()
-			require("config.markview")
+			require("config.lang.markview")
 		end,
 	},
 

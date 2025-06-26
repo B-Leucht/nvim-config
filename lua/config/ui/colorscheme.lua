@@ -1,11 +1,11 @@
 require("catppuccin").setup({
-	pflavour = "mocha",
+	flavor = "mocha",
+	term_colors = true,
 	default_integrations = true,
-	transparent_background = true,
+	transparent_background = not vim.g.neovide, -- Disable transparency in Neovide
 	integrations = {
 		cmp = true,
 		fzf = true,
-		nvimtree = true,
 		treesitter = true,
 		mason = true,
 	},

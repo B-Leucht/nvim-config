@@ -40,13 +40,13 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate buffers (using BufferLine)
 keymap("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 keymap("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
--- Better buffer deletion with mini.bufremove
+-- Better buffer deletion with snacks.bufdelete
 keymap("n", "<leader>bd", function()
-	require("mini.bufremove").delete(0, false)
+	Snacks.bufdelete()
 end, { desc = "Delete buffer (keep window)" })
 
 keymap("n", "<leader>bD", function()
-	require("mini.bufremove").delete(0, true)
+	Snacks.bufdelete({ force = true })
 end, { desc = "Force delete buffer" })
 
 -- BufferLine specific commands
@@ -103,10 +103,10 @@ end)
 -- Better Search and Highlighting
 -- ===============================================
 
-keymap("n", "n", [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]])
-keymap("n", "N", [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]])
-keymap("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]])
-keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]])
+-- keymap("n", "n", [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]])
+-- keymap("n", "N", [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]])
+-- keymap("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]])
+-- keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]])
 
 -- ===============================================
 -- FILE EXPLORER
@@ -118,14 +118,14 @@ keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]])
 -- Smart Oil keymap - disabled in terminals/special buffers
 keymap("n", "-", function()
 	local ft = vim.bo.filetype
-	if ft == "toggleterm" or ft == "terminal" or ft:match("neogit") or ft == "claude" or ft == "trouble" then
+	if ft == "snacks_terminal" or ft == "terminal" or ft == "claude" or ft == "trouble" then
 		return
 	end
 	vim.cmd("Oil")
 end, { desc = "Open parent directory" })
 keymap("n", "<leader>E", "<cmd>Oil --float<cr>", { desc = "Open Oil in floating window" })
 local open_remote = function()
-	vim.ui.input({ prompt = "Remote path (ssh://user@host/path): " }, function(input)
+	vim.ui.input({ prompt = "Remote path (oil-ssh://user@host/path): " }, function(input)
 		if input then
 			vim.cmd("Oil " .. input)
 		end
@@ -134,48 +134,9 @@ end
 keymap("n", "<leader>Er", open_remote, { desc = "Open remote directory in Oil" })
 
 -- ===============================================
--- FUZZY FINDER (FZF-LUA)
+-- FUZZY FINDER (SNACKS.PICKER)
 -- ===============================================
-
--- File finding
-keymap("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Find files", silent = true })
-keymap("n", "<leader>fF", "<cmd>FzfLua git_files<CR>", { desc = "Find git files", silent = true })
-keymap("n", "<leader>fr", "<cmd>FzfLua oldfiles<CR>", { desc = "Recent files", silent = true })
-keymap("n", "<leader>fb", "<cmd>FzfLua buffers<CR>", { desc = "Buffers", silent = true })
-
--- Text searching
-keymap("n", "<leader>fg", "<cmd>FzfLua live_grep<CR>", { desc = "Live grep", silent = true })
-keymap("n", "<leader>fw", "<cmd>FzfLua grep_cword<CR>", { desc = "Grep word under cursor", silent = true })
-keymap("n", "<leader>fW", "<cmd>FzfLua grep_cWORD<CR>", { desc = "Grep WORD under cursor", silent = true })
-keymap("n", "<leader>fl", "<cmd>FzfLua grep_last<CR>", { desc = "Repeat last grep", silent = true })
-keymap("v", "<leader>fg", "<cmd>FzfLua grep_visual<CR>", { desc = "Grep selection", silent = true })
-
--- LSP integration
-keymap("n", "<leader>ls", "<cmd>FzfLua lsp_document_symbols<cr>", { desc = "Document symbols" })
-keymap("n", "<leader>lS", "<cmd>FzfLua lsp_workspace_symbols<cr>", { desc = "Workspace symbols" })
-keymap("n", "<leader>lr", "<cmd>FzfLua lsp_references<cr>", { desc = "LSP references" })
-keymap("n", "<leader>ld", "<cmd>FzfLua lsp_definitions<cr>", { desc = "LSP definitions" })
-keymap("n", "<leader>li", "<cmd>FzfLua lsp_implementations<cr>", { desc = "LSP implementations" })
-keymap("n", "<leader>lt", "<cmd>FzfLua lsp_typedefs<cr>", { desc = "LSP type definitions" })
-keymap("n", "<leader>la", "<cmd>FzfLua lsp_code_actions<cr>", { desc = "LSP code actions" })
-keymap("n", "<leader>lx", "<cmd>FzfLua diagnostics_document<cr>", { desc = "Document diagnostics" })
-keymap("n", "<leader>lX", "<cmd>FzfLua diagnostics_workspace<cr>", { desc = "Workspace diagnostics" })
-
--- Git integration
-keymap("n", "<leader>gb", "<cmd>FzfLua git_branches<CR>", { desc = "Git branches", silent = true })
-keymap("n", "<leader>gs", "<cmd>FzfLua git_status<CR>", { desc = "Git status", silent = true })
-keymap("n", "<leader>gc", "<cmd>FzfLua git_commits<CR>", { desc = "Git commits", silent = true })
-keymap("n", "<leader>gC", "<cmd>FzfLua git_bcommits<CR>", { desc = "Buffer commits", silent = true })
-
--- Utility
-keymap("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Help tags", silent = true })
-keymap("n", "<leader>fk", "<cmd>FzfLua keymaps<CR>", { desc = "Keymaps", silent = true })
-keymap("n", "<leader>fc", "<cmd>FzfLua commands<cr>", { desc = "Commands", silent = true })
-keymap("n", "<leader>fq", "<cmd>FzfLua quickfix<cr>", { desc = "Quickfix", silent = true })
-keymap("n", "<leader>fl", "<cmd>FzfLua loclist<cr>", { desc = "Location list", silent = true })
-keymap("n", "<leader>fm", "<cmd>FzfLua marks<cr>", { desc = "Marks", silent = true })
-keymap("n", "<leader>fj", "<cmd>FzfLua jumps<cr>", { desc = "Jumps", silent = true })
-keymap("n", "<leader>fz", "<cmd>FzfLua resume<cr>", { desc = "Resume last search", silent = true })
+-- Keymaps are configured in snacks-picker.lua
 
 -- ===============================================
 -- LSP KEYMAPS
@@ -245,33 +206,25 @@ keymap("n", "<leader>o", "<cmd>Lspsaga outline<CR>", opts)
 -- GIT KEYMAPS
 -- ===============================================
 
--- Diffview (if using)
+-- -- Lazygit (main git interface - floating terminal)
+-- local Terminal  = require('toggleterm').Terminal
+-- local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+--
+-- function _lazygit_toggle()
+--   lazygit:toggle()
+-- end
+--
+-- keymap("n", "<leader>g", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+
+-- Diffview (enhanced git diffs)
 keymap("n", "<leader>gdo", "<cmd>DiffviewOpen<CR>", opts)
 keymap("n", "<leader>gdc", "<cmd>DiffviewClose<CR>", opts)
 keymap("n", "<leader>gdh", "<cmd>DiffviewFileHistory<CR>", opts)
 
 -- ===============================================
--- TERMINAL (TOGGLETERM)
+-- TERMINAL (SNACKS.TERMINAL)
 -- ===============================================
-
-keymap("n", "<leader>tt", "<cmd>ToggleTerm<CR>", opts)
-keymap("n", "<leader>tf", "<cmd>ToggleTerm direction=float<CR>", opts)
-keymap("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<CR>", opts)
-keymap("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical size=80<CR>", opts)
-
--- Terminal mode keymaps (YOUR CONFIGURATION)
-function _G.set_terminal_keymaps()
-	local term_opts = { buffer = 0 }
-	keymap("t", "<esc>", [[<C-\><C-n>]], term_opts)
-	keymap("t", "jk", [[<C-\><C-n>]], term_opts)
-	keymap("t", "<C-h>", [[<Cmd>wincmd h<CR>]], term_opts)
-	keymap("t", "<C-j>", [[<Cmd>wincmd j<CR>]], term_opts)
-	keymap("t", "<C-k>", [[<Cmd>wincmd k<CR>]], term_opts)
-	keymap("t", "<C-l>", [[<Cmd>wincmd l<CR>]], term_opts)
-	keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], term_opts)
-end
-
-vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+-- Keymaps are configured in snacks-terminal.lua
 
 -- ===============================================
 -- COMPILER & OVERSEER
@@ -283,13 +236,13 @@ keymap("n", "<leader>cr", "<cmd>CompilerRedo<CR>", opts)
 keymap("n", "<leader>ct", "<cmd>CompilerToggleResults<CR>", opts)
 keymap("n", "<leader>cs", "<cmd>CompilerStop<CR>", opts)
 
--- F-key mappings (your original setup - kept as alternatives)
--- vim.api.nvim_set_keymap("n", "<F6>", "<cmd>CompilerOpen<cr>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("n", "<S-F6>", "<cmd>CompilerStop<cr><cmd>CompilerRedo<cr>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("n", "<S-F7>", "<cmd>CompilerToggleResults<cr>", { noremap = true, silent = true })
+-- F-key mappings (kept as alternatives)
+-- keymap("n", "<F6>", "<cmd>CompilerOpen<cr>", { desc = "Open compiler" })
+-- keymap("n", "<S-F6>", "<cmd>CompilerStop<cr><cmd>CompilerRedo<cr>", { desc = "Restart compiler" })
+-- keymap("n", "<S-F7>", "<cmd>CompilerToggleResults<cr>", { desc = "Toggle compiler results" })
 
 -- ===============================================
--- COMMENT
+-- CODE EDITING & UTILITIES
 -- ===============================================
 
 -- mini.comment keymaps are set automatically:
@@ -298,11 +251,33 @@ keymap("n", "<leader>cs", "<cmd>CompilerStop<CR>", opts)
 -- gc{motion} - line comment with motion
 -- gb{motion} - block comment with motion
 
+-- Sniprun (code execution)
+keymap("n", "<leader>r", "<Plug>SnipRun", { desc = "Run code snippet" })
+keymap("v", "<leader>r", "<Plug>SnipRun", { desc = "Run code snippet" })
+keymap("n", "<leader>rc", "<Plug>SnipClose", { desc = "Close sniprun" })
+keymap("n", "<leader>rt", "<Plug>SnipTerminate", { desc = "Terminate sniprun" })
+
+-- Spectre (Search & Replace)
+-- keymap("n", "<leader>sr", '<cmd>lua require("spectre").toggle()<CR>', { desc = "Toggle Spectre (Search & Replace)" })
+-- keymap(
+-- 	"n",
+-- 	"<leader>sw",
+-- 	'<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
+-- 	{ desc = "Search current word" }
+-- )
+-- keymap("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', { desc = "Search selected text" })
+-- keymap(
+-- 	"n",
+-- 	"<leader>sf",
+-- 	'<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
+-- 	{ desc = "Search in current file" }
+-- )
+
 -- ===============================================
--- COPILOT (YOUR TOGGLE SETUP)
+-- AI ASSISTANCE
 -- ===============================================
 
--- Copilot toggle
+-- Copilot
 local copilot_enabled = true
 keymap("n", "<leader>cp", function()
 	copilot_enabled = not copilot_enabled
@@ -310,12 +285,40 @@ keymap("n", "<leader>cp", function()
 	print("Copilot " .. (copilot_enabled and "enabled" or "disabled"))
 end, { desc = "Toggle Copilot" })
 
--- Copilot accept
 keymap("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
 	expr = true,
 	replace_keycodes = false,
 })
 vim.g.copilot_no_tab_map = true
+
+-- Claude Code (Smart replacement with symbols)
+keymap("n", "<leader>a", function() end, { desc = "AI/Claude Code" })
+keymap("n", "<leader>ac", function()
+	-- Check if symbols trouble is open in right sidebar
+	local symbols_win = nil
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local buf = vim.api.nvim_win_get_buf(win)
+		local name = vim.api.nvim_buf_get_name(buf)
+		local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+		if ft == "trouble" and name:match("symbols") then
+			symbols_win = win
+			break
+		end
+	end
+
+	if symbols_win then
+		-- Close symbols and open Claude in same position
+		vim.api.nvim_win_close(symbols_win, false)
+	end
+	vim.cmd("ClaudeCode")
+end, { desc = "Toggle Claude" })
+keymap("n", "<leader>af", "<cmd>ClaudeCodeFocus<cr>", { desc = "Focus Claude" })
+keymap("n", "<leader>ar", "<cmd>ClaudeCode --resume<cr>", { desc = "Resume Claude" })
+keymap("n", "<leader>aC", "<cmd>ClaudeCode --continue<cr>", { desc = "Continue Claude" })
+keymap("n", "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", { desc = "Add current buffer" })
+keymap("v", "<leader>as", "<cmd>ClaudeCodeSend<cr>", { desc = "Send to Claude" })
+keymap("n", "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Accept diff" })
+keymap("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Deny diff" })
 
 -- ===============================================
 -- MARKDOWN & MATH PREVIEW (YOUR TOGGLE SETUP)
@@ -348,9 +351,58 @@ keymap("n", "<leader>p", ToggleNablaMarkView, { desc = "Toggle Nabla / MarkView 
 -- TROUBLE (DIAGNOSTICS)
 -- ===============================================
 
-keymap("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
-keymap("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
-keymap("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
+-- Smart diagnostics trouble - shares bottom panel with terminal
+keymap("n", "<leader>xx", function()
+	-- Check if terminal is open in bottom panel
+	local term_win = nil
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local buf = vim.api.nvim_win_get_buf(win)
+		local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+		local name = vim.api.nvim_buf_get_name(buf)
+		if ft == "snacks_terminal" or name:match("term://") then
+			term_win = win
+			break
+		end
+	end
+
+	if term_win then
+		-- Close terminal and open diagnostics in same position
+		vim.api.nvim_win_close(term_win, false)
+	end
+	vim.cmd("Trouble diagnostics toggle win.position=bottom")
+end, { desc = "Diagnostics (Trouble)" })
+
+keymap(
+	"n",
+	"<leader>xX",
+	"<cmd>Trouble diagnostics toggle filter.buf=0 win.position=bottom<cr>",
+	{ desc = "Buffer Diagnostics (Trouble)" }
+)
+-- Smart symbols trouble - replaces Claude if open
+keymap("n", "<leader>xs", function()
+	-- Check if Claude is open in right sidebar
+	local claude_win = nil
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local buf = vim.api.nvim_win_get_buf(win)
+		local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+		local name = vim.api.nvim_buf_get_name(buf)
+		local bt = vim.api.nvim_get_option_value("buftype", { buf = buf })
+		if ft == "claude" or name:match("claude") or bt == "terminal" and name:match("claude") then
+			claude_win = win
+			break
+		end
+	end
+
+	if claude_win then
+		-- Close Claude and open symbols in same position
+		vim.api.nvim_win_close(claude_win, false)
+		vim.cmd("Trouble symbols toggle focus=false win.position=right")
+	else
+		-- Normal symbols toggle
+		vim.cmd("Trouble symbols toggle focus=false")
+	end
+end, { desc = "Symbols (Trouble)" })
+
 keymap(
 	"n",
 	"<leader>cl",
@@ -390,12 +442,7 @@ end, { desc = "Next todo comment" })
 keymap("n", "[t", function()
 	require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
-keymap(
-	"n",
-	"<leader>ft",
-	"<cmd>FzfLua grep_project search=TODO\\ \\|FIXME\\ \\|HACK\\ \\|WARN\\ \\|PERF\\ \\|NOTE<cr>",
-	{ desc = "Find todos" }
-)
+-- Todo finding moved to snacks-picker.lua
 
 -- ===============================================
 -- VIMTEX
@@ -413,8 +460,13 @@ keymap("n", "<leader>vtG", "<cmd>VimtexStatusAll<CR>", { desc = "VimTeX status a
 keymap("n", "<leader>vtt", "<cmd>VimtexTocToggle<CR>", { desc = "VimTeX TOC toggle" })
 
 -- ===============================================
--- WHICH-KEY DESCRIPTIONS
+-- WHICH-KEY DESCRIPTIONS & HELPER
 -- ===============================================
+
+-- Which-key show buffer keymaps
+keymap("n", "<leader>?", function()
+	require("which-key").show({ global = false })
+end, { desc = "Buffer Local Keymaps (which-key)" })
 
 -- Register descriptions for which-key
 local which_key_ok, which_key = pcall(require, "which-key")
@@ -422,20 +474,17 @@ if which_key_ok then
 	which_key.add({
 		{ "<leader>f", group = "+find" },
 		{ "<leader>g", group = "+git" },
-		{ "<leader>gh", group = "+hunks" },
-		{ "<leader>gt", group = "+toggle" },
-		{ "<leader>l", group = "+lsp" }, -- Changed from latex
+		{ "<leader>l", group = "+lsp" },
 		{ "<leader>t", group = "+terminal" },
-		{ "<leader>c", group = "+compiler" }, -- More specific
+		{ "<leader>q", group = "+quickfile" },
+		{ "<leader>r", group = "+run/rename" },
+		{ "<leader>c", group = "+compiler" },
 		{ "<leader>w", group = "+workspace" },
 		{ "<leader>x", group = "+diagnostics" },
-		{ "<leader>a", group = "+ai/avante" },
-		{ "<leader>s", group = "+saga/show" },
-		{ "<leader>e", group = "+edit" }, -- New group for config editing
-		{ "<leader>m", group = "+marks" }, -- New group for harpoon
-		{ "<leader>se", group = "+session" }, -- New group for sessions
-		{ "<leader>vt", group = "+vimtex" }, -- New group for VimTeX (if using option 2)
-		{ "<leader>tex", group = "+latex" }, -- New group for VimTeX (if using option 1)
+		{ "<leader>a", group = "+ai/claude" },
+		{ "<leader>s", group = "+saga/show/search" },
+		{ "<leader>e", group = "+edit" },
+		{ "<leader>vt", group = "+vimtex" },
 	})
 end
 -- ===============================================
@@ -469,7 +518,7 @@ keymap({ "n", "v" }, "<leader>P", '"+p', opts)
 -- ===============================================
 
 -- Uncomment to disable arrow keys for better vim habits
--- keymap("n", "<up>", "<nop>", opts)
--- keymap("n", "<down>", "<nop>", opts)
--- keymap("n", "<left>", "<nop>", opts)
--- keymap("n", "<right>", "<nop>", opts)", "<leader>ghr", "<cmd>Gitsigns reset_hunk<CR>", opts)
+keymap("n", "<up>", "<nop>", opts)
+keymap("n", "<down>", "<nop>", opts)
+keymap("n", "<left>", "<nop>", opts)
+keymap("n", "<right>", "<nop>", opts)

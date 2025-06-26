@@ -69,7 +69,7 @@ lint.linters.luacheck.args = {
 -- Configure checkstyle for Java
 lint.linters.checkstyle.args = {
 	"-c",
-	"/google_checks.xml", -- or path to your custom config
+	"/google_checks.xml",
 	"-f",
 	"sarif",
 }

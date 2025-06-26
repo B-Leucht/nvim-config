@@ -10,7 +10,7 @@ require("noice").setup({
 	},
 	messages = {
 		enabled = true,
-		view = "notify", -- Use `nvim-notify` backend for messages
+		view = "notify", -- Use snacks.notifier backend for messages
 	},
 	popupmenu = {
 		enabled = true, -- Enable wildmenu/popupmenu UI
@@ -51,6 +51,5 @@ require("noice").setup({
 	},
 })
 
-require("notify").setup({
-	background_colour = "#1e1e2e", -- or any hex color that matches your theme
-})
+-- Snacks notifier is configured in snacks-dashboard.lua
+-- Noice will automatically use snacks.notifier when available

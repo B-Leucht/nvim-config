@@ -5,7 +5,7 @@ require("markview").setup({
 		headings = presets.headings.simple,
 		horizontal_rules = presets.horizontal_rules.dashed,
 		tables = presets.tables.single,
-		icon_provider = "devicons",
+		icon_provider = "mini",
 	},
 	avante = {
 		headings = presets.headings.advanced,

@@ -20,21 +20,14 @@ require("bufferline").setup({
 		-- Updated offsets for Oil.nvim instead of NvimTree
 		offsets = {
 			{
-				filetype = "toggleterm",
+				filetype = "snacks_terminal",
 				text = "Terminal",
 				highlight = "Directory",
 				text_align = "center",
 				separator = true,
 			},
 			{
-				filetype = "NeogitStatus",
-				text = "Neogit",
-				highlight = "Directory",
-				text_align = "center",
-				separator = true,
-			},
-			{
-				filetype = "snacks_terminal",
+				filetype = "claude",
 				text = "Claude",
 				highlight = "Directory",
 				text_align = "center",
@@ -50,6 +43,22 @@ require("bufferline").setup({
 		enforce_regular_tabs = false,
 		always_show_bufferline = false,
 		sort_by = "insert_after_current",
+		-- Clean up terminal buffer names
+		name_formatter = function(buf)
+			local buf_name = buf.name
+			-- Clean up Claude terminal names
+			if string.match(buf_name, "term://.*claude") then
+				return " Claude"
+			end
+			-- Clean up other terminal names
+			if string.match(buf_name, "term://.*") then
+				local terminal_name = string.match(buf_name, "term://.*//.*:(.*)")
+				if terminal_name then
+					return " " .. terminal_name:gsub("^%l", string.upper)
+				end
+			end
+			return nil -- Use default naming for other buffers
+		end,
 		-- Filter out Oil buffers from BufferLine tabs
 		custom_filter = function(buf_number)
 			local buf_name = vim.fn.bufname(buf_number)
@@ -63,18 +72,18 @@ require("bufferline").setup({
 			end
 			return true
 		end,
-		-- Better buffer management with bufdelete
+		-- Better buffer management with snacks.bufdelete
 		close_command = function(bufnr)
-			-- Use bufdelete instead of bdelete to preserve window layout
-			require("bufdelete").bufdelete(bufnr, true)
+			-- Use snacks.bufdelete instead of bdelete to preserve window layout
+			Snacks.bufdelete({ buf = bufnr, force = true })
 		end,
 		right_mouse_command = function(bufnr)
-			-- Right click to close buffer using bufdelete
-			require("bufdelete").bufdelete(bufnr, true)
+			-- Right click to close buffer using snacks.bufdelete
+			Snacks.bufdelete({ buf = bufnr, force = true })
 		end,
 		middle_mouse_command = function(bufnr)
-			-- Middle click to close buffer using bufdelete
-			require("bufdelete").bufdelete(bufnr, true)
+			-- Middle click to close buffer using snacks.bufdelete
+			Snacks.bufdelete({ buf = bufnr, force = true })
 		end,
 	},
 	highlights = require("catppuccin.groups.integrations.bufferline").get(), -- optional
