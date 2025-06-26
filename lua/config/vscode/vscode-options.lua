@@ -3,6 +3,7 @@
 -- ===============================================
 
 -- VS Code specific options
+local constants = require("core.constants")
 local opt = vim.opt
 
 -- Set leader key
@@ -34,4 +35,4 @@ opt.completeopt = { "menu", "menuone", "noselect" }
 opt.swapfile = false
 opt.backup = false
 opt.writebackup = false
-opt.updatetime = 300
+opt.updatetime = constants.UI.UPDATE_TIME

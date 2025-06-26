@@ -1,17 +1,9 @@
-local presets = require("markview.presets")
-
-require("markview").setup({
+return {
 	markdown = {
 		headings = presets.headings.simple,
 		horizontal_rules = presets.horizontal_rules.dashed,
 		tables = presets.tables.single,
 		icon_provider = "mini",
-	},
-	avante = {
-		headings = presets.headings.advanced,
-		horizontal_rules = presets.horizontal_rules.solid,
-		tables = presets.tables.enhanced,
-		icon_provider = "custom-icons",
 	},
 	preview = {
 		enable = false,
@@ -19,6 +11,4 @@ require("markview").setup({
 		hybrid_modes = { "i" },
 		modes = { "n" }, -- Other modes still get preview, just not hybrid
 	},
-})
-
-
+}

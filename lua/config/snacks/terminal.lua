@@ -1,0 +1,7 @@
+return {
+	win = {
+		wo = {
+			winbar = "",
+		},
+	},
+}

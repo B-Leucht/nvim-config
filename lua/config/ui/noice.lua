@@ -1,4 +1,4 @@
-require("noice").setup({
+return {
 	cmdline = {
 		view = "cmdline_popup", -- Use floating cmdline
 		format = {
@@ -49,7 +49,6 @@ require("noice").setup({
 		inc_rename = false,
 		lsp_doc_border = true,
 	},
-})
+}
 
--- Snacks notifier is configured in snacks-dashboard.lua
 -- Noice will automatically use snacks.notifier when available

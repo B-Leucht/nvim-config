@@ -1,5 +1,7 @@
+local constants = require("core.constants")
+
 require("catppuccin").setup({
-	flavor = "mocha",
+	flavor = constants.APPEARANCE.FLAVOR,
 	term_colors = true,
 	default_integrations = true,
 	transparent_background = not vim.g.neovide, -- Disable transparency in Neovide
@@ -15,4 +17,4 @@ require("catppuccin").setup({
 	},
 })
 
-vim.cmd.colorscheme("catppuccin")
+vim.cmd.colorscheme(constants.APPEARANCE.THEME)

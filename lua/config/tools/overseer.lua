@@ -1,8 +1,10 @@
-require("overseer").setup({
+local constants = require("core.constants")
+
+return {
 	task_list = {
 		direction = "bottom",
-		min_height = 15,
-		max_height = 15,
+		min_height = constants.TERMINAL.SIZE,
+		max_height = constants.TERMINAL.SIZE,
 		default_detail = 1,
 		bindings = {
 			["<C-l>"] = false,
@@ -22,4 +24,4 @@ require("overseer").setup({
 			{ "on_complete_notify", system = "unfocused" },
 		},
 	},
-})
+}

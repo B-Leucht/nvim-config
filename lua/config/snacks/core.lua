@@ -1,0 +1,16 @@
+return {
+	lazygit = { enabled = true },
+	input = { enabled = true },
+	scope = { enabled = true },
+	words = { enabled = true },
+	scroll = { enabled = true },
+	bufdelete = { enabled = true },
+	indent = { enabled = true },
+	zen = { enabled = true },
+	statuscolumn = { enabled = true },
+	dim = { enabled = true },
+	git = { enabled = true },
+	animate = { enabled = true },
+	quickfile = { enabled = true },
+	rename = { enabled = true },
+}

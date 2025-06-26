@@ -1,10 +1,13 @@
+local constants = require("core.constants")
+
 require("lazy").setup({
 	-- ===============================================
 	-- COLORSCHEME & THEME
 	-- ===============================================
 	{
-		"catppuccin/nvim",
+		constants.APPEARANCE.THEME .. "/nvim",
 		priority = 1000,
+		lazy = false,
 		config = function()
 			require("config.ui.colorscheme")
 		end,
@@ -16,11 +19,14 @@ require("lazy").setup({
 	{
 		"echasnovski/mini.nvim",
 		version = false,
+		event = "VeryLazy",
 		config = function()
 			require("mini.comment").setup()
 			require("mini.pairs").setup()
 			require("mini.surround").setup()
 			require("mini.icons").setup()
+			-- require("mini.tabline").setup()
+			-- require("mini.statusline").setup()
 		end,
 	},
 
@@ -28,9 +34,8 @@ require("lazy").setup({
 		"folke/snacks.nvim",
 		priority = 1000,
 		lazy = false,
-		config = function()
-			require("config.snacks")
-		end,
+		keys = require("config.keys.snacks"),
+		opts = require("config.snacks"),
 	},
 	-- ===============================================
 	-- NAVIGATION & MOVEMENT
@@ -38,11 +43,16 @@ require("lazy").setup({
 	-- Quick scope navigation
 	{
 		"folke/flash.nvim",
-		event = "VeryLazy",
+		lazy = true,
+		keys = require("config.keys.flash"),
 		opts = {},
 	},
 	-- Number increment/decrement
-	{ "monaqa/dial.nvim" },
+	{
+		"monaqa/dial.nvim",
+		lazy = true,
+		keys = require("config.keys.dial"),
+	},
 	-- Smooth scrolling replaced by snacks.scroll
 
 	-- ===============================================
@@ -51,6 +61,7 @@ require("lazy").setup({
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
+		lazy = true,
 		opts = {
 			preset = "helix",
 		},
@@ -59,24 +70,35 @@ require("lazy").setup({
 	-- ===============================================
 	-- LSP & LANGUAGE SUPPORT
 	-- ===============================================
-	{ "neovim/nvim-lspconfig" },
+	{
+		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("config.lsp.init")
+		end,
+		lazy = true,
+	},
 	{
 		"williamboman/mason.nvim",
+		lazy = true,
 		build = ":MasonUpdate",
-		config = function()
-			require("config.lsp.mason")
-		end,
+		cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate" },
+		opts = require("config.lsp.mason"),
 	},
-	{ "williamboman/mason-lspconfig.nvim" },
+	{ "williamboman/mason-lspconfig.nvim", dependencies = { "williamboman/mason.nvim" } },
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = { "williamboman/mason.nvim" },
+		opts = require("config.lsp.mason-tool-installer"),
+	},
 	{
 		"nvimdev/lspsaga.nvim",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			"neovim/nvim-lspconfig",
 		},
-		config = function()
-			require("config.lsp.lspsaga")
-		end,
+		keys = require("config.keys.lsp"),
+		opts = require("config.lsp.lspsaga"),
 	},
 	{
 		"onsails/lspkind.nvim",
@@ -89,15 +111,15 @@ require("lazy").setup({
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		config = function()
-			require("config.editor.treesitter")
-		end,
+		event = { "BufReadPost", "BufNewFile" },
+		opts = require("config.editor.treesitter"),
 	},
 	-- Word highlighting replaced by snacks.words
 	-- TODO comment highlighting
 	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
+		keys = require("config.keys.todo-comments"),
 		opts = {},
 	},
 
@@ -106,6 +128,7 @@ require("lazy").setup({
 	-- ===============================================
 	{
 		"hrsh7th/nvim-cmp",
+		event = "InsertEnter",
 		config = function()
 			require("config.editor.cmp")
 		end,
@@ -128,7 +151,7 @@ require("lazy").setup({
 	{ "saadparwaiz1/cmp_luasnip" },
 
 	-- Snippet engine and collections
-	{ "L3MON4D3/LuaSnip", dependencies = { "rafamadriz/friendly-snippets" } },
+	{ "L3MON4D3/LuaSnip", event = "InsertEnter", dependencies = { "rafamadriz/friendly-snippets" } },
 	{
 		"rafamadriz/friendly-snippets",
 		config = function()
@@ -138,6 +161,7 @@ require("lazy").setup({
 	{
 		"iurimateus/luasnip-latex-snippets.nvim",
 		dependencies = { "L3MON4D3/LuaSnip", "lervag/vimtex" },
+		ft = { "tex", "latex" },
 		config = function()
 			require("config.editor.latex-snippets")
 		end,
@@ -159,9 +183,8 @@ require("lazy").setup({
 		branch = "master",
 		build = "sh install.sh",
 		dependencies = { "folke/snacks.nvim" },
-		config = function()
-			require("config.tools.sniprun")
-		end,
+		keys = require("config.keys.sniprun"),
+		opts = require("config.tools.sniprun"),
 	},
 	-- Search and replace across project
 	-- {
@@ -182,9 +205,8 @@ require("lazy").setup({
 
 	{
 		"nacro90/numb.nvim",
-		config = function()
-			require("config.ui.numb")
-		end,
+		event = "CmdlineEnter",
+		opts = {},
 	},
 
 	-- ===============================================
@@ -194,6 +216,8 @@ require("lazy").setup({
 	{
 		"Zeioth/compiler.nvim",
 		cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+		keys = require("config.keys.compiler"),
+
 		dependencies = { "stevearc/overseer.nvim", "nvim-telescope/telescope.nvim" },
 		opts = {},
 	},
@@ -201,9 +225,7 @@ require("lazy").setup({
 		"stevearc/overseer.nvim",
 		commit = "6271cab7ccc4ca840faa93f54440ffae3a3918bd",
 		cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-		config = function()
-			require("config.tools.overseer")
-		end,
+		opts = require("config.tools.overseer"),
 	},
 
 	-- ===============================================
@@ -211,9 +233,9 @@ require("lazy").setup({
 	-- ===============================================
 	{
 		"stevearc/conform.nvim",
-		config = function()
-			require("config.editor.conform")
-		end,
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
+		opts = require("config.editor.conform"),
 	},
 	{
 		"mfussenegger/nvim-lint",
@@ -231,31 +253,20 @@ require("lazy").setup({
 	-- ===============================================
 	{
 		"stevearc/oil.nvim",
-		opts = {},
 		-- Optional dependencies
 		dependencies = { "echasnovski/mini.icons" }, -- use for file icons
 		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 		lazy = false,
-		config = function()
-			require("config.tools.oil")
-		end,
-	},
-	-- {
-	-- 	"echasnovski/mini.files",
-	-- 	version = "*",
-	-- 	config = function()
-	-- 		require("mini.files").setup()
-	-- 	end,
-	-- },
+		keys = require("config.keys.oil"),
 
+		opts = require("config.tools.oil"),
+	},
 	{
 		"refractalize/oil-git-status.nvim",
-
 		dependencies = {
 			"stevearc/oil.nvim",
 		},
-
-		config = true,
+		opts = {},
 	},
 	{
 		"JezerM/oil-lsp-diagnostics.nvim",
@@ -267,13 +278,12 @@ require("lazy").setup({
 	-- Telescope (for compiler.nvim)
 	{
 		"nvim-telescope/telescope.nvim",
+		cmd = "Telescope",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"echasnovski/mini.icons",
 		},
-		config = function()
-			require("config.tools.telescope")
-		end,
+		opts = require("config.tools.telescope"),
 	},
 
 	-- ===============================================
@@ -283,10 +293,15 @@ require("lazy").setup({
 	{
 		"sindrets/diffview.nvim",
 		cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
-		config = function()
-			require("config.tools.diffview")
-		end,
+		keys = require("config.keys.git"),
+		opts = {},
 	},
+	-- -- Git signs
+	-- {
+	-- 	"lewis6991/gitsigns.nvim",
+	-- 	event = "VeryLazy",
+	-- 	opts = {},
+	-- },
 	-- ===============================================
 	-- UI ENHANCEMENTS
 	-- ===============================================
@@ -304,18 +319,15 @@ require("lazy").setup({
 			"MunifTanjim/nui.nvim",
 			"folke/snacks.nvim",
 		},
-		config = function()
-			require("config.ui.noice")
-		end,
+		opts = require("config.ui.noice"),
 	},
 	-- snacks.notifier replaces nvim-notify
 
 	-- Status line
 	{
 		"nvim-lualine/lualine.nvim",
-		config = function()
-			require("config.ui.lualine")
-		end,
+		event = "VeryLazy",
+		opts = require("config.ui.lualine"),
 	},
 
 	-- Buffer line
@@ -323,9 +335,8 @@ require("lazy").setup({
 		"akinsho/bufferline.nvim",
 		version = "*",
 		dependencies = "echasnovski/mini.icons",
-		config = function()
-			require("config.ui.bufferline")
-		end,
+		event = "VeryLazy",
+		opts = require("config.ui.bufferline"),
 	},
 
 	-- Buffer removal replaced by snacks.bufdelete
@@ -333,6 +344,7 @@ require("lazy").setup({
 	{
 		"folke/trouble.nvim",
 		dependencies = { "echasnovski/mini.icons" },
+		keys = require("config.keys.trouble"),
 		opts = function()
 			local constants = require("core.constants")
 			return {
@@ -355,22 +367,21 @@ require("lazy").setup({
 		"zbirenbaum/copilot.lua",
 		cmd = "Copilot",
 		build = ":Copilot auth",
+		opts = require("config.editor.copilot"),
+		keys = require("config.keys.copilot"),
 	},
 	{
 		"zbirenbaum/copilot-cmp",
 		dependencies = { "zbirenbaum/copilot.lua" },
-		config = function()
-			require("config.editor.copilot")
-		end,
+		opts = {},
 	},
 
 	-- Claude Code TUI integration
 	{
 		"coder/claudecode.nvim",
 		dependencies = { "folke/snacks.nvim" },
-		config = function()
-			require("config.tools.claudecode")
-		end,
+		keys = require("config.keys.claudecode"),
+		opts = require("config.tools.claudecode"),
 	},
 
 	-- ===============================================
@@ -379,7 +390,7 @@ require("lazy").setup({
 	{
 		"mrcjkb/rustaceanvim",
 		version = "^5",
-		lazy = false,
+		ft = "rust",
 		init = function()
 			vim.g.rustaceanvim = {
 				server = {
@@ -396,10 +407,9 @@ require("lazy").setup({
 	},
 	{
 		"saecki/crates.nvim",
-		event = { "BufRead Cargo.toml" },
-		config = function()
-			require("config.lang.crates")
-		end,
+		event = "BufRead Cargo.toml",
+		ft = "toml",
+		opts = require("config.lang.crates"),
 	},
 
 	-- ===============================================
@@ -407,7 +417,9 @@ require("lazy").setup({
 	-- ===============================================
 	{
 		"lervag/vimtex",
-		config = function()
+		ft = { "tex", "latex", "bib" },
+		keys = require("config.keys.vimtex"),
+		init = function()
 			require("config.lang.vimtex")
 		end,
 	},
@@ -417,11 +429,10 @@ require("lazy").setup({
 	-- ===============================================
 	-- Markdown preview
 	{
-		"OXY2DEV/markview.nvim",
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		config = function()
-			require("config.lang.markview")
-		end,
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
+		ft = "markdown",
+		opts = {},
 	},
 
 	-- Mathematical notation rendering
@@ -431,5 +442,7 @@ require("lazy").setup({
 			"nvim-treesitter/nvim-treesitter",
 			"williamboman/mason.nvim",
 		},
+		ft = "markdown",
+		keys = require("config.keys.nabla"),
 	},
 })

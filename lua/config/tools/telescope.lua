@@ -1,1 +1,1 @@
-require("telescope").setup({})
+return {}

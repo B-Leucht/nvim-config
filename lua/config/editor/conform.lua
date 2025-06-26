@@ -1,4 +1,4 @@
-require("conform").setup({
+return {
 	formatters_by_ft = {
 		lua = { "stylua" },
 		python = { "black" },
@@ -12,4 +12,4 @@ require("conform").setup({
 		lsp_fallback = true,
 		timeout_ms = 1000,
 	},
-})
+}

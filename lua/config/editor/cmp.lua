@@ -1,3 +1,4 @@
+local constants = require("core.constants")
 local cmp = require("cmp")
 local lsp = vim.lsp
 local luasnip = require("luasnip")
@@ -21,16 +22,15 @@ cmp.setup({
 	sources = cmp.config.sources({
 		-- Group 1: Primary sources (highest priority)
 		{ name = "nvim_lsp", priority = 1000 },
-		{ name = "nvim_lsp_signature_help", priority = 900 },
 		{ name = "luasnip", priority = 800 },
 		{ name = "copilot", priority = 700 },
 	}, {
 		-- Group 2: Secondary sources
 		{ name = "buffer", priority = 500, max_item_count = 5, keyword_length = 3 },
-		{ name = "path", priority = 400, max_item_count = 5 },
+		{ name = "path", priority = constants.UI.TIMEOUT, max_item_count = 5 },
 		{
 			name = "nvim_lua",
-			priority = 300,
+			priority = constants.UI.UPDATE_TIME,
 			max_item_count = 5,
 			entry_filter = function()
 				return vim.bo.filetype == "lua"
@@ -85,9 +85,9 @@ cmp.setup({
 	},
 })
 require("cmp_git").setup()
-cmp.setup.cmdline({ "/", "?" }, {
+cmp.setup.cmdline({
 	mapping = cmp.mapping.preset.cmdline(),
 	sources = {
 		{ name = "buffer" },
 	},
-})
+}, { "/", "?" })

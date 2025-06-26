@@ -1,6 +1,5 @@
-require("mason").setup()
-
-require("mason-lspconfig").setup({
+-- Setup mason-lspconfig
+return {
 	ensure_installed = {
 		"ltex",
 		"pyright",
@@ -8,19 +7,6 @@ require("mason-lspconfig").setup({
 		"texlab",
 		"hls",
 		"rust_analyzer",
+		"lua_ls",
 	},
-})
-
--- require("mason-tool-installer").setup({
--- 	ensure_installed = {
--- 		-- ... your existing tools
--- 		-- Linters
--- 		"ruff",
--- 		"shellcheck",
--- 		"luacheck",
--- 		"markdownlint",
--- 		"yamllint",
--- 		"mypy",
--- 		"checkstyle",
--- 	},
--- })
+}

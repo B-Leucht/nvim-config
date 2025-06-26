@@ -3,8 +3,9 @@
 -- ===============================================
 
 -- VS Code specific keymaps
+local constants = require("core.constants")
 local keymap = vim.keymap.set
-local opts = { noremap = true, silent = true }
+local opts = constants.OPTS.SILENT
 
 -- VS Code command helper function
 local function vscode_action(action)

@@ -1,7 +1,7 @@
-require("crates").setup({
+return {
 	completion = {
 		cmp = {
 			enabled = true,
 		},
 	},
-})
+}

@@ -9,8 +9,10 @@ function _G.get_oil_winbar()
 		return vim.api.nvim_buf_get_name(0)
 	end
 end
+
 local detail = false
-require("oil").setup({
+
+return {
 	keymaps = {
 		["gd"] = {
 			desc = "Toggle file detail view",
@@ -39,4 +41,4 @@ require("oil").setup({
 		wrap = true,
 		winbar = "%!v:lua.get_oil_winbar()",
 	},
-})
+}

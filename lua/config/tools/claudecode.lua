@@ -1,19 +1,8 @@
 local constants = require("core.constants")
 
--- Configure snacks.nvim terminal
-require("snacks").setup({
-	terminal = {
-		win = {
-			wo = {
-				winbar = "",
-			},
-		},
-	},
-})
-
-require("claudecode").setup({
+return {
 	window = {
 		width = constants.UI.SIDEBAR_WIDTH / 100,
 	},
-})
+}
 
