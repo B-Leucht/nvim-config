@@ -17,30 +17,33 @@ local function get_python_venv()
 	return ""
 end
 
-local function get_macro_recording()
-	local reg = vim.fn.reg_recording()
-	if reg == "" then
-		return ""
-	end
-	return "Recording @" .. reg
-end
-
 return {
 	options = {
 		theme = constants.APPEARANCE.THEME,
-		component_separators = { left = "|", right = "|" },
-		section_separators = { left = "", right = "" },
 		globalstatus = true,
 		disabled_filetypes = {
 			statusline = { "snacks_dashboard" },
-			winbar = {},
+			winbar = {
+				"oil",
+				"trouble",
+				"lazy",
+				"mason",
+				"help",
+				"qf",
+				"quickfix",
+				"TelescopePrompt",
+				"snacks_picker",
+				"snacks_terminal",
+				"snacks_dashboard",
+			},
+			tabline = { "snacks_dashboard" },
 		},
 		ignore_focus = {},
 		always_divide_middle = true,
 		refresh = {
 			statusline = 1000,
 			tabline = 1000,
-			winbar = 1000,
+			winbar = 2000,
 		},
 	},
 	sections = {
@@ -58,35 +61,16 @@ return {
 		},
 		lualine_c = {
 			{
-				function()
-					if vim.bo.filetype == "oil" then
-						local ok, oil = pcall(require, "oil")
-						if ok then
-							return " " .. oil.get_current_dir()
-						end
-					end
-
-					local filename = vim.fn.expand("%:t")
-					if filename == "" then
-						return "[No Name]"
-					end
-
-					local ok, mini_icons = pcall(require, "mini.icons")
-					if ok then
-						local icon, hl = mini_icons.get("file", filename)
-						return icon .. " " .. filename
-					end
-					return filename
-				end,
-				color = function()
-					if vim.bo.modified then
-						return { fg = "#fab387", gui = "bold,italic" }
-					elseif vim.bo.readonly then
-						return { fg = "#f38ba8", gui = "bold" }
-					end
-					return { gui = "bold" }
-				end,
+				"filename",
+				file_status = true,
+				symbols = {
+					modified = " ●",
+					readonly = " ",
+					unnamed = "[No Name]",
+					newfile = " ",
+				},
 			},
+
 			{
 				get_short_cwd,
 				icon = "",
@@ -95,24 +79,20 @@ return {
 					return vim.fn.expand("%") ~= ""
 				end,
 			},
-			{
-				"diagnostics",
-				sources = { "nvim_lsp", "nvim_diagnostic" },
-				symbols = { error = "󰅚 ", warn = "󰀪 ", info = "󰋽 ", hint = "󰌶 " },
-				diagnostics_color = {
-					error = { fg = "#f38ba8" },
-					warn = { fg = "#fab387" },
-					info = { fg = "#89b4fa" },
-					hint = { fg = "#a6e3a1" },
-				},
-				update_in_insert = false,
-			},
-			{
-				get_macro_recording,
-				color = { fg = "#f38ba8", gui = "bold" },
-			},
 		},
 		lualine_x = {
+			{
+				"searchcount",
+				maxcount = 999,
+				timeout = 500,
+			},
+			{
+				"selectioncount",
+				fmt = function(str)
+					return str ~= "" and "󰒅 " .. str or ""
+				end,
+			},
+
 			{
 				get_python_venv,
 				icon = "",
@@ -195,37 +175,8 @@ return {
 					return pcall(require, "copilot")
 				end,
 			},
-			{
-				"searchcount",
-				maxcount = 999,
-				timeout = 500,
-			},
-			{
-				"selectioncount",
-				fmt = function(str)
-					return str ~= "" and "󰒅 " .. str or ""
-				end,
-			},
 		},
-		lualine_y = {
-
-			{
-				"filetype",
-				colored = true,
-				icon_only = true,
-				icon = function()
-					local ok, mini_icons = pcall(require, "mini.icons")
-					if ok then
-						local filename = vim.fn.expand("%:t")
-						if filename ~= "" then
-							local icon, hl = mini_icons.get("file", filename)
-							return icon
-						end
-					end
-					return nil
-				end,
-			},
-		},
+		lualine_y = { "diagnostics" },
 		lualine_z = {
 			{
 				"location",
@@ -238,36 +189,91 @@ return {
 	inactive_sections = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = {
-			{
-				function()
-					if vim.bo.filetype == "oil" then
-						local ok, oil = pcall(require, "oil")
-						if ok then
-							return " " .. oil.get_current_dir()
-						end
-					end
-
-					-- Get file icon for inactive windows too
-					local ok, mini_icons = pcall(require, "mini.icons")
-					if ok then
-						local filename = vim.fn.expand("%:t")
-						if filename ~= "" then
-							local icon, hl = mini_icons.get("file", filename)
-							return icon .. " %f"
-						end
-					end
-					return "%f"
-				end,
-			},
-		},
+		lualine_c = {},
 		lualine_x = { "location" },
 		lualine_y = {},
 		lualine_z = {},
 	},
-	-- Added missing sections
-	tabline = {},
-	winbar = {},
+	tabline = {
+		lualine_a = {
+			{
+				"buffers",
+				mode = 2,
+				show_filename_only = true,
+				show_modified_status = true,
+				hide_filename_extension = false,
+				symbols = {
+					modified = " ●",
+					alternate_file = "",
+					directory = " ",
+				},
+				filetype_names = {
+					oil = "",
+					trouble = "Trouble",
+					lazy = "Lazy",
+					mason = "Mason",
+					snacks_picker_input = "Picker",
+					snacks_picker_list = "Explorer",
+					snacks_picker_preview = "Picker",
+					snacks_dashboard = "Dashboard",
+				},
+				buffers_color = {
+					active = "lualine_a_normal",
+					inactive = "lualine_b_normal",
+				},
+			},
+		},
+		lualine_b = {},
+		lualine_c = {},
+		lualine_x = {
+			{
+				function()
+					local ok, noice = pcall(require, "noice")
+					if not ok then
+						return ""
+					end
+					return noice.api.statusline.mode.get()
+				end,
+				cond = function()
+					local ok, noice = pcall(require, "noice")
+					if not ok then
+						return false
+					end
+					return noice.api.statusline.mode.has()
+				end,
+				color = { fg = "#ff9e64" },
+			},
+		},
+		lualine_y = {},
+		lualine_z = { "tabs" },
+	},
+	winbar = {
+		lualine_c = {
+			{
+				function()
+					local ok, trouble = pcall(require, "trouble")
+					if not ok then
+						return " "
+					end
+
+					-- Cache the symbols object to avoid multiple calls
+					if not vim.b._lualine_trouble_symbols then
+						vim.b._lualine_trouble_symbols = trouble.statusline({
+							mode = "lsp_document_symbols",
+							groups = {},
+							title = false,
+							filter = { range = true },
+							format = "{kind_icon}{symbol.name:Normal}",
+							hl_group = "lualine_c_normal",
+						})
+					end
+
+					local symbols = vim.b._lualine_trouble_symbols
+					return symbols.has() and symbols.get() or " "
+				end,
+			},
+		},
+	},
 	inactive_winbar = {},
 	-- Extensions
 	extensions = {

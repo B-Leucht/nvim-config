@@ -1,15 +1,45 @@
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lspconfig.pyright.setup({ capabilities = capabilities })
-lspconfig.jdtls.setup({ capabilities = capabilities })
+lspconfig.pyright.setup({
+	capabilities = capabilities,
+})
+lspconfig.jdtls.setup({
+	capabilities = capabilities,
+})
+-- Function to switch ltex language
+local function switch_ltex_language()
+	local current_clients = vim.lsp.get_clients({ name = "ltex" })
+	if #current_clients == 0 then
+		vim.notify("LTeX server not running", vim.log.levels.WARN)
+		return
+	end
+
+	local current_lang = current_clients[1].config.settings.ltex.language
+	local new_lang = current_lang == "en-US" and "de-DE" or "en-US"
+
+	-- Update settings for all ltex clients
+	for _, client in pairs(current_clients) do
+		client.config.settings.ltex.language = new_lang
+		client.notify("workspace/didChangeConfiguration", {
+			settings = client.config.settings,
+		})
+	end
+
+	vim.notify("LTeX language switched to " .. new_lang, vim.log.levels.INFO)
+end
+
+-- Make function globally accessible
+_G.switch_ltex_language = switch_ltex_language
+
 lspconfig.ltex.setup({
 	capabilities = capabilities,
 	settings = {
 		ltex = {
-			language = "de-DE", -- change as needed
+			language = "en-US", -- default to English
 			additionalRules = {
 				enablePickyRules = true,
+				languageModel = "~/models/ngrams/",
 			},
 			dictionary = {
 				-- custom words, optional

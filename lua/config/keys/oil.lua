@@ -1,18 +1,28 @@
 -- Oil file manager keymaps
 return {
-	{ "-", function()
-		local ft = vim.bo.filetype
-		if ft == "snacks_terminal" or ft == "terminal" or ft == "claude" or ft == "trouble" then
-			return
-		end
-		vim.cmd("Oil")
-	end, desc = "Open parent directory" },
-	{ "<leader>E", "<cmd>Oil --float<cr>", desc = "Open Oil in floating window" },
-	{ "<leader>Er", function()
-		vim.ui.input({ prompt = "Remote path (oil-ssh://user@host/path): " }, function(input)
-			if input then
-				vim.cmd("Oil " .. input)
+	{
+		"-",
+		function()
+			local ft = vim.bo.filetype
+			if ft == "snacks_terminal" or ft == "terminal" or ft == "trouble" then
+				return
 			end
-		end)
-	end, desc = "Open remote directory in Oil" },
+			require("oil").open_float(nil, { preview = { update_on_cursor_moved = true } })
+		end,
+		desc = "Open parent directory",
+	},
+	{
+		"<leader>fo",
+		function()
+			require("oil").open_float(nil, { preview = { update_on_cursor_moved = true } })
+		end,
+		desc = "Open oil (parent directory)",
+	},
+	{
+		"<leader>fO",
+		function()
+			require("oil").open_float(vim.fn.getcwd(), { preview = { update_on_cursor_moved = true } })
+		end,
+		desc = "Open oil (cwd)",
+	},
 }

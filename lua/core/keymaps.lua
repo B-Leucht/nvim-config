@@ -15,15 +15,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- ===============================================
--- CONFIG KEYMAPS
--- ===============================================
-
-keymap("n", "<leader>ec", "<cmd>e " .. constants.PATHS.INIT_LUA .. "<cr>", { desc = "Edit config" })
-keymap("n", "<leader>ek", "<cmd>e " .. constants.PATHS.KEYMAPS .. "<cr>", { desc = "Edit keymaps" })
-keymap("n", "<leader>ep", "<cmd>e " .. constants.PATHS.PLUGINS .. "<cr>", { desc = "Edit plugins" })
-keymap("n", "<leader>er", "<cmd>source " .. constants.PATHS.INIT_LUA .. "<cr>", { desc = "Reload config" })
-
--- ===============================================
 -- BASIC VIM KEYMAPS
 -- ===============================================
 
@@ -39,9 +30,30 @@ keymap("n", "<C-Down>", ":resize +2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
--- Navigate buffers (using BufferLine)
-keymap("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-keymap("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
+-- Navigate buffers
+keymap("n", "<Tab>", "<cmd>bnext<CR>", { desc = "Next buffer" })
+keymap("n", "<S-Tab>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+
+-- Jump to buffer by index
+for i = 1, 9 do
+	keymap("n", "<leader>b" .. i, function()
+		local buffers = vim.api.nvim_list_bufs()
+		local listed_buffers = {}
+
+		-- Get only listed buffers (exclude hidden/unlisted ones)
+		for _, buf in ipairs(buffers) do
+			if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
+				table.insert(listed_buffers, buf)
+			end
+		end
+
+		if listed_buffers[i] then
+			vim.api.nvim_set_current_buf(listed_buffers[i])
+		else
+			vim.notify("Buffer " .. i .. " not found", vim.log.levels.WARN)
+		end
+	end, { desc = "Jump to buffer " .. i })
+end
 
 -- Better buffer deletion with snacks.bufdelete
 keymap("n", "<leader>bd", function()
@@ -53,10 +65,10 @@ keymap("n", "<leader>bD", function()
 end, { desc = "Force delete buffer" })
 
 -- BufferLine specific commands
-keymap("n", "<leader>bc", "<cmd>BufferLineCloseOthers<CR>", { desc = "Close other buffers" })
-keymap("n", "<leader>bl", "<cmd>BufferLineCloseLeft<CR>", { desc = "Close buffers to left" })
-keymap("n", "<leader>br", "<cmd>BufferLineCloseRight<CR>", { desc = "Close buffers to right" })
-keymap("n", "<leader>bp", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
+-- keymap("n", "<leader>bc", "<cmd>BufferLineCloseOthers<CR>", { desc = "Close other buffers" })
+-- keymap("n", "<leader>bl", "<cmd>BufferLineCloseLeft<CR>", { desc = "Close buffers to left" })
+-- keymap("n", "<leader>br", "<cmd>BufferLineCloseRight<CR>", { desc = "Close buffers to right" })
+-- keymap("n", "<leader>bp", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
 
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)

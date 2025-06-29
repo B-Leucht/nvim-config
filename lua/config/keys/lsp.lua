@@ -1,18 +1,18 @@
--- LSP keymaps for lspconfig and lspsaga
+-- LSP keymaps using native LSP and snacks
 local constants = require("core.constants")
 
 return {
-	-- LSPSaga keymaps that can be lazy loaded
-	{ "K", "<cmd>Lspsaga hover_doc<CR>", desc = "Hover documentation" },
-	{ "gh", "<cmd>Lspsaga lsp_finder<CR>", desc = "LSP finder" },
-	{ "<leader>ca", "<cmd>Lspsaga code_action<CR>", desc = "Code actions" },
-	{ "gr", "<cmd>Lspsaga rename<CR>", desc = "Rename" },
-	{ "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", desc = "Previous diagnostic" },
-	{ "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", desc = "Next diagnostic" },
-	{ "<leader>gd", "<cmd>Lspsaga peek_definition<CR>", desc = "Peek definition" },
-	{ "<leader>gt", "<cmd>Lspsaga peek_type_definition<CR>", desc = "Peek type definition" },
-	{ "<leader>sl", "<cmd>Lspsaga show_line_diagnostics<CR>", desc = "Show line diagnostics" },
-	{ "<leader>sc", "<cmd>Lspsaga show_cursor_diagnostics<CR>", desc = "Show cursor diagnostics" },
-	{ "<leader>sb", "<cmd>Lspsaga show_buf_diagnostics<CR>", desc = "Show buffer diagnostics" },
-	{ "<leader>o", "<cmd>Lspsaga outline<CR>", desc = "Outline" },
+	-- Native LSP keymaps
+	{ "K", vim.lsp.buf.hover, desc = "Hover documentation" },
+	{ "gh", vim.lsp.buf.references, desc = "LSP references" },
+	{ "<leader>ca", vim.lsp.buf.code_action, desc = "Code actions" },
+	{ "gr", vim.lsp.buf.rename, desc = "Rename" },
+	{ "[e", vim.diagnostic.goto_prev, desc = "Previous diagnostic" },
+	{ "]e", vim.diagnostic.goto_next, desc = "Next diagnostic" },
+	{ "<leader>gd", vim.lsp.buf.definition, desc = "Go to definition" },
+	{ "<leader>gt", vim.lsp.buf.type_definition, desc = "Go to type definition" },
+	{ "<leader>sl", vim.diagnostic.open_float, desc = "Show line diagnostics" },
+	{ "<leader>sb", vim.diagnostic.setloclist, desc = "Show buffer diagnostics" },
+	{ "<leader>o", function() Snacks.picker.symbols() end, desc = "Document symbols" },
+	{ "<leader>ll", "<cmd>lua switch_ltex_language()<CR>", desc = "Switch LTeX language" },
 }

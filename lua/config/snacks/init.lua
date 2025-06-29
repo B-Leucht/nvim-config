@@ -12,3 +12,4 @@ return vim.tbl_deep_extend("force", {
 	notifier = notifier,
 	terminal = terminal,
 }, core)
+

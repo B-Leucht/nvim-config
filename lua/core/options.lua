@@ -19,7 +19,7 @@ opt.number = true -- Show line numbers
 opt.relativenumber = false -- Relative line numbers
 opt.cursorline = true -- Highlight current line
 opt.wrap = false -- No line wrap
-opt.signcolumn = "yes" -- Always show sign column
+opt.signcolumn = "auto" -- Show sign column only when needed
 opt.scrolloff = 8 -- Keep 8 lines above/below cursor
 opt.sidescrolloff = 8
 

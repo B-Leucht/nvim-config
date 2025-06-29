@@ -20,6 +20,11 @@ cmp.setup({
 		["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 	}),
 	sources = cmp.config.sources({
+		{
+			name = "lazydev",
+			priority = 1001,
+		},
+
 		-- Group 1: Primary sources (highest priority)
 		{ name = "nvim_lsp", priority = 1000 },
 		{ name = "luasnip", priority = 800 },
@@ -77,6 +82,7 @@ cmp.setup({
 			},
 			mode = "symbol", -- show symbol + text
 			ellipsis_char = "...",
+			show_labelDetails = true,
 			symbol_map = {
 				Copilot = "",
 				-- add other kinds here if customizing

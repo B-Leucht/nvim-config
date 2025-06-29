@@ -43,5 +43,11 @@ M.TERMINAL = {
 	FLOAT_HEIGHT_RATIO = 0.8,
 }
 
-return M
+-- Float window dimensions
+M.FLOAT = {
+	WIDTH = 0.8,
+	HEIGHT = 0.8,
+	PADDING = 2,
+}
 
+return M
