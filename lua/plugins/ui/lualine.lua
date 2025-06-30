@@ -43,6 +43,13 @@ return {
 			lualine_b = {
 				{
 					"pretty_path",
+					providers = {
+						default = "base",
+						"toggleterm",
+						"oil",
+						"trouble",
+						"dapui",
+					},
 					fmt = (function(trunc_width, trunc_len, hide_width, no_ellipsis)
 						return function(str)
 							local win_width = vim.o.columns
@@ -324,13 +331,12 @@ return {
 		},
 		inactive_winbar = {},
 		extensions = {
-			"oil",
+			-- "oil",
 			"lazy",
 			"mason",
 			"quickfix",
-			"trouble",
+			-- "trouble",
 			"overseer",
 		},
 	},
 }
-

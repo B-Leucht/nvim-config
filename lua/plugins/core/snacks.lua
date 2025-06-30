@@ -795,21 +795,7 @@ return {
 
 		dashboard = {
 			enabled = true,
-			preset = {
-				header = [[
-                                                     
-  ███▄    █ ▓█████  ▒█████   ██▒   █▓ ██▓ ███▄ ▄███▓ 
-  ██ ▀█   █ ▓█   ▀ ▒██▒  ██▒▓██░   █▒▓██▒▓██▒▀█ ██▒ 
- ▓██  ▀█ ██▒▒███   ▒██░  ██▒ ▓██  █▒░▒██▒▓██    ▓██░ 
- ▓██▒  ▐▌██▒▒▓█  ▄ ▒██   ██░  ▒██ █░░░██░▒██    ▒██  
- ▒██░   ▓██░░▒████▒░ █▓██▓▒░   ▒▀█░  ░██░▒██▒   ░██▒ 
- ░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒░▒▓▒░    ░ ▐░  ░▓  ░ ▒░   ░  ░ 
- ░ ░    ░ ▒░ ░ ░  ░  ░ ▒ ▒░    ░ ░░   ▒ ░░  ░      ░ 
-    ░   ░ ░    ░   ░ ░ ░ ░        ░   ░         ░    
-          ░    ░  ░    ░ ░        ░   ░         ░    
-                                 ░                   
-                                                     ]],
-			},
+
 			sections = {
 				{ section = "header" },
 				{ section = "keys", gap = 1, padding = 1 },
@@ -834,7 +820,12 @@ return {
 				{ icon = "", key = "r", desc = "Recent Files", action = ":lua Snacks.picker.recent()" },
 				{ icon = "", key = "g", desc = "Live Grep", action = ":lua Snacks.picker.grep()" },
 				{ icon = "", key = "b", desc = "Bookmarks", action = ":lua Snacks.picker.marks()" },
-				{ icon = "", key = "c", desc = "Configuration", action = ":e " .. require("core.constants").PATHS.INIT_LUA },
+				{
+					icon = "",
+					key = "c",
+					desc = "Configuration",
+					action = ":e " .. require("core.constants").PATHS.INIT_LUA,
+				},
 				{ icon = "", key = "q", desc = "Quit", action = ":qa" },
 			},
 		},

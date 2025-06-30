@@ -71,7 +71,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - `<leader>d`: Show line diagnostics.
 - `[d` & `]d`: Jump to previous/next diagnostic.
 
-### Terminal Keymaps
+### Terminal Key maps
 
 - `<esc>`: Toggle terminal mode.
 - `<C-h/j/k/l>`: Navigate terminal windows.
