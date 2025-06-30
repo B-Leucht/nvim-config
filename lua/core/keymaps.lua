@@ -1,13 +1,5 @@
--- ~/.config/nvim/lua/core/keymaps.lua
--- ===============================================
--- CORE KEYMAPS CONFIGURATION
--- Plugin-specific keymaps are now defined in their respective plugin configurations
--- ===============================================
-
-local constants = require("core.constants")
+local opts = require("core.constants").OPTS.SILENT
 local keymap = vim.keymap.set
-local opts = constants.OPTS.SILENT
-
 -- ===============================================
 -- LEADER KEY
 -- ===============================================
@@ -130,7 +122,6 @@ if which_key_ok then
 		{ "<leader>t", group = "+terminal" },
 		{ "<leader>q", group = "+quickfile" },
 		{ "<leader>r", group = "+run/rename" },
-		{ "<leader>c", group = "+compiler" },
 		{ "<leader>w", group = "+workspace" },
 		{ "<leader>x", group = "+diagnostics" },
 		{ "<leader>a", group = "+ai/claude" },

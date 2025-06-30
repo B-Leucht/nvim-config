@@ -4,6 +4,9 @@ local constants = require("core.constants")
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Lualine LSP names display
+vim.g.custom_lualine_show_lsp_names = true
+
 local opt = vim.opt
 
 -- Tabs and indentation

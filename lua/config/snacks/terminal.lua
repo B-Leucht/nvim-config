@@ -1,7 +1,0 @@
-return {
-	win = {
-		wo = {
-			winbar = "",
-		},
-	},
-}
