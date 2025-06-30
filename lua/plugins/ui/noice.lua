@@ -60,3 +60,4 @@ return {
 		-- Noice will automatically use snacks.notifier when available
 	},
 }
+

@@ -8,7 +8,8 @@ return {
 		{
 			"<leader>tt",
 			function()
-				local constants = require("core.constants") -- Require constants here
+				local constants = require("core.constants")
+				-- Close any trouble windows first
 				for _, win in ipairs(vim.api.nvim_list_wins()) do
 					local buf = vim.api.nvim_win_get_buf(win)
 					local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
@@ -17,9 +18,8 @@ return {
 						return
 					end
 				end
-				Snacks.terminal.toggle({
+				Snacks.terminal.toggle(nil, {
 					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
-					interactive = true,
 				})
 			end,
 			desc = "Toggle Terminal",
@@ -27,10 +27,9 @@ return {
 		{
 			"<leader>tf",
 			function()
-				local constants = require("core.constants") -- Require constants here
-				Snacks.terminal.open({
+				local constants = require("core.constants")
+				Snacks.terminal.toggle(nil, {
 					win = { position = "float", width = constants.UI.WINDOW_SCALE, height = constants.UI.WINDOW_SCALE },
-					interactive = true,
 				})
 			end,
 			desc = "Toggle Float Terminal",
@@ -38,10 +37,9 @@ return {
 		{
 			"<leader>th",
 			function()
-				local constants = require("core.constants") -- Require constants here
-				Snacks.terminal.open({
+				local constants = require("core.constants")
+				Snacks.terminal.toggle(nil, {
 					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
-					interactive = true,
 				})
 			end,
 			desc = "Toggle Horizontal Terminal",
@@ -49,10 +47,9 @@ return {
 		{
 			"<leader>tv",
 			function()
-				local constants = require("core.constants") -- Require constants here
-				Snacks.terminal.open({
+				local constants = require("core.constants")
+				Snacks.terminal.toggle(nil, {
 					win = { position = "right", width = constants.UI.SIDEBAR_WIDTH },
-					interactive = true,
 				})
 			end,
 			desc = "Toggle Vertical Terminal",
@@ -60,24 +57,22 @@ return {
 		{
 			"<leader>py",
 			function()
-				local constants = require("core.constants") -- Require constants here
-				Snacks.terminal("ipython", {
+				local constants = require("core.constants")
+				Snacks.terminal.toggle("ipython", {
 					win = { position = "float", width = constants.UI.WINDOW_SCALE, height = constants.UI.WINDOW_SCALE },
-					interactive = true,
 				})
 			end,
-			desc = "New IPython Terminal",
+			desc = "Toggle IPython Terminal",
 		},
 		{
 			"<leader>ss",
 			function()
-				local constants = require("core.constants") -- Require constants here
-				Snacks.terminal("ssh", {
+				local constants = require("core.constants")
+				Snacks.terminal.toggle("ssh", {
 					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
-					interactive = true,
 				})
 			end,
-			desc = "New SSH Terminal",
+			desc = "Toggle SSH Terminal",
 		},
 
 		-- Lazygit
@@ -169,6 +164,17 @@ return {
 				Snacks.toggle.indent()
 			end,
 			desc = "Toggle Indent Guides",
+		},
+		{
+			"<leader>un",
+			function()
+				vim.g.custom_lualine_show_names = not vim.g.custom_lualine_show_names
+				-- Force lualine refresh
+				require("lualine").refresh()
+				local status = vim.g.custom_lualine_show_names and "shown" or "hidden"
+				vim.notify("Lualine names " .. status, vim.log.levels.INFO)
+			end,
+			desc = "Toggle Lualine Names",
 		},
 
 		-- Zen mode
@@ -842,10 +848,14 @@ return {
 		},
 
 		terminal = {
+			enabled = true,
 			win = {
 				wo = {
 					winbar = "",
 				},
+			},
+			bo = {
+				filetype = "terminal",
 			},
 		},
 	},

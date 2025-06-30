@@ -6,7 +6,7 @@ return {
 	config = function()
 		local lspconfig = require("lspconfig")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
-		
+
 		-- Ensure Mason path is set
 		local mason_path = vim.fn.stdpath("data") .. "/mason/bin"
 		if not string.find(vim.env.PATH, mason_path, 1, true) then
@@ -105,3 +105,4 @@ return {
 		})
 	end,
 }
+

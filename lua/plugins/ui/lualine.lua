@@ -45,40 +45,35 @@ return {
 					"pretty_path",
 					providers = {
 						default = "base",
+						"snacks_terminal",
 						"toggleterm",
 						"oil",
 						"trouble",
 						"dapui",
 					},
-					fmt = (function(trunc_width, trunc_len, hide_width, no_ellipsis)
+					fmt = (function(trunc_width, trunc_len, no_ellipsis)
 						return function(str)
 							local win_width = vim.o.columns
-							if hide_width and win_width < hide_width then
-								return ""
-							end
 							if trunc_len and win_width < trunc_width and #str > trunc_len then
 								return no_ellipsis and str:sub(1, trunc_len) or str:sub(1, trunc_len) .. "…"
 							end
 							return str
 						end
-					end)(80, 30, 60, true),
+					end)(80, 30, true),
 				},
 			},
 			lualine_c = {
 				{
 					"branch",
-					fmt = (function(trunc_width, trunc_len, hide_width, no_ellipsis)
+					fmt = (function(trunc_width, trunc_len, no_ellipsis)
 						return function(str)
 							local win_width = vim.o.columns
-							if hide_width and win_width < hide_width then
-								return ""
-							end
 							if trunc_len and win_width < trunc_width and #str > trunc_len then
 								return no_ellipsis and str:sub(1, trunc_len) or str:sub(1, trunc_len) .. "…"
 							end
 							return str
 						end
-					end)(70, 15, 65, true),
+					end)(70, 15, true),
 				},
 				{
 					"diff",
@@ -135,9 +130,6 @@ return {
 			lualine_y = {
 				{
 					function()
-						if not vim.g.custom_lualine_show_lsp_names then
-							return ""
-						end
 						local ok, clients = pcall(vim.lsp.get_clients, { bufnr = 0 })
 						if not ok or #clients == 0 then
 							return ""
@@ -151,12 +143,13 @@ return {
 						if #names == 0 then
 							return ""
 						end
-						return "󰒋 " .. table.concat(names, " ")
+						if vim.g.custom_lualine_show_names then
+							return "󰒋 " .. table.concat(names, " ")
+						else
+							return "󰒋"
+						end
 					end,
 					cond = function()
-						if not vim.g.custom_lualine_show_lsp_names then
-							return false
-						end
 						local ok, clients = pcall(vim.lsp.get_clients, { bufnr = 0 })
 						if not ok then
 							return false
@@ -188,7 +181,11 @@ return {
 						if #names == 0 then
 							return ""
 						end
-						return "󰉼 " .. table.concat(names, " ")
+						if vim.g.custom_lualine_show_names then
+							return "󰉼 " .. table.concat(names, " ")
+						else
+							return "󰉼"
+						end
 					end,
 					color = { fg = "#94e2d5", gui = "italic" },
 					cond = function()
@@ -198,6 +195,32 @@ return {
 						end
 						local formatters_ok, formatters = pcall(conform.list_formatters, 0)
 						return formatters_ok and #formatters > 0
+					end,
+				},
+				{
+					function()
+						local ok, lint = pcall(require, "lint")
+						if not ok then
+							return ""
+						end
+						local linters_by_ft = lint.linters_by_ft[vim.bo.filetype] or {}
+						if #linters_by_ft == 0 then
+							return ""
+						end
+						if vim.g.custom_lualine_show_names then
+							return "󰁨 " .. table.concat(linters_by_ft, " ")
+						else
+							return "󰁨"
+						end
+					end,
+					color = { fg = "#f38ba8", gui = "italic" },
+					cond = function()
+						local ok, lint = pcall(require, "lint")
+						if not ok then
+							return false
+						end
+						local linters_by_ft = lint.linters_by_ft[vim.bo.filetype] or {}
+						return #linters_by_ft > 0
 					end,
 				},
 				{
@@ -285,51 +308,33 @@ return {
 			lualine_y = {},
 			lualine_z = { "tabs" },
 		},
-		winbar = {
-			lualine_c = {
-				{
-					function()
-						local ok, trouble = pcall(require, "trouble")
-						if not ok then
-							return " "
-						end
+		-- winbar = {
+		-- 	lualine_c = {
+		-- 		{
+		-- 			function()
+		-- 				local ok, trouble = pcall(require, "trouble")
+		-- 				if not ok then
+		-- 					return " "
+		-- 				end
 
-						-- Debounced caching to prevent flicker
-						local bufnr = vim.api.nvim_get_current_buf()
-						local cache_key = "_lualine_trouble_symbols_" .. bufnr
+		-- 				local symbols = trouble.statusline({
+		-- 					mode = "lsp_document_symbols",
+		-- 					groups = {},
+		-- 					title = false,
+		-- 					filter = { range = true },
+		-- 					format = "{kind_icon}{symbol.name:Normal}",
+		-- 					hl_group = "lualine_c_normal",
+		-- 				})
 
-						-- Use debounced function for symbol updates
-						local update_symbols = function()
-							local cache = {}
-							local function debounce(fn, key, timeout)
-								timeout = timeout or 1000
-								return function(...)
-									local now = vim.loop.now()
-									if not cache[key] or (now - cache[key].time) > timeout then
-										cache[key] = { value = fn(...), time = now }
-									end
-									return cache[key].value
-								end
-							end
-							return debounce(function()
-								return trouble.statusline({
-									mode = "lsp_document_symbols",
-									groups = {},
-									title = false,
-									filter = { range = true },
-									format = "{kind_icon}{symbol.name:Normal}",
-									hl_group = "lualine_c_normal",
-								})
-							end, cache_key, 500)
-						end
-
-						local symbols = update_symbols()
-						return symbols and symbols.has() and symbols.get() or " "
-					end,
-				},
-			},
-		},
-		inactive_winbar = {},
+		-- 				return (symbols and symbols.has() and symbols.get()) or " "
+		-- 			end,
+		-- 			cond = function()
+		-- 				return true
+		-- 			end,
+		-- 		},
+		-- 	},
+		-- },
+		-- inactive_winbar = {},
 		extensions = {
 			-- "oil",
 			"lazy",
