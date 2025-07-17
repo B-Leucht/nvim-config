@@ -5,23 +5,13 @@ return {
 	config = function()
 		require("mason-tool-installer").setup({
 			ensure_installed = {
-				-- Formatters
-				"stylua",
+				-- Python tools
 				"black",
-				"google-java-format",
-				"jq",
-				"clang-format",
-				"fourmolu",
-				"prettier",
-				-- Linters
 				"ruff",
-				"shellcheck",
-				"luacheck",
-				"markdownlint",
-				"yamllint",
 				"mypy",
-				"checkstyle",
-				"hlint",
+				-- Lua tools (for Neovim config)
+				"stylua",
+				"luacheck",
 			},
 			auto_update = true,
 			run_on_start = true,
