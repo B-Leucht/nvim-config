@@ -1,7 +1,11 @@
--- Status line
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "folke/trouble.nvim", "cameronr/lualine-pretty-path" },
+	dependencies = {
+		"folke/noice.nvim",
+		"folke/trouble.nvim",
+		"cameronr/lualine-pretty-path",
+		"AndreM222/copilot-lualine",
+	},
 	event = "VeryLazy",
 	opts = {
 		options = {
@@ -12,25 +16,30 @@ return {
 			disabled_filetypes = {
 				statusline = { "snacks_dashboard" },
 				winbar = {
-					"oil",
-					"trouble",
+					-- "oil",
+					-- "trouble",
 					"lazy",
 					"mason",
 					"help",
 					"qf",
 					"quickfix",
-					"snacks_picker",
-					"snacks_terminal",
+					-- "snacks_picker",
+					-- "snacks_terminal",
 					"snacks_dashboard",
+					"nvim-dap-view",
+					"dap-view",
+					"dap-view-term",
+					"dap-repl",
+					"terminal",
 				},
 				tabline = { "snacks_dashboard" },
 			},
 			ignore_focus = {},
 			always_divide_middle = true,
 			refresh = {
-				statusline = 1000,
-				tabline = 1000,
-				winbar = 2000,
+				statusline = 2000,
+				tabline = 2000,
+				winbar = 3000,
 			},
 		},
 		sections = {
@@ -42,39 +51,19 @@ return {
 			},
 			lualine_b = {
 				{
-					"pretty_path",
-					providers = {
-						default = "base",
-						"snacks_terminal",
-						"toggleterm",
-						"oil",
-						"trouble",
-						"dapui",
-					},
-					fmt = (function(trunc_width, trunc_len, no_ellipsis)
-						return function(str)
-							local win_width = vim.o.columns
-							if trunc_len and win_width < trunc_width and #str > trunc_len then
-								return no_ellipsis and str:sub(1, trunc_len) or str:sub(1, trunc_len) .. "…"
-							end
-							return str
-						end
-					end)(80, 30, true),
+					"filetype",
+					icon_only = true,
+					padding = { left = 1, right = 0 },
+				},
+				{
+					"filename",
+					file_status = false,
+					path = 0,
+					shorting_target = 20,
 				},
 			},
 			lualine_c = {
-				{
-					"branch",
-					fmt = (function(trunc_width, trunc_len, no_ellipsis)
-						return function(str)
-							local win_width = vim.o.columns
-							if trunc_len and win_width < trunc_width and #str > trunc_len then
-								return no_ellipsis and str:sub(1, trunc_len) or str:sub(1, trunc_len) .. "…"
-							end
-							return str
-						end
-					end)(70, 15, true),
-				},
+				"branch",
 				{
 					"diff",
 					symbols = { added = " ", modified = " ", removed = " " },
@@ -84,12 +73,30 @@ return {
 				{
 					"diagnostics",
 					symbols = { error = " ", warn = " ", info = " ", hint = " " },
-					update_in_insert = true,
+					update_in_insert = false,
 				},
+				-- {
+				-- 	"searchcount",
+				-- 	maxcount = 999,
+				-- 	timeout = 500,
+				-- 	icon = "",
+				-- },
 				{
-					"searchcount",
-					maxcount = 999,
-					timeout = 500,
+					function()
+						local ok, noice = pcall(require, "noice")
+						if not ok then
+							return ""
+						end
+						return noice.api.status.search.get()
+					end,
+					cond = function()
+						local ok, noice = pcall(require, "noice")
+						if not ok then
+							return false
+						end
+						return noice.api.status.search.has()
+					end,
+					color = { fg = "#ff9e64" },
 				},
 				{
 					"selectioncount",
@@ -98,17 +105,6 @@ return {
 					end,
 				},
 
-				{
-					(function()
-						local venv = vim.env.VIRTUAL_ENV or vim.env.CONDA_DEFAULT_ENV
-						if venv then
-							return " " .. vim.fn.fnamemodify(venv, ":t")
-						end
-						return ""
-					end)(),
-					icon = "",
-					color = { fg = "#a6e3a1", gui = "italic" },
-				},
 				{
 					function()
 						local ok, lazy_status = pcall(require, "lazy.status")
@@ -223,24 +219,7 @@ return {
 						return #linters_by_ft > 0
 					end,
 				},
-				{
-					function()
-						local ok = pcall(require, "copilot")
-						if not ok then
-							return ""
-						end
-						return "󰚩"
-					end,
-					color = function()
-						if vim.g.copilot_enabled == false then
-							return { fg = "#6c7086" }
-						end
-						return { fg = "#a6e3a1" }
-					end,
-					cond = function()
-						return pcall(require, "copilot")
-					end,
-				},
+				"copilot",
 			},
 			lualine_z = {
 				{ "location", icon = "" },
@@ -259,15 +238,12 @@ return {
 				{
 					"buffers",
 					mode = 2,
+					use_mode_colors = true,
 					component_separators = { left = "╲", right = "╱" },
 					show_filename_only = true,
 					show_modified_status = true,
 					hide_filename_extension = false,
-					symbols = {
-						modified = " ●",
-						alternate_file = "",
-						directory = " ",
-					},
+					symbols = { modified = "_󰷥", alternate_file = "", directory = " " },
 					filetype_names = {
 						oil = "",
 						trouble = "Trouble",
@@ -289,52 +265,50 @@ return {
 			lualine_x = {
 				{
 					function()
-						local ok, noice = pcall(require, "noice")
-						if not ok then
-							return ""
+						local cwd = vim.fn.getcwd()
+						local home_cwd = vim.fn.fnamemodify(cwd, ":~")
+						local parts = vim.split(home_cwd, "/", { plain = true })
+						if #parts > 3 then
+							return "…/" .. table.concat({ parts[#parts - 1], parts[#parts] }, "/")
 						end
-						return noice.api.statusline.mode.get()
+						return home_cwd
 					end,
-					cond = function()
-						local ok, noice = pcall(require, "noice")
-						if not ok then
-							return false
-						end
-						return noice.api.statusline.mode.has()
-					end,
-					color = { fg = "#ff9e64" },
+					color = { fg = "#6c7086" },
 				},
 			},
 			lualine_y = {},
 			lualine_z = { "tabs" },
 		},
-		-- winbar = {
-		-- 	lualine_c = {
-		-- 		{
-		-- 			function()
-		-- 				local ok, trouble = pcall(require, "trouble")
-		-- 				if not ok then
-		-- 					return " "
-		-- 				end
-
-		-- 				local symbols = trouble.statusline({
-		-- 					mode = "lsp_document_symbols",
-		-- 					groups = {},
-		-- 					title = false,
-		-- 					filter = { range = true },
-		-- 					format = "{kind_icon}{symbol.name:Normal}",
-		-- 					hl_group = "lualine_c_normal",
-		-- 				})
-
-		-- 				return (symbols and symbols.has() and symbols.get()) or " "
-		-- 			end,
-		-- 			cond = function()
-		-- 				return true
-		-- 			end,
-		-- 		},
-		-- 	},
-		-- },
-		-- inactive_winbar = {},
+		winbar = {
+			lualine_c = {
+				{
+					"pretty_path",
+					providers = {
+						default = "base",
+						"snacks_terminal",
+						"toggleterm",
+						"oil",
+						"trouble",
+						"dapui",
+					},
+				},
+			},
+		},
+		inactive_winbar = {
+			lualine_c = {
+				{
+					"pretty_path",
+					providers = {
+						default = "base",
+						"snacks_terminal",
+						"toggleterm",
+						"oil",
+						"trouble",
+						"dapui",
+					},
+				},
+			},
+		},
 		extensions = {
 			-- "oil",
 			"lazy",

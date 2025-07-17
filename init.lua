@@ -7,8 +7,8 @@ if require("core.vscode").setup() then
 end
 
 -- Load core configuration
-require("core.options")
 require("core.keymaps")
+require("core.options")
 
 -- Load plugin setup
 require("plugins.init")

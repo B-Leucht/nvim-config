@@ -7,7 +7,7 @@ M.UI = {
 	SIDEBAR_WIDTH = 10,
 	WINDOW_SCALE = 0.8,
 	TIMEOUT = 400,
-	UPDATE_TIME = 300,
+	UPDATE_TIME = 1000,
 }
 
 -- Appearance
@@ -21,11 +21,11 @@ M.APPEARANCE = {
 
 -- File paths
 M.PATHS = {
-	BACKUP_DIR = vim.fn.expand("~/.config/nvim/backup//"),
-	CONFIG_DIR = "~/.config/nvim/",
-	INIT_LUA = "~/.config/nvim/init.lua",
-	KEYMAPS = "~/.config/nvim/lua/config/keymaps.lua",
-	PLUGINS = "~/.config/nvim/lua/plugins/init.lua",
+	BACKUP_DIR = vim.fn.stdpath("config") .. "/backup/",
+	CONFIG_DIR = vim.fn.stdpath("config"),
+	INIT_LUA = vim.fn.stdpath("config") .. "/init.lua",
+	KEYMAPS = vim.fn.stdpath("config") .. "/lua/config/keymaps.lua",
+	PLUGINS = vim.fn.stdpath("config") .. "/lua/plugins/init.lua",
 }
 
 -- Keybinding options

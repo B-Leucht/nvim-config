@@ -142,6 +142,14 @@ keymap("n", "<left>", "<nop>", opts)
 keymap("n", "<right>", "<nop>", opts)
 
 -- ===============================================
+-- LSP KEYMAPS
+-- ===============================================
+
+-- Code actions
+keymap("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
+keymap("v", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
+
+-- ===============================================
 -- PLUGIN-SPECIFIC KEYMAPS
 -- ===============================================
 -- Plugin-specific keymaps are now defined in their respective plugin configurations

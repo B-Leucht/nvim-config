@@ -58,6 +58,9 @@ return {
 			-- C/C++
 			c = { "cppcheck" },
 			cpp = { "cppcheck" },
+
+			-- Haskell
+			haskell = { "hlint" },
 		}
 
 		-- Configure specific linters if needed

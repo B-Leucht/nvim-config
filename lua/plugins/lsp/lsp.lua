@@ -7,15 +7,33 @@ return {
 		local lspconfig = require("lspconfig")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-		-- Ensure Mason path is set
+		-- Ensure Mason path is set (cross-platform)
 		local mason_path = vim.fn.stdpath("data") .. "/mason/bin"
+		local path_separator = vim.fn.has("win32") == 1 and ";" or ":"
 		if not string.find(vim.env.PATH, mason_path, 1, true) then
-			vim.env.PATH = mason_path .. ":" .. vim.env.PATH
+			vim.env.PATH = mason_path .. path_separator .. vim.env.PATH
 		end
 
 		lspconfig.pyright.setup({
 			capabilities = capabilities,
 		})
+
+		lspconfig.hls.setup({
+			capabilities = capabilities,
+			cmd = { "haskell-language-server-wrapper", "--lsp" },
+			settings = {
+				haskell = {
+					formattingProvider = "fourmolu",
+				},
+			},
+			filetypes = { "haskell", "lhaskell" },
+			root_dir = function(fname)
+				return lspconfig.util.root_pattern("*.cabal", "stack.yaml", "cabal.project", "hie.yaml")(fname)
+					or lspconfig.util.find_git_ancestor(fname)
+					or vim.fn.getcwd()
+			end,
+		})
+
 		lspconfig.jdtls.setup({
 			capabilities = capabilities,
 		})
@@ -51,7 +69,7 @@ return {
 					language = "en-US", -- default to English
 					additionalRules = {
 						enablePickyRules = true,
-						languageModel = "~/models/ngrams/",
+						-- languageModel = "~/models/ngrams/",
 					},
 					dictionary = {
 						-- custom words, optional
@@ -70,6 +88,19 @@ return {
 			capabilities = capabilities,
 		})
 
+		require("lspconfig").markdown_oxide.setup({
+			-- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
+			-- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
+			capabilities = vim.tbl_deep_extend("force", capabilities, {
+				workspace = {
+					didChangeWatchedFiles = {
+						dynamicRegistration = true,
+					},
+				},
+			}),
+			-- on_attach = on_attach, -- configure your on attach config
+		})
+
 		lspconfig.rust_analyzer.setup({
 			capabilities = capabilities,
 			settings = {
@@ -84,6 +115,13 @@ return {
 			},
 		})
 
+		lspconfig.tinymist.setup({
+			settings = {
+				formatterMode = "typstyle",
+				exportPdf = "onType",
+				semanticTokens = "disable",
+			},
+		})
 		lspconfig.lua_ls.setup({
 			capabilities = capabilities,
 			settings = {
@@ -105,4 +143,3 @@ return {
 		})
 	end,
 }
-

@@ -9,15 +9,6 @@ return {
 			"<leader>tt",
 			function()
 				local constants = require("core.constants")
-				-- Close any trouble windows first
-				for _, win in ipairs(vim.api.nvim_list_wins()) do
-					local buf = vim.api.nvim_win_get_buf(win)
-					local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-					if ft == "trouble" then
-						vim.api.nvim_win_close(win, false)
-						return
-					end
-				end
 				Snacks.terminal.toggle(nil, {
 					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
 				})
@@ -28,51 +19,51 @@ return {
 			"<leader>tf",
 			function()
 				local constants = require("core.constants")
-				Snacks.terminal.toggle(nil, {
+				Snacks.terminal.open(nil, {
 					win = { position = "float", width = constants.UI.WINDOW_SCALE, height = constants.UI.WINDOW_SCALE },
 				})
 			end,
-			desc = "Toggle Float Terminal",
+			desc = "Open Float Terminal",
 		},
 		{
 			"<leader>th",
 			function()
 				local constants = require("core.constants")
-				Snacks.terminal.toggle(nil, {
+				Snacks.terminal.open(nil, {
 					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
 				})
 			end,
-			desc = "Toggle Horizontal Terminal",
+			desc = "Open Horizontal Terminal",
 		},
 		{
 			"<leader>tv",
 			function()
 				local constants = require("core.constants")
-				Snacks.terminal.toggle(nil, {
+				Snacks.terminal.open(nil, {
 					win = { position = "right", width = constants.UI.SIDEBAR_WIDTH },
 				})
 			end,
-			desc = "Toggle Vertical Terminal",
+			desc = "Open Vertical Terminal",
 		},
 		{
 			"<leader>py",
 			function()
 				local constants = require("core.constants")
-				Snacks.terminal.toggle("ipython", {
+				Snacks.terminal.open("ipython", {
 					win = { position = "float", width = constants.UI.WINDOW_SCALE, height = constants.UI.WINDOW_SCALE },
 				})
 			end,
-			desc = "Toggle IPython Terminal",
+			desc = "Open IPython Terminal",
 		},
 		{
 			"<leader>ss",
 			function()
 				local constants = require("core.constants")
-				Snacks.terminal.toggle("ssh", {
+				Snacks.terminal.open("ssh", {
 					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
 				})
 			end,
-			desc = "Toggle SSH Terminal",
+			desc = "Open SSH Terminal",
 		},
 
 		-- Lazygit
@@ -133,21 +124,21 @@ return {
 		{
 			"<leader>ur",
 			function()
-				Snacks.toggle.relativenumber()
+				Snacks.toggle.option("relativenumber")
 			end,
 			desc = "Toggle Relative Numbers",
 		},
 		{
 			"<leader>uw",
 			function()
-				Snacks.toggle.wrap()
+				Snacks.toggle.option("wrap")
 			end,
 			desc = "Toggle Line Wrap",
 		},
 		{
 			"<leader>us",
 			function()
-				Snacks.toggle.spell()
+				Snacks.toggle.option("spell")
 			end,
 			desc = "Toggle Spelling",
 		},
@@ -169,28 +160,23 @@ return {
 			"<leader>un",
 			function()
 				vim.g.custom_lualine_show_names = not vim.g.custom_lualine_show_names
-				-- Force lualine refresh
-				require("lualine").refresh()
+				-- Force lualine refresh with error handling
+				vim.schedule(function()
+					local ok, lualine = pcall(require, "lualine")
+					if ok then
+						lualine.refresh()
+					end
+				end)
 				local status = vim.g.custom_lualine_show_names and "shown" or "hidden"
 				vim.notify("Lualine names " .. status, vim.log.levels.INFO)
 			end,
 			desc = "Toggle Lualine Names",
-		},
-
-		-- Zen mode
-		{
-			"<leader>z",
-			function()
-				Snacks.zen()
-			end,
-			desc = "Toggle Zen Mode",
 		},
 		{
 			"<leader>Z",
 			function()
 				Snacks.zen({
 					toggles = {
-						dim = true,
 						git_signs = false,
 						mini_diff_signs = false,
 						diagnostics = false,
@@ -259,9 +245,16 @@ return {
 		{
 			"<leader>n",
 			function()
-				Snacks.picker.notifications()
+				Snacks.notifier.show_history()
 			end,
 			desc = "Notification History",
+		},
+		{
+			"<leader>fn",
+			function()
+				Snacks.picker.notifications()
+			end,
+			desc = "Find Notifications",
 		},
 		{
 			"<leader>e",
@@ -785,7 +778,6 @@ return {
 		zen = { enabled = true },
 		statuscolumn = { enabled = true },
 		statusline = { enabled = true },
-		dim = { enabled = true },
 		git = { enabled = true },
 		animate = { enabled = true },
 		quickfile = { enabled = true },
@@ -798,9 +790,38 @@ return {
 		gitbrowse = { enabled = true },
 		toggle = { enabled = true },
 		debug = { enabled = true },
+		dim = { enabled = false },
 
 		dashboard = {
 			enabled = true,
+			preset = {
+				-- 				header = [[
+				--             _..--¯¯¯¯--.._
+				--       ,-''              `-.
+				--     ,'                     `.
+				--    ,                         \
+				--   /                           \
+				--  /          ′.                 \
+				-- '          /  ││                ;
+				-- ;       n /│  │/         │      │
+				-- │      / v    /\/`-'v√\'.│\     ,
+				-- :    /v`,———         ————.^.    ;
+				-- '   │  /′@@`,        ,@@ `\│    ;
+				-- │  n│  '.@@/         \@@  /│\  │;
+				-- ` │ `    ¯¯¯          ¯¯¯  │ \/││
+				--  \ \ \                     │ /\/
+				--  '; `-\          `′       /│/ │′
+				--   `    \       —          /│  │
+				--    `    `.              .' │  │
+				--     v,_   `;._     _.-;    │  /
+				--        `'`\│-_`'-''__/^'^' │ │
+				--               ¯¯¯¯¯        │ │
+				--     ____ ____ ____ ____    │ /
+				--    ||l |||a |||i |||n ||   ││
+				--    ||__|||__|||__|||__||   ││
+				--    |/__\|/__\|/__\|/__\|   │,
+				--    ]],
+			},
 
 			sections = {
 				{ section = "header" },
@@ -835,6 +856,7 @@ return {
 				{ icon = "", key = "q", desc = "Quit", action = ":qa" },
 			},
 		},
+		--
 
 		notifier = {
 			enabled = true,
