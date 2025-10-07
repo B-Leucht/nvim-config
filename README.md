@@ -25,14 +25,18 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 
 ### Unique Features
 
-- **AI Assistance:** Includes Copilot and Claude Code TUI integration for code suggestions and chat-based coding assistance.
-- **Enhanced Git Integration:** Modern Git interface with `neogit`, `gitsigns.nvim`, and `diffview.nvim`.
-- **LaTeX Support:** Comprehensive LaTeX editing with `vimtex` and `luasnip-latex-snippets.nvim`.
-- **Terminal Management:** Seamless terminal integration with `toggleterm.nvim`.
-- **Fuzzy Finder:** Blazing fast file and text search with `fzf-lua`.
+- **AI Assistance:** Claude Code TUI integration for chat-based coding assistance.
+- **Snacks.nvim:** Modern all-in-one plugin providing picker, terminal, lazygit, file explorer, notifications, zen mode, and more.
+- **Enhanced Git Integration:** Git interface with Snacks git features, `diffview.nvim`, and lazygit integration.
+- **LaTeX & Typst Support:** Comprehensive document editing with `vimtex` for LaTeX and Typst support.
+- **Terminal Management:** Seamless terminal integration with Snacks terminal (supports floating, horizontal, vertical layouts, IPython, SSH).
+- **Picker:** Blazing fast fuzzy finder powered by Snacks picker for files, grep, git operations, LSP, and more.
 - **Rust Development:** Enhanced Rust support with `rustaceanvim` and `crates.nvim`.
+- **Java Development:** Full Java support with `nvim-jdtls`.
 - **Code Execution:** Run code snippets directly with `sniprun`.
 - **Markdown Rendering:** Beautiful markdown rendering with `markview.nvim` and mathematical notation with `nabla.nvim`.
+- **Search & Replace:** Advanced search and replace with `grug-far`.
+- **File Navigation:** Modern file explorer with `oil.nvim` and Snacks explorer.
 
 ---
 
@@ -71,24 +75,54 @@ For a full list of keymaps, refer to the detailed sections in the README.
 
 ## Plugins
 
-### Themes
-- **catppuccin/nvim:** Beautiful Catppuccin color scheme.
+### Core Plugins
+- **folke/snacks.nvim:** All-in-one modern plugin (picker, terminal, notifications, lazygit, explorer, zen mode, git blame, rename, etc.)
+- **echasnovski/mini.nvim:** Collection of minimal, independent Lua modules
+
+### UI & Themes
+- **catppuccin/nvim:** Beautiful Catppuccin color scheme
+- **nvim-lualine/lualine.nvim:** Fast and configurable statusline
+- **folke/noice.nvim:** Better UI for messages, cmdline, and popupmenu
+- **folke/trouble.nvim:** Pretty diagnostics, references, and quickfix list
+- **nacro90/numb.nvim:** Peek lines when entering `:number`
 
 ### Navigation and Movement
-- **folke/flash.nvim:** Quick scope navigation and jumping.
-- **monaqa/dial.nvim:** Advanced manipulation of numbers and dates.
-- **karb94/neoscroll.nvim:** Smooth scrolling animations.
-- **folke/which-key.nvim:** Key binding helper with visual guide.
+- **folke/flash.nvim:** Quick scope navigation and jumping
+- **folke/which-key.nvim:** Key binding helper with visual guide
+- **stevearc/oil.nvim:** File explorer that lets you edit your filesystem like a buffer
 
 ### LSP and Language Support
-- **neovim/nvim-lspconfig:** Configurations for built-in LSP.
-- **williamboman/mason.nvim:** LSP server, formatter, and linter installer.
-- **williamboman/mason-lspconfig.nvim:** Mason integration for LSP.
-- **WhoIsSethDaniel/mason-tool-installer.nvim:** Automatic tool installation.
-- **nvimdev/lspsaga.nvim:** Enhanced LSP UI with beautiful interface.
-- **onsails/lspkind.nvim:** VSCode-like pictograms for completion.
+- **neovim/nvim-lspconfig:** Configurations for built-in LSP
+- **williamboman/mason.nvim:** LSP server, formatter, and linter installer
+- **WhoIsSethDaniel/mason-tool-installer.nvim:** Automatic tool installation
+- **onsails/lspkind.nvim:** VSCode-like pictograms for completion
 
-(Refer to the full README for a complete plugin list.)
+### Code Editing
+- **nvim-treesitter/nvim-treesitter:** Advanced syntax highlighting and code understanding
+- **nvim-cmp:** Autocompletion plugin
+- **L3MON4D3/LuaSnip:** Snippet engine
+- **stevearc/conform.nvim:** Formatter plugin
+- **mfussenegger/nvim-lint:** Linter integration
+- **folke/todo-comments.nvim:** Highlight and search TODO comments
+
+### Debugging
+- **mfussenegger/nvim-dap:** Debug Adapter Protocol client
+- **rcarriga/nvim-dap-ui:** UI for nvim-dap
+
+### Language-Specific
+- **mrcjkb/rustaceanvim:** Enhanced Rust support
+- **Saecki/crates.nvim:** Rust crate management
+- **mfussenegger/nvim-jdtls:** Java language server integration
+- **lervag/vimtex:** LaTeX support
+- **MeanderingProgrammer/render-markdown.nvim:** Markdown rendering
+- **chomosuke/typst-preview.nvim:** Typst document preview
+
+### Tools
+- **folke/lazydev.nvim:** Lua development for Neovim config
+- **michaelb/sniprun:** Run code snippets
+- **MagicDuck/grug-far.nvim:** Search and replace
+- **folke/persistence.nvim:** Session management
+- **sindrets/diffview.nvim:** Git diff viewer
 
 ---
 
