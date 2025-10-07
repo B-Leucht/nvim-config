@@ -7,3 +7,4 @@ return {
 	require("plugins.tools.lualine-pretty-path"),
 	require("plugins.tools.claudecode"),
 }
+

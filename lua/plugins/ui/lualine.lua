@@ -2,11 +2,13 @@ return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = {
 		"folke/noice.nvim",
-		"folke/trouble.nvim",
 		"cameronr/lualine-pretty-path",
 		"AndreM222/copilot-lualine",
 	},
 	event = "VeryLazy",
+	init = function()
+		vim.g.lualine_disabled = true
+	end,
 	opts = {
 		options = {
 			theme = require("core.constants").APPEARANCE.THEME,
@@ -239,7 +241,8 @@ return {
 					"buffers",
 					mode = 2,
 					use_mode_colors = true,
-					component_separators = { left = "╲", right = "╱" },
+					section_separators = { left = "", right = "" },
+					component_separators = { left = "┃", right = "┃" },
 					show_filename_only = true,
 					show_modified_status = true,
 					hide_filename_extension = false,
@@ -316,6 +319,41 @@ return {
 			"quickfix",
 			-- "trouble",
 			"overseer",
+		},
+	},
+	config = function(_, opts)
+		local lualine = require("lualine")
+		if not vim.g.lualine_disabled then
+			lualine.setup(opts)
+		end
+	end,
+	keys = {
+		{
+			"<leader>ul",
+			function()
+				local lualine = require("lualine")
+				if vim.g.lualine_disabled then
+					-- Enable lualine
+					vim.g.lualine_disabled = false
+					lualine.setup(
+						require("lazy.core.plugin").values(
+							require("lazy.core.config").spec.plugins["lualine.nvim"],
+							"opts",
+							false
+						)
+					)
+					vim.opt.laststatus = 3 -- globalstatus
+					vim.cmd("redrawstatus!")
+				else
+					-- Disable lualine completely
+					vim.g.lualine_disabled = true
+					pcall(lualine.hide, { place = { "statusline", "tabline", "winbar" }, unhide = false })
+					vim.opt.laststatus = 2 -- standard statusline
+					vim.opt.statusline = ""
+					vim.cmd("redrawstatus!")
+				end
+			end,
+			desc = "Toggle Lualine",
 		},
 	},
 }

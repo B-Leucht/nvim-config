@@ -56,11 +56,15 @@ return {
 			java = { "checkstyle" },
 
 			-- C/C++
-			c = { "cppcheck" },
-			cpp = { "cppcheck" },
+			c = { "cpplint" },
+			cpp = { "cpplint" },
 
 			-- Haskell
 			haskell = { "hlint" },
+
+			-- LaTeX
+			tex = { "chktex" },
+			latex = { "chktex" },
 		}
 
 		-- Configure specific linters if needed
@@ -82,23 +86,19 @@ return {
 			"sarif",
 		}
 
-		-- Auto-lint on certain events
-		local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+		-- Configure chktex for LaTeX
+		lint.linters.chktex.args = {
+			"-n22",
+			"-n30",
+			"-e16",
+			"-q",
+		}
+		lint.linters.chktex.ignore_exitcode = true
 
-		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-			group = lint_augroup,
-			callback = function()
-				-- Only lint if the buffer is attached to a file
-				if vim.api.nvim_buf_get_name(0) ~= "" then
-					lint.try_lint()
-				end
-			end,
-		})
-
+	
 		-- Manual linting command
 		vim.keymap.set("n", "<leader>cl", function()
 			lint.try_lint()
 		end, { desc = "Trigger linting for current file" })
-		end,
-
+	end,
 }

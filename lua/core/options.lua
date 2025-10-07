@@ -19,11 +19,11 @@ opt.autoindent = true -- Copy indent from current line when starting a new one
 
 -- UI
 opt.number = true -- Show line numbers
-opt.relativenumber = false -- Relative line numbers
+opt.relativenumber = true -- Relative line numbers
 opt.numberwidth = 1 -- Minimum width of line number gutter
 opt.signcolumn = "yes" -- Sign column on left side only
 opt.foldcolumn = "0" -- No fold column to eliminate right padding
-opt.cursorline = false -- Disable cursorline to prevent flickering
+opt.cursorline = true -- Enable cursorline for CursorLineNr highlight
 opt.wrap = true -- Enable line wrap
 opt.textwidth = 80 -- Set line width for hard wrapping
 opt.formatoptions = "tcqjrn1" -- Auto-wrap text and comments, insert comment leader, break long lines
@@ -51,7 +51,7 @@ opt.splitbelow = true -- Horizontal splits below
 opt.splitright = true -- Vertical splits to the right
 
 -- Appearance
-opt.termguicolors = false -- True color support
+opt.termguicolors = true -- True color support
 opt.showmode = false -- Don’t show mode (use statusline instead)
 opt.laststatus = 2 -- Global statusline
 
@@ -64,7 +64,7 @@ local term_program = os.getenv("TERM_PROGRAM")
 if term_program == "iTerm.app" or term_program == "Apple_Terminal" then
 	vim.opt.ttyfast = true
 	vim.opt.ttimeout = true
-	vim.opt.ttimeoutlen = 50
+	-- vim.opt.ttimeoutlen = 50
 end
 
 -- File detection
@@ -109,7 +109,7 @@ if vim.g.neovide then
 		vim.g.neovide_input_use_logo = 1 -- Use Cmd key on macOS
 		vim.g.neovide_input_macos_options_key_is_meta = "only_left"
 	end
-	
+
 	vim.g.neovide_title_hidden = 1
 	vim.g.neovide_frame = "buttonless"
 	-- Disable cursor animations to prevent flickering

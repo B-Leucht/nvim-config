@@ -2,7 +2,6 @@
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
-	dependencies = { "williamboman/mason-lspconfig.nvim" },
 	config = function()
 		local lspconfig = require("lspconfig")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -34,9 +33,7 @@ return {
 			end,
 		})
 
-		lspconfig.jdtls.setup({
-			capabilities = capabilities,
-		})
+		-- jdtls is handled by nvim-jdtls plugin, not lspconfig
 		-- Function to switch ltex language
 		local function switch_ltex_language()
 			local current_clients = vim.lsp.get_clients({ name = "ltex" })
@@ -100,6 +97,26 @@ return {
 			}),
 			-- on_attach = on_attach, -- configure your on attach config
 		})
+		lspconfig.clangd.setup({
+			capabilities = capabilities,
+			cmd = {
+				"clangd",
+				"--background-index",
+				"--clang-tidy",
+				"--header-insertion=iwyu",
+				"--completion-style=detailed",
+				"--function-arg-placeholders",
+				"--fallback-style=llvm",
+			},
+			init_options = {
+				usePlaceholders = true,
+				completeUnimported = true,
+				clangdFileStatus = true,
+			},
+			filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+		})
+
+		lspconfig.bashls.setup({ capabilities = capabilities })
 
 		lspconfig.rust_analyzer.setup({
 			capabilities = capabilities,
@@ -140,6 +157,25 @@ return {
 					},
 				},
 			},
+		})
+
+		lspconfig.dockerls.setup({
+			capabilities = capabilities,
+		})
+
+		lspconfig.docker_compose_language_service.setup({
+			capabilities = capabilities,
+			filetypes = { "yaml.docker-compose", "yaml" },
+			root_dir = lspconfig.util.root_pattern("docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml"),
+		})
+
+		lspconfig.bzl.setup({
+			capabilities = capabilities,
+			filetypes = { "bzl", "bazel", "starlark" },
+		})
+
+		lspconfig.gradle_ls.setup({
+			capabilities = capabilities,
 		})
 	end,
 }

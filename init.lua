@@ -5,7 +5,6 @@ require("core.bootstrap").setup()
 if require("core.vscode").setup() then
 	return -- Early exit for VS Code
 end
-
 -- Load core configuration
 require("core.keymaps")
 require("core.options")

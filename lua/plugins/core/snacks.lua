@@ -793,7 +793,7 @@ return {
 		dim = { enabled = false },
 
 		dashboard = {
-			enabled = true,
+			enabled = false,
 			preset = {
 				-- 				header = [[
 				--             _..--¯¯¯¯--.._

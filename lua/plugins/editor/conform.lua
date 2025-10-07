@@ -9,9 +9,16 @@ return {
 			python = { "black" },
 			java = { "google-java-format" },
 			json = { "jq" },
+			c = { "clang-format" },
 			cpp = { "clang-format" },
 			haskell = { "fourmolu" },
 			markdown = { "prettier" },
+			bzl = { "buildifier" },
+			bazel = { "buildifier" },
+			bazelrc = { "buildifier" },
+			tex = { "latexindent" },
+			latex = { "latexindent" },
+			bib = { "bibtex-tidy" },
 		},
 		format_on_save = {
 			lsp_fallback = true,
@@ -19,4 +26,3 @@ return {
 		},
 	},
 }
-

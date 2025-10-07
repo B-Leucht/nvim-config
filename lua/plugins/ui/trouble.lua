@@ -1,7 +1,6 @@
 -- Trouble diagnostics
 return {
 	"folke/trouble.nvim",
-	dependencies = { "echasnovski/mini.icons" },
 	keys = {
 		{
 			"<leader>xx",

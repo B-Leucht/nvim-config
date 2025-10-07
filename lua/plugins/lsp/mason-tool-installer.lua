@@ -1,10 +1,27 @@
 return {
 	"WhoIsSethDaniel/mason-tool-installer.nvim",
 	dependencies = { "williamboman/mason.nvim" },
-	lazy = false,
 	config = function()
 		require("mason-tool-installer").setup({
 			ensure_installed = {
+				-- LSP servers
+				"ltex-ls",
+				"pyright",
+				"jdtls",
+				"java-test",
+				"java-debug-adapter",
+				"texlab",
+				"haskell-language-server",
+				"rust-analyzer",
+				"lua-language-server",
+				"markdown-oxide",
+				"tinymist",
+				"clangd",
+				"bash-language-server",
+				"dockerfile-language-server",
+				"docker-compose-language-service",
+				"bzl",
+				"gradle-language-server",
 				-- Formatters
 				"stylua",
 				"black",
@@ -13,6 +30,9 @@ return {
 				"clang-format",
 				"fourmolu",
 				"prettier",
+				"buildifier",
+				"latexindent",
+				"bibtex-tidy",
 				-- Linters
 				"ruff",
 				"shellcheck",
@@ -22,8 +42,13 @@ return {
 				"mypy",
 				"checkstyle",
 				"hlint",
+				"cpplint",
+				-- Debuggers
+				"codelldb",
+				-- "java-debug-adapter",
+				-- "java-test",
 			},
-			auto_update = true,
+			auto_update = false,
 			run_on_start = true,
 		})
 	end,

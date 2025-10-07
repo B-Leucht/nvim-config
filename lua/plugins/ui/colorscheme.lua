@@ -29,6 +29,8 @@ return {
 					Visual = { bg = colors.surface1, fg = "NONE" },
 					-- Ensure visual selection is visible in all terminal modes
 					VisualNOS = { bg = colors.surface1, fg = "NONE" },
+					-- Highlight current line number
+					CursorLineNr = { fg = colors.peach, bold = true },
 				}
 			end,
 		})

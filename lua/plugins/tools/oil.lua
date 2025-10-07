@@ -1,8 +1,6 @@
 -- File management
 return {
 	"stevearc/oil.nvim",
-	dependencies = { "echasnovski/mini.icons" },
-	lazy = false,
 	keys = {
 		{
 			"-",
