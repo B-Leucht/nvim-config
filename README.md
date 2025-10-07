@@ -42,34 +42,252 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 
 ## Keymaps
 
-Keymaps have been summarized into an easy-to-read table format for better navigation:
+### General
+| Key | Description |
+|-----|-------------|
+| `<C-h/j/k/l>` | Navigate windows |
+| `<C-Up/Down/Left/Right>` | Resize windows |
+| `<Tab>` / `<S-Tab>` | Next/previous buffer |
+| `<leader>b1-9` | Jump to buffer by index |
+| `<leader>bd` | Delete buffer (keep window) |
+| `<leader>bD` | Force delete buffer |
+| `<leader>h` | Clear search highlights |
+| `<leader>w` | Quick save |
+| `<leader>q` | Quick quit |
+| `<leader>Q` | Force quit |
+| `<leader>x` | Save and quit |
+| `<leader>o/O` | New line below/above without insert mode |
+| `<leader>y` | Yank to system clipboard |
+| `<leader>P` | Paste from system clipboard |
+| `<leader>?` | Show buffer local keymaps |
 
-| Key Combination           | Description                                    |
-|---------------------------|------------------------------------------------|
-| `<leader>ec`              | Edit main configuration file                  |
-| `<leader>ek`              | Edit keymaps configuration                    |
-| `<leader>ep`              | Edit plugins configuration                    |
-| `<leader>er`              | Reload configuration                          |
-| `<C-h>`/`<C-j>`/`<C-k>`/`<C-l>` | Navigate windows                             |
-| `<C-Up>`/`<C-Down>`/`<C-Left>`/`<C-Right>` | Resize windows                   |
-| `<Tab>`/`<S-Tab>`         | Navigate buffers using BufferLine             |
-| `<leader>bd`              | Delete buffer (keep window)                   |
-| `<leader>bD`              | Force delete buffer                           |
-| `<leader>bc`              | Close other buffers                           |
-| `<leader>bl`              | Close buffers to left                         |
-| `<leader>br`              | Close buffers to right                        |
-| `<leader>bp`              | Pick buffer                                   |
-| `<leader>h`               | Clear highlights                              |
-| `<leader>w`               | Quick save                                    |
-| `<leader>q`               | Quick quit                                    |
-| `<leader>Q`               | Force quit                                    |
-| `<leader>x`               | Save and quit                                 |
-| `<leader>o`               | New line above without entering insert mode   |
-| `<leader>O`               | New line below without entering insert mode   |
-| `<leader>y`               | Yank to system clipboard                      |
-| `<leader>P`               | Paste from system clipboard                   |
+### Visual Mode
+| Key | Description |
+|-----|-------------|
+| `<` / `>` | Indent left/right (stay in visual mode) |
+| `J` / `K` | Move selection down/up |
+| `<A-j>` / `<A-k>` | Move selection down/up |
 
-For a full list of keymaps, refer to the detailed sections in the README.
+### File Navigation & Picker
+| Key | Description |
+|-----|-------------|
+| `<leader><space>` | Smart find files |
+| `<leader>e` | Toggle file explorer |
+| `<leader>fb` | Find buffers |
+| `<leader>fc` | Find config files |
+| `<leader>ff` | Find files |
+| `<leader>fg` | Find git files |
+| `<leader>fo` | Open oil (parent directory) |
+| `<leader>fO` | Open oil (cwd) |
+| `<leader>fp` | Find projects |
+| `<leader>fr` | Recent files |
+| `<leader>fz` | Zoxide |
+| `<leader>fn` | Find notifications |
+
+### Search & Grep
+| Key | Description |
+|-----|-------------|
+| `<leader>sb` | Search buffer lines |
+| `<leader>sB` | Grep open buffers |
+| `<leader>sg` | Live grep |
+| `<leader>sw` | Grep word under cursor |
+| `<leader>sr` | Search and replace |
+| `<leader>sR` | Search and replace (current file) |
+| `<leader>s/` | Search history |
+| `<leader>sa` | Search autocmds |
+| `<leader>sc` | Command history |
+| `<leader>sC` | Commands |
+| `<leader>sd` | Diagnostics |
+| `<leader>sD` | Buffer diagnostics |
+| `<leader>sh` | Help pages |
+| `<leader>sH` | Highlights |
+| `<leader>si` | Icons |
+| `<leader>sj` | Jumps |
+| `<leader>sk` | Keymaps |
+| `<leader>sl` | Location list |
+| `<leader>sm` | Marks |
+| `<leader>sM` | Man pages |
+| `<leader>sp` | Plugin specs |
+| `<leader>sq` | Quickfix list |
+| `<leader>sR` | Resume last picker |
+| `<leader>ss` | LSP symbols |
+| `<leader>sS` | LSP workspace symbols |
+| `<leader>st` | Todo comments |
+| `<leader>sT` | Todo/Fix/Fixme comments |
+| `<leader>su` | Undo history |
+
+### LSP
+| Key | Description |
+|-----|-------------|
+| `gd` | Goto definition |
+| `gD` | Goto declaration |
+| `gr` | Find references |
+| `gI` | Goto implementation |
+| `gy` | Goto type definition |
+| `<leader>la` | Code actions |
+| `<leader>rr` | LSP rename |
+| `<leader>rp` | LSP rename (with preview) |
+
+### Git
+| Key | Description |
+|-----|-------------|
+| `<leader>gg` | Toggle lazygit |
+| `<leader>gb` | Git branches |
+| `<leader>gbl` | Git blame line |
+| `<leader>gbf` | Git blame file |
+| `<leader>gd` | Git diff (hunks) |
+| `<leader>gf` | Git log file |
+| `<leader>gfl` | Git log for file |
+| `<leader>gl` | Git log |
+| `<leader>gL` | Git log line |
+| `<leader>go` | Open in browser |
+| `<leader>gO` | Open file in git web |
+| `<leader>gR` | Browse git repository |
+| `<leader>gs` | Git status |
+| `<leader>gS` | Git stash |
+
+### Terminal
+| Key | Description |
+|-----|-------------|
+| `<leader>tt` | Toggle terminal |
+| `<leader>tf` | Float terminal |
+| `<leader>th` | Horizontal terminal |
+| `<leader>tv` | Vertical terminal |
+| `<leader>py` | IPython terminal |
+| `<leader>ss` | SSH terminal |
+
+### Quickfile Operations
+| Key | Description |
+|-----|-------------|
+| `<leader>qn` | New file |
+| `<leader>qd` | Delete file |
+| `<leader>qc` | Copy file |
+| `<leader>qm` | Move file |
+| `<leader>rn` | Rename file |
+
+### Window Management
+| Key | Description |
+|-----|-------------|
+| `<leader>wl` | Toggle horizontal layout |
+| `<leader>wv` | Toggle vertical layout |
+| `<leader>wm` | Maximize window |
+| `<leader>wf` | Float current buffer |
+| `<leader>ws` | Split horizontal |
+| `<leader>wS` | Split vertical |
+
+### Debug (DAP)
+| Key | Description |
+|-----|-------------|
+| `<leader>db` | Toggle breakpoint |
+| `<leader>dc` | Continue |
+| `<leader>di` | Step into |
+| `<leader>do` | Step out |
+| `<leader>dO` | Step over |
+| `<leader>dt` | Terminate |
+
+### Diagnostics (Trouble)
+| Key | Description |
+|-----|-------------|
+| `<leader>xx` | Diagnostics (Trouble) |
+| `<leader>xX` | Buffer diagnostics (Trouble) |
+| `<leader>xs` | Symbols (Trouble) |
+| `<leader>cl` | LSP definitions/references (Trouble) |
+| `<leader>xL` | Location list (Trouble) |
+| `<leader>xQ` | Quickfix list (Trouble) |
+
+### Todo Comments
+| Key | Description |
+|-----|-------------|
+| `]t` | Next todo comment |
+| `[t` | Previous todo comment |
+
+### Flash (Navigation)
+| Key | Description |
+|-----|-------------|
+| `s` | Flash jump |
+| `S` | Flash treesitter |
+| `r` | Remote flash (operator mode) |
+| `R` | Treesitter search (operator/visual) |
+| `<C-s>` | Toggle flash search (command mode) |
+
+### Oil (File Explorer)
+| Key | Description |
+|-----|-------------|
+| `-` | Open parent directory (float) |
+| `q` | Close oil buffer |
+| `<C-p>` | Preview file |
+| `<C-c>` | Close oil |
+
+### LaTeX (VimTeX)
+| Key | Description |
+|-----|-------------|
+| `<leader>vtl` | Compile |
+| `<leader>vtv` | View PDF |
+| `<leader>vts` | Stop compilation |
+| `<leader>vtc` | Clean auxiliary files |
+| `<leader>vtC` | Clean all files |
+| `<leader>vte` | Show errors |
+| `<leader>vto` | Show compilation output |
+| `<leader>vtg` | Status |
+| `<leader>vtG` | Status (all) |
+| `<leader>vtt` | Toggle TOC |
+
+### Markdown
+| Key | Description |
+|-----|-------------|
+| `<leader>p` | Toggle Nabla/RenderMarkdown preview |
+
+### Claude Code
+| Key | Description |
+|-----|-------------|
+| `<leader>ac` | Toggle Claude |
+| `<leader>af` | Focus Claude |
+| `<leader>ar` | Resume Claude |
+| `<leader>aC` | Continue Claude |
+| `<leader>ab` | Add current buffer |
+| `<leader>as` | Send to Claude (visual) |
+| `<leader>aa` | Accept diff |
+| `<leader>ad` | Deny diff |
+
+### Session (Persistence)
+| Key | Description |
+|-----|-------------|
+| `<leader>qs` | Load session |
+| `<leader>qS` | Select session |
+| `<leader>ql` | Load last session |
+| `<leader>qd` | Stop persistence |
+
+### Diffview
+| Key | Description |
+|-----|-------------|
+| `<leader>gdo` | Diffview open |
+| `<leader>gdc` | Diffview close |
+| `<leader>gdh` | Diffview file history |
+
+### Sniprun
+| Key | Description |
+|-----|-------------|
+| `<leader>r` | Run code snippet |
+| `<leader>rc` | Close sniprun |
+| `<leader>rt` | Terminate sniprun |
+
+### Utilities
+| Key | Description |
+|-----|-------------|
+| `<leader>:` | Command history |
+| `<leader>"` | Registers |
+| `<leader>n` | Notification history |
+| `<leader>ns` | Scratch buffer |
+| `<leader>nS` | Select scratch buffer |
+| `<leader>Z` | Zen mode |
+| `<leader>ul` | Toggle line numbers |
+| `<leader>ur` | Toggle relative numbers |
+| `<leader>uw` | Toggle line wrap |
+| `<leader>us` | Toggle spelling |
+| `<leader>ud` | Toggle diagnostics |
+| `<leader>ui` | Toggle indent guides |
+| `<leader>un` | Toggle lualine names |
+| `<leader>uC` | Colorschemes picker |
 
 ---
 
@@ -138,15 +356,7 @@ For a full list of keymaps, refer to the detailed sections in the README.
 
 ---
 
-## Usage
-
-### Keymaps
-
-Navigate using the intuitive shortcuts listed above.
-
----
-
-### Troubleshooting
+## Troubleshooting
 
 If you encounter any issues:
 
