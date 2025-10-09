@@ -30,6 +30,8 @@ opt.formatoptions = "tcqjrn1" -- Auto-wrap text and comments, insert comment lea
 opt.wrapmargin = 0 -- Use textwidth instead of wrapmargin
 opt.scrolloff = 8 -- Keep 8 lines above/below cursor
 opt.sidescrolloff = 8
+opt.conceallevel = 0 -- Show all text including markers
+opt.concealcursor = "" -- Show concealed text when cursor is on the line
 
 -- Search
 opt.ignorecase = true -- Case insensitive search...

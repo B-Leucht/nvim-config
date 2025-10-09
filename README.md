@@ -272,22 +272,22 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>rt` | Terminate sniprun |
 
 ### Utilities
-| Key | Description |
-|-----|-------------|
-| `<leader>:` | Command history |
-| `<leader>"` | Registers |
-| `<leader>n` | Notification history |
-| `<leader>ns` | Scratch buffer |
-| `<leader>nS` | Select scratch buffer |
-| `<leader>Z` | Zen mode |
-| `<leader>ul` | Toggle line numbers |
+| Key          | Description             |
+| ------------ | ----------------------- |
+| `<leader>:`  | Command history         |
+| `<leader>"`  | Registers               |
+| `<leader>n`  | Notification history    |
+| `<leader>ns` | Scratch buffer          |
+| `<leader>nS` | Select scratch buffer   |
+| `<leader>Z`  | Zen mode                |
+| `<leader>ul` | Toggle line lualine     |
 | `<leader>ur` | Toggle relative numbers |
-| `<leader>uw` | Toggle line wrap |
-| `<leader>us` | Toggle spelling |
-| `<leader>ud` | Toggle diagnostics |
-| `<leader>ui` | Toggle indent guides |
-| `<leader>un` | Toggle lualine names |
-| `<leader>uC` | Colorschemes picker |
+| `<leader>uw` | Toggle line wrap        |
+| `<leader>us` | Toggle spelling         |
+| `<leader>ud` | Toggle diagnostics      |
+| `<leader>ui` | Toggle indent guides    |
+| `<leader>un` | Toggle lualine names    |
+| `<leader>uC` | Colorschemes picker     |
 
 ---
 

@@ -124,7 +124,7 @@ return {
 		{
 			"<leader>ur",
 			function()
-				Snacks.toggle.option("relativenumber")
+				vim.opt.relativenumber = not vim.opt.relativenumber:get()
 			end,
 			desc = "Toggle Relative Numbers",
 		},
@@ -734,38 +734,6 @@ return {
 			desc = "Split Vertical",
 		},
 
-		-- Search and Replace with grug-far integration
-		{
-			"<leader>sr",
-			function()
-				local grug = require("grug-far")
-				local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
-				grug.open({
-					transient = true,
-					prefills = {
-						filesFilter = ext and ext ~= "" and "*." .. ext or nil,
-					},
-				})
-			end,
-			desc = "Search and Replace",
-			mode = { "n", "v" },
-		},
-		{
-			"<leader>sR",
-			function()
-				local grug = require("grug-far")
-				local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
-				grug.open({
-					transient = true,
-					prefills = {
-						paths = vim.fn.expand("%"),
-						filesFilter = ext and ext ~= "" and "*." .. ext or nil,
-					},
-				})
-			end,
-			desc = "Search and Replace (current file)",
-			mode = { "n", "v" },
-		},
 	},
 	opts = {
 		lazygit = { enabled = true },
