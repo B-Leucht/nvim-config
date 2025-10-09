@@ -5,6 +5,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 ---
 
 ## Table of Contents
+
 - [Features](#features)
 - [Keymaps](#keymaps)
 - [Plugins](#plugins)
@@ -35,7 +36,6 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - **Java Development:** Full Java support with `nvim-jdtls`.
 - **Code Execution:** Run code snippets directly with `sniprun`.
 - **Markdown Rendering:** Beautiful markdown rendering with `markview.nvim` and mathematical notation with `nabla.nvim`.
-- **Search & Replace:** Advanced search and replace with `grug-far`.
 - **File Navigation:** Modern file explorer with `oil.nvim` and Snacks explorer.
 
 ---
@@ -43,6 +43,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 ## Keymaps
 
 ### General
+
 | Key | Description |
 |-----|-------------|
 | `<C-h/j/k/l>` | Navigate windows |
@@ -62,6 +63,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>?` | Show buffer local keymaps |
 
 ### Visual Mode
+
 | Key | Description |
 |-----|-------------|
 | `<` / `>` | Indent left/right (stay in visual mode) |
@@ -69,6 +71,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<A-j>` / `<A-k>` | Move selection down/up |
 
 ### File Navigation & Picker
+
 | Key | Description |
 |-----|-------------|
 | `<leader><space>` | Smart find files |
@@ -85,6 +88,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>fn` | Find notifications |
 
 ### Search & Grep
+
 | Key | Description |
 |-----|-------------|
 | `<leader>sb` | Search buffer lines |
@@ -117,6 +121,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>su` | Undo history |
 
 ### LSP
+
 | Key | Description |
 |-----|-------------|
 | `gd` | Goto definition |
@@ -129,6 +134,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>rp` | LSP rename (with preview) |
 
 ### Git
+
 | Key | Description |
 |-----|-------------|
 | `<leader>gg` | Toggle lazygit |
@@ -147,6 +153,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>gS` | Git stash |
 
 ### Terminal
+
 | Key | Description |
 |-----|-------------|
 | `<leader>tt` | Toggle terminal |
@@ -157,6 +164,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>ss` | SSH terminal |
 
 ### Quickfile Operations
+
 | Key | Description |
 |-----|-------------|
 | `<leader>qn` | New file |
@@ -166,6 +174,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>rn` | Rename file |
 
 ### Window Management
+
 | Key | Description |
 |-----|-------------|
 | `<leader>wl` | Toggle horizontal layout |
@@ -176,6 +185,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>wS` | Split vertical |
 
 ### Debug (DAP)
+
 | Key | Description |
 |-----|-------------|
 | `<leader>db` | Toggle breakpoint |
@@ -186,6 +196,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>dt` | Terminate |
 
 ### Diagnostics (Trouble)
+
 | Key | Description |
 |-----|-------------|
 | `<leader>xx` | Diagnostics (Trouble) |
@@ -196,12 +207,14 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>xQ` | Quickfix list (Trouble) |
 
 ### Todo Comments
+
 | Key | Description |
 |-----|-------------|
 | `]t` | Next todo comment |
 | `[t` | Previous todo comment |
 
 ### Flash (Navigation)
+
 | Key | Description |
 |-----|-------------|
 | `s` | Flash jump |
@@ -211,6 +224,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<C-s>` | Toggle flash search (command mode) |
 
 ### Oil (File Explorer)
+
 | Key | Description |
 |-----|-------------|
 | `-` | Open parent directory (float) |
@@ -219,6 +233,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<C-c>` | Close oil |
 
 ### LaTeX (VimTeX)
+
 | Key | Description |
 |-----|-------------|
 | `<leader>vtl` | Compile |
@@ -233,11 +248,13 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>vtt` | Toggle TOC |
 
 ### Markdown
+
 | Key | Description |
 |-----|-------------|
 | `<leader>p` | Toggle Nabla/RenderMarkdown preview |
 
 ### Claude Code
+
 | Key | Description |
 |-----|-------------|
 | `<leader>ac` | Toggle Claude |
@@ -250,6 +267,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>ad` | Deny diff |
 
 ### Session (Persistence)
+
 | Key | Description |
 |-----|-------------|
 | `<leader>qs` | Load session |
@@ -258,6 +276,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>qd` | Stop persistence |
 
 ### Diffview
+
 | Key | Description |
 |-----|-------------|
 | `<leader>gdo` | Diffview open |
@@ -265,6 +284,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>gdh` | Diffview file history |
 
 ### Sniprun
+
 | Key | Description |
 |-----|-------------|
 | `<leader>r` | Run code snippet |
@@ -272,6 +292,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>rt` | Terminate sniprun |
 
 ### Utilities
+
 | Key          | Description             |
 | ------------ | ----------------------- |
 | `<leader>:`  | Command history         |
@@ -294,10 +315,12 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 ## Plugins
 
 ### Core Plugins
+
 - **folke/snacks.nvim:** All-in-one modern plugin (picker, terminal, notifications, lazygit, explorer, zen mode, git blame, rename, etc.)
 - **echasnovski/mini.nvim:** Collection of minimal, independent Lua modules
 
 ### UI & Themes
+
 - **catppuccin/nvim:** Beautiful Catppuccin color scheme
 - **nvim-lualine/lualine.nvim:** Fast and configurable statusline
 - **folke/noice.nvim:** Better UI for messages, cmdline, and popupmenu
@@ -305,17 +328,20 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - **nacro90/numb.nvim:** Peek lines when entering `:number`
 
 ### Navigation and Movement
+
 - **folke/flash.nvim:** Quick scope navigation and jumping
 - **folke/which-key.nvim:** Key binding helper with visual guide
 - **stevearc/oil.nvim:** File explorer that lets you edit your filesystem like a buffer
 
 ### LSP and Language Support
+
 - **neovim/nvim-lspconfig:** Configurations for built-in LSP
 - **williamboman/mason.nvim:** LSP server, formatter, and linter installer
 - **WhoIsSethDaniel/mason-tool-installer.nvim:** Automatic tool installation
 - **onsails/lspkind.nvim:** VSCode-like pictograms for completion
 
 ### Code Editing
+
 - **nvim-treesitter/nvim-treesitter:** Advanced syntax highlighting and code understanding
 - **nvim-cmp:** Autocompletion plugin
 - **L3MON4D3/LuaSnip:** Snippet engine
@@ -324,10 +350,12 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - **folke/todo-comments.nvim:** Highlight and search TODO comments
 
 ### Debugging
+
 - **mfussenegger/nvim-dap:** Debug Adapter Protocol client
 - **rcarriga/nvim-dap-ui:** UI for nvim-dap
 
 ### Language-Specific
+
 - **mrcjkb/rustaceanvim:** Enhanced Rust support
 - **Saecki/crates.nvim:** Rust crate management
 - **mfussenegger/nvim-jdtls:** Java language server integration
@@ -336,6 +364,7 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - **chomosuke/typst-preview.nvim:** Typst document preview
 
 ### Tools
+
 - **folke/lazydev.nvim:** Lua development for Neovim config
 - **michaelb/sniprun:** Run code snippets
 - **MagicDuck/grug-far.nvim:** Search and replace
