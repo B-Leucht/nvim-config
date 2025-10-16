@@ -367,7 +367,6 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 
 - **folke/lazydev.nvim:** Lua development for Neovim config
 - **michaelb/sniprun:** Run code snippets
-- **MagicDuck/grug-far.nvim:** Search and replace
 - **folke/persistence.nvim:** Session management
 - **sindrets/diffview.nvim:** Git diff viewer
 

@@ -10,9 +10,9 @@ vim.g.custom_lualine_show_lsp_names = true
 local opt = vim.opt
 
 -- Tabs and indentation
-opt.tabstop = 4 -- Number of spaces tabs count for
-opt.shiftwidth = 4 -- Number of spaces for auto-indent
-opt.softtabstop = 4 -- Number of spaces for tab input
+opt.tabstop = 2 -- Number of spaces tabs count for
+opt.shiftwidth = 2 -- Number of spaces for auto-indent
+opt.softtabstop = 2 -- Number of spaces for tab input
 opt.expandtab = true -- Use spaces instead of tabs
 opt.smartindent = true -- Smart autoindenting on new lines
 opt.autoindent = true -- Copy indent from current line when starting a new one
