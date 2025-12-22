@@ -1,12 +1,10 @@
 -- Shared configuration constants
 local SEPARATORS = {
-	round2 = { left = "", right = "" },
-	round1 = { left = "", right = "" },
-	lines = { left = "┃", right = "┃" },
-	empty = { left = "", right = "" },
+	component = { left = "", right = "" },
+	section = { left = "", right = "" },
 }
 
-local PRETTY_PATH_PROVIDERS = { default = "base", "toggleterm", "oil", "trouble", "dapui" }
+local PRETTY_PATH_PROVIDERS = { default = "base", "snacks_terminal", "toggleterm", "oil", "trouble", "dapui" }
 
 local DISABLED_FILETYPES = {
 	statusline = { "snacks_dashboard" },
@@ -33,13 +31,10 @@ local TABLINE_CONFIG = {
 			mode = 2,
 			use_mode_colors = true,
 			icons_enabled = true,
-			separator = SEPARATORS.round1,
+			section_separators = SEPARATORS.section,
 			component_separators = { left = "┃", right = "┃" },
 			show_filename_only = true,
 			show_modified_status = true,
-			max_length = function()
-				return vim.o.columns -- Use full screen width
-			end,
 			symbols = { modified = "_󰷥", alternate_file = "", directory = " " },
 			filetype_names = {
 				oil = "",
@@ -54,7 +49,7 @@ local TABLINE_CONFIG = {
 			buffers_color = { active = "lualine_a_normal", inactive = "lualine_b_normal" },
 		},
 	},
-	lualine_z = {},
+	lualine_z = { "tabs" },
 }
 
 return {
@@ -63,13 +58,13 @@ return {
 	event = "VeryLazy",
 	init = function()
 		vim.g.lualine_minimal = true
-		vim.opt.showtabline = 0 -- Hide tabline by default
+		vim.opt.showtabline = 0
 	end,
 	opts = {
 		options = {
 			theme = require("core.constants").APPEARANCE.THEME,
-			component_separators = { left = "", right = "" },
-			section_separators = { left = "", right = "" },
+			component_separators = SEPARATORS.component,
+			section_separators = SEPARATORS.section,
 			globalstatus = true,
 			disabled_filetypes = DISABLED_FILETYPES,
 			always_divide_middle = true,
@@ -79,7 +74,6 @@ return {
 			lualine_a = {
 				{
 					"mode",
-					separator = SEPARATORS.round1,
 					fmt = function(str)
 						local mode_map = {
 							NORMAL = "N",
@@ -96,23 +90,13 @@ return {
 					end,
 				},
 			},
-			lualine_b = {
-				{ "pretty_path", providers = PRETTY_PATH_PROVIDERS, section_separators = SEPARATORS.round2 },
-			},
-			lualine_c = {
-				{ "branch", separator = SEPARATORS.empty },
-				{
-					"diff",
-					symbols = { added = " ", modified = " ", removed = " " },
-					separator = SEPARATORS.empty,
-				},
-			},
+			lualine_b = { { "pretty_path", providers = PRETTY_PATH_PROVIDERS } },
+			lualine_c = { "branch", { "diff", symbols = { added = " ", modified = " ", removed = " " } } },
 			lualine_x = {
 				{
 					"diagnostics",
 					symbols = { error = " ", warn = " ", info = " ", hint = " " },
 					update_in_insert = false,
-					separator = SEPARATORS.empty,
 				},
 				{
 					function()
@@ -124,14 +108,12 @@ return {
 						return ok and noice.api.status.search.has()
 					end,
 					color = { fg = "#ff9e64" },
-					separator = SEPARATORS.empty,
 				},
 				{
 					"selectioncount",
 					fmt = function(str)
 						return str ~= "" and "󰒅 " .. str or ""
 					end,
-					separator = SEPARATORS.empty,
 				},
 				{
 					function()
@@ -143,17 +125,10 @@ return {
 						return ok and lazy.has_updates()
 					end,
 					color = { fg = "#ff9e64" },
-					separator = SEPARATORS.empty,
 				},
 			},
-			lualine_y = { { "progress", section_separators = SEPARATORS.round2 } },
-			lualine_z = {
-				{
-					"location",
-					icon = "",
-					separator = SEPARATORS.round1,
-				},
-			},
+			lualine_y = { "progress" },
+			lualine_z = { { "location", icon = "" } },
 		},
 		inactive_sections = {
 			lualine_c = { { "pretty_path", providers = PRETTY_PATH_PROVIDERS } },

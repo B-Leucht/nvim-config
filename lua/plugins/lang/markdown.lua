@@ -3,7 +3,24 @@ return {
 	"MeanderingProgrammer/render-markdown.nvim",
 	dependencies = { "nvim-treesitter/nvim-treesitter" },
 	ft = "markdown",
-	opts = {},
+	opts = {
+		-- Render all lines except cursor line (anti-conceal)
+		anti_conceal = {
+			enabled = true,
+		},
+	},
+	config = function(_, opts)
+		require("render-markdown").setup(opts)
+
+		-- Set conceallevel for markdown files only
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "markdown",
+			callback = function()
+				vim.opt_local.conceallevel = 2
+				vim.opt_local.concealcursor = "i" -- Show raw text only in insert mode
+			end,
+		})
+	end,
 },
 
 -- Mathematical notation rendering

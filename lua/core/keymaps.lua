@@ -112,6 +112,11 @@ keymap("n", "<leader>?", function()
 	require("which-key").show({ global = false })
 end, { desc = "Buffer Local Keymaps (which-key)" })
 
+-- Toggle transparency
+keymap("n", "<leader>ut", function()
+	toggle_transparency()
+end, { desc = "Toggle transparency" })
+
 -- Register descriptions for which-key
 local which_key_ok, which_key = pcall(require, "which-key")
 if which_key_ok then
@@ -127,6 +132,7 @@ if which_key_ok then
 		{ "<leader>a", group = "+ai/claude" },
 		{ "<leader>s", group = "+saga/show/search" },
 		{ "<leader>e", group = "+edit" },
+		{ "<leader>u", group = "+ui" },
 		{ "<leader>vt", group = "+vimtex" },
 	})
 end
@@ -148,6 +154,9 @@ keymap("n", "<right>", "<nop>", opts)
 -- Code actions
 keymap("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
 keymap("v", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
+
+-- LTeX language switch
+keymap("n", "<leader>ls", "<cmd>lua switch_ltex_language()<CR>", { desc = "Switch LTeX language (EN/DE)" })
 
 -- ===============================================
 -- PLUGIN-SPECIFIC KEYMAPS

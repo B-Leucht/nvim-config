@@ -43,6 +43,16 @@ return {
 					luasnip.lsp_expand(args.body)
 				end,
 			},
+			completion = {
+				autocomplete = { -- Auto-trigger completion
+					require("cmp.types").cmp.TriggerEvent.TextChanged,
+				},
+			},
+			performance = {
+				debounce = 60, -- Faster debounce (default 60ms)
+				throttle = 30, -- Faster throttle (default 30ms)
+				fetching_timeout = 200, -- Faster timeout (default 500ms)
+			},
 			window = {
 				completion = cmp.config.window.bordered({
 					border = "rounded",
@@ -86,7 +96,7 @@ return {
 			-- 	},
 			-- },
 			sources = cmp.config.sources({
-				{ name = "copilot", priority = 1100, max_item_count = 1 },
+				{ name = "copilot", priority = 1100, max_item_count = 3 },
 				{
 					name = "lazydev",
 					priority = 1000,
@@ -119,6 +129,7 @@ return {
 				{ name = "calc", priority = 50, max_item_count = 3 },
 			}),
 			formatting = {
+				fields = { "abbr", "kind", "menu" },
 				format = require("lspkind").cmp_format({
 					maxwidth = {
 						menu = function()
@@ -126,9 +137,9 @@ return {
 						end,
 						abbr = 50,
 					},
-					mode = "symbol_text",
+					mode = "symbol", -- Only show icon, not icon + text
 					ellipsis_char = "...",
-					show_labelDetails = true,
+					show_labelDetails = false, -- Disable to avoid icon duplication
 					symbol_map = {
 						Copilot = "",
 						-- add other kinds here if customizing
@@ -146,14 +157,14 @@ return {
 			},
 		})
 
-		-- Command line setup for commands
-		cmp.setup.cmdline(":", {
-			mapping = cmp.mapping.preset.cmdline(),
-			sources = cmp.config.sources({
-				{ name = "path" },
-			}, {
-				{ name = "cmdline" },
-			}),
-		})
+		-- -- Command line setup for commands
+		-- cmp.setup.cmdline(":", {
+		-- 	mapping = cmp.mapping.preset.cmdline(),
+		-- 	sources = cmp.config.sources({
+		-- 		{ name = "path" },
+		-- 	}, {
+		-- 		{ name = "cmdline" },
+		-- 	}),
+		-- })
 	end,
 }

@@ -17,6 +17,7 @@ M.APPEARANCE = {
 	FLAVOR = "mocha",
 	OPACITY = 0.95,
 	SCALE_FACTOR = 1.0,
+	TRANSPARENT = true,
 }
 
 -- File paths

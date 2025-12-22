@@ -6,7 +6,7 @@ local SEPARATORS = {
 	empty = { left = "", right = "" },
 }
 
-local PRETTY_PATH_PROVIDERS = { default = "base", "toggleterm", "oil", "trouble", "dapui" }
+local PRETTY_PATH_PROVIDERS = { default = "base", "snacks_terminal", "toggleterm", "oil", "trouble", "dapui" }
 
 local DISABLED_FILETYPES = {
 	statusline = { "snacks_dashboard" },
@@ -37,9 +37,6 @@ local TABLINE_CONFIG = {
 			component_separators = { left = "┃", right = "┃" },
 			show_filename_only = true,
 			show_modified_status = true,
-			max_length = function()
-				return vim.o.columns -- Use full screen width
-			end,
 			symbols = { modified = "_󰷥", alternate_file = "", directory = " " },
 			filetype_names = {
 				oil = "",
@@ -54,7 +51,7 @@ local TABLINE_CONFIG = {
 			buffers_color = { active = "lualine_a_normal", inactive = "lualine_b_normal" },
 		},
 	},
-	lualine_z = {},
+	lualine_z = { "tabs", seperator = SEPARATORS.round1 },
 }
 
 return {
@@ -63,7 +60,7 @@ return {
 	event = "VeryLazy",
 	init = function()
 		vim.g.lualine_minimal = true
-		vim.opt.showtabline = 0 -- Hide tabline by default
+		vim.opt.showtabline = 0
 	end,
 	opts = {
 		options = {

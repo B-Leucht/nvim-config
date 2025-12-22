@@ -49,11 +49,11 @@ return {
 			"<leader>py",
 			function()
 				local constants = require("core.constants")
-				Snacks.terminal.open("ipython", {
+				Snacks.terminal.toggle("ipython", {
 					win = { position = "float", width = constants.UI.WINDOW_SCALE, height = constants.UI.WINDOW_SCALE },
 				})
 			end,
-			desc = "Open IPython Terminal",
+			desc = "Toggle IPython Terminal",
 		},
 		{
 			"<leader>ss",
@@ -114,13 +114,6 @@ return {
 		},
 
 		-- Toggle utilities
-		{
-			"<leader>ul",
-			function()
-				Snacks.toggle.line_number()
-			end,
-			desc = "Toggle Line Numbers",
-		},
 		{
 			"<leader>ur",
 			function()
@@ -255,13 +248,6 @@ return {
 				Snacks.picker.notifications()
 			end,
 			desc = "Find Notifications",
-		},
-		{
-			"<leader>e",
-			function()
-				Snacks.explorer()
-			end,
-			desc = "File Explorer",
 		},
 		-- find
 		{
@@ -407,13 +393,6 @@ return {
 				Snacks.picker.autocmds()
 			end,
 			desc = "Autocmds",
-		},
-		{
-			"<leader>sb",
-			function()
-				Snacks.picker.lines()
-			end,
-			desc = "Buffer Lines",
 		},
 		{
 			"<leader>sc",
@@ -745,7 +724,7 @@ return {
 		indent = { enabled = true },
 		zen = { enabled = true },
 		statuscolumn = { enabled = true },
-		statusline = { enabled = true },
+		statusline = { enabled = false }, -- Disabled: using lualine instead
 		git = { enabled = true },
 		animate = { enabled = true },
 		quickfile = { enabled = true },
@@ -761,34 +740,12 @@ return {
 		dim = { enabled = false },
 
 		dashboard = {
-			enabled = false,
+			enabled = true,
 			preset = {
-				-- 				header = [[
-				--             _..--¯¯¯¯--.._
-				--       ,-''              `-.
-				--     ,'                     `.
-				--    ,                         \
-				--   /                           \
-				--  /          ′.                 \
-				-- '          /  ││                ;
-				-- ;       n /│  │/         │      │
-				-- │      / v    /\/`-'v√\'.│\     ,
-				-- :    /v`,———         ————.^.    ;
-				-- '   │  /′@@`,        ,@@ `\│    ;
-				-- │  n│  '.@@/         \@@  /│\  │;
-				-- ` │ `    ¯¯¯          ¯¯¯  │ \/││
-				--  \ \ \                     │ /\/
-				--  '; `-\          `′       /│/ │′
-				--   `    \       —          /│  │
-				--    `    `.              .' │  │
-				--     v,_   `;._     _.-;    │  /
-				--        `'`\│-_`'-''__/^'^' │ │
-				--               ¯¯¯¯¯        │ │
-				--     ____ ____ ____ ____    │ /
-				--    ||l |||a |||i |||n ||   ││
-				--    ||__|||__|||__|||__||   ││
-				--    |/__\|/__\|/__\|/__\|   │,
-				--    ]],
+				header = [[
+
+
+]],
 			},
 
 			sections = {
@@ -835,6 +792,8 @@ return {
 
 		picker = {
 			enabled = true,
+			width = require("core.constants").FLOAT.WIDTH,
+			height = require("core.constants").FLOAT.HEIGHT,
 		},
 
 		terminal = {

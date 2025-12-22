@@ -33,9 +33,8 @@ return {
 			end
 
 			local function get_jdtls_config()
-				local home = os.getenv("HOME")
 				local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-				local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
+				local workspace_dir = vim.fn.expand("~/.local/share/eclipse/") .. project_name
 
 				local launcher_jar = vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
 				if launcher_jar == "" then
@@ -43,20 +42,35 @@ return {
 					return
 				end
 
+				-- Auto-detect OS config folder
+				local config_dir = "config_linux"
+				if vim.fn.has("mac") == 1 then
+					config_dir = "config_mac"
+				elseif vim.fn.has("win32") == 1 then
+					config_dir = "config_win"
+				end
+
+				-- Build runtimes from environment variables if available
+				local runtimes = {}
+				if os.getenv("JAVA17_HOME") then
+					table.insert(runtimes, { name = "JavaSE-17", path = os.getenv("JAVA17_HOME") })
+				end
+				if os.getenv("JAVA21_HOME") then
+					table.insert(runtimes, { name = "JavaSE-21", path = os.getenv("JAVA21_HOME") })
+				end
+
 				local config = {
 					cmd = {
-						"/Library/Java/JavaVirtualMachines/temurin-24.jdk/Contents/Home/bin/java",
+						"java", -- Uses system PATH
 						"-Declipse.application=org.eclipse.jdt.ls.core.id1",
 						"-Dosgi.bundles.defaultStartLevel=4",
 						"-Declipse.product=org.eclipse.jdt.ls.core.product",
-						"-Dlog.protocol=true",
-						"-Dlog.level=ALL",
 						"-Xms1g",
 						"--add-modules=ALL-SYSTEM",
 						"--add-opens", "java.base/java.util=ALL-UNNAMED",
 						"--add-opens", "java.base/java.lang=ALL-UNNAMED",
 						"-jar", launcher_jar,
-						"-configuration", vim.fn.stdpath("data") .. "/mason/packages/jdtls/config_mac",
+						"-configuration", vim.fn.stdpath("data") .. "/mason/packages/jdtls/" .. config_dir,
 						"-data", workspace_dir,
 					},
 					root_dir = jdtls_setup.find_root({ ".git", "mvnw", "gradlew", "build.gradle", "pom.xml" }),
@@ -67,16 +81,7 @@ return {
 							},
 							configuration = {
 								updateBuildConfiguration = "interactive",
-								runtimes = {
-									{
-										name = "JavaSE-17",
-										path = "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home",
-									},
-									{
-										name = "JavaSE-24",
-										path = "/Library/Java/JavaVirtualMachines/temurin-24.jdk/Contents/Home",
-									},
-								},
+								runtimes = runtimes, -- Uses JAVA17_HOME, JAVA21_HOME env vars if set
 							},
 							maven = {
 								downloadSources = true,
@@ -179,6 +184,13 @@ return {
 				return config
 			end
 
+			-- Start jdtls immediately if we're in a Java buffer
+			local config = get_jdtls_config()
+			if config then
+				jdtls.start_or_attach(config)
+			end
+
+			-- Also set up autocmd for future Java buffers
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "java",
 				callback = function()

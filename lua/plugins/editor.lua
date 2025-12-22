@@ -7,5 +7,5 @@ return {
 	require("plugins.editor.nvim-lint"),
 	require("plugins.editor.nvim-dap"),
 	require("plugins.editor.dap-view"),
-	-- require("plugins.editor.copilot"),
+	require("plugins.editor.copilot"),
 }

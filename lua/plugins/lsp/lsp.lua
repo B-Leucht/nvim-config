@@ -2,8 +2,10 @@
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
+	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
+	},
 	config = function()
-		local lspconfig = require("lspconfig")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 		-- Ensure Mason path is set (cross-platform)
@@ -13,11 +15,22 @@ return {
 			vim.env.PATH = mason_path .. path_separator .. vim.env.PATH
 		end
 
-		lspconfig.pyright.setup({
+		vim.lsp.config("pyright", {
 			capabilities = capabilities,
+			settings = {
+				python = {
+					analysis = {
+						inlayHints = {
+							variableTypes = true,
+							functionReturnTypes = true,
+						},
+					},
+				},
+			},
 		})
+		vim.lsp.enable("pyright")
 
-		lspconfig.hls.setup({
+		vim.lsp.config("hls", {
 			capabilities = capabilities,
 			cmd = { "haskell-language-server-wrapper", "--lsp" },
 			settings = {
@@ -26,12 +39,9 @@ return {
 				},
 			},
 			filetypes = { "haskell", "lhaskell" },
-			root_dir = function(fname)
-				return lspconfig.util.root_pattern("*.cabal", "stack.yaml", "cabal.project", "hie.yaml")(fname)
-					or lspconfig.util.find_git_ancestor(fname)
-					or vim.fn.getcwd()
-			end,
+			root_markers = { "*.cabal", "stack.yaml", "cabal.project", "hie.yaml", ".git" },
 		})
+		vim.lsp.enable("hls")
 
 		-- jdtls is handled by nvim-jdtls plugin, not lspconfig
 		-- Function to switch ltex language
@@ -59,11 +69,11 @@ return {
 		-- Make function globally accessible
 		_G.switch_ltex_language = switch_ltex_language
 
-		lspconfig.ltex.setup({
+		vim.lsp.config("ltex", {
 			capabilities = capabilities,
 			settings = {
 				ltex = {
-					language = "en-US", -- default to English
+					language = "de-DE", -- default to German
 					additionalRules = {
 						enablePickyRules = true,
 						-- languageModel = "~/models/ngrams/",
@@ -81,11 +91,14 @@ return {
 				-- You can add your on_attach logic here
 			end,
 		})
-		lspconfig.texlab.setup({
+		vim.lsp.enable("ltex")
+
+		vim.lsp.config("texlab", {
 			capabilities = capabilities,
 		})
+		vim.lsp.enable("texlab")
 
-		require("lspconfig").markdown_oxide.setup({
+		vim.lsp.config("markdown_oxide", {
 			-- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
 			-- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
 			capabilities = vim.tbl_deep_extend("force", capabilities, {
@@ -97,7 +110,9 @@ return {
 			}),
 			-- on_attach = on_attach, -- configure your on attach config
 		})
-		lspconfig.clangd.setup({
+		vim.lsp.enable("markdown_oxide")
+
+		vim.lsp.config("clangd", {
 			capabilities = capabilities,
 			cmd = {
 				"clangd",
@@ -115,10 +130,14 @@ return {
 			},
 			filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
 		})
+		vim.lsp.enable("clangd")
 
-		lspconfig.bashls.setup({ capabilities = capabilities })
+		vim.lsp.config("bashls", {
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("bashls")
 
-		lspconfig.rust_analyzer.setup({
+		vim.lsp.config("rust_analyzer", {
 			capabilities = capabilities,
 			settings = {
 				["rust-analyzer"] = {
@@ -131,15 +150,18 @@ return {
 				},
 			},
 		})
+		vim.lsp.enable("rust_analyzer")
 
-		lspconfig.tinymist.setup({
+		vim.lsp.config("tinymist", {
 			settings = {
 				formatterMode = "typstyle",
 				exportPdf = "onType",
 				semanticTokens = "disable",
 			},
 		})
-		lspconfig.lua_ls.setup({
+		vim.lsp.enable("tinymist")
+
+		vim.lsp.config("lua_ls", {
 			capabilities = capabilities,
 			settings = {
 				Lua = {
@@ -155,27 +177,50 @@ return {
 					telemetry = {
 						enable = false,
 					},
+					hint = {
+						enable = false, -- Disable all lua_ls inlay hints (too noisy)
+					},
 				},
 			},
 		})
+		vim.lsp.enable("lua_ls")
 
-		lspconfig.dockerls.setup({
+		vim.lsp.config("dockerls", {
 			capabilities = capabilities,
 		})
+		vim.lsp.enable("dockerls")
 
-		lspconfig.docker_compose_language_service.setup({
+		vim.lsp.config("docker_compose_language_service", {
 			capabilities = capabilities,
 			filetypes = { "yaml.docker-compose", "yaml" },
-			root_dir = lspconfig.util.root_pattern("docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml"),
+			root_markers = {
+				"docker-compose.yml",
+				"docker-compose.yaml",
+				"compose.yml",
+				"compose.yaml",
+			},
 		})
+		vim.lsp.enable("docker_compose_language_service")
 
-		lspconfig.bzl.setup({
+		vim.lsp.config("bzl", {
 			capabilities = capabilities,
 			filetypes = { "bzl", "bazel", "starlark" },
 		})
+		vim.lsp.enable("bzl")
 
-		lspconfig.gradle_ls.setup({
+		vim.lsp.config("gradle_ls", {
 			capabilities = capabilities,
+		})
+		vim.lsp.enable("gradle_ls")
+
+		-- Enable inlay hints globally for all LSP servers that support it
+		vim.api.nvim_create_autocmd("LspAttach", {
+			callback = function(args)
+				local client = vim.lsp.get_client_by_id(args.data.client_id)
+				if client and client.server_capabilities.inlayHintProvider then
+					vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+				end
+			end,
 		})
 	end,
 }

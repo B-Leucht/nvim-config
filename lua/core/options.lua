@@ -90,7 +90,6 @@ vim.diagnostic.config({
 
 -- Show diagnostic popup on cursor hold
 vim.api.nvim_create_autocmd("CursorHold", {
-	buffer = bufnr,
 	callback = function()
 		local opts = {
 			focusable = false,
