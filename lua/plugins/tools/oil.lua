@@ -9,23 +9,12 @@ return {
 				if ft == "snacks_terminal" or ft == "terminal" or ft == "trouble" then
 					return
 				end
-				require("oil").open_float(nil, { preview = { update_on_cursor_moved = true } })
+				require("oil").open()
+				vim.defer_fn(function()
+					require("oil").open_preview()
+				end, 50)
 			end,
 			desc = "Open parent directory",
-		},
-		{
-			"<leader>fo",
-			function()
-				require("oil").open_float(nil, { preview = { update_on_cursor_moved = true } })
-			end,
-			desc = "Open oil (parent directory)",
-		},
-		{
-			"<leader>fO",
-			function()
-				require("oil").open_float(vim.fn.getcwd(), { preview = { update_on_cursor_moved = true } })
-				end,
-			desc = "Open oil (cwd)",
 		},
 	},
 	opts = {
