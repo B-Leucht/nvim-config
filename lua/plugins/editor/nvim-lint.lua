@@ -17,7 +17,7 @@ return {
 			vue = { "eslint_d" },
 
 			-- Python
-			python = { "ruff", "mypy" },
+			python = { "ruff" },
 
 			-- Shell
 			sh = { "shellcheck" },

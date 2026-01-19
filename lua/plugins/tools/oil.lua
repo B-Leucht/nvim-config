@@ -103,13 +103,13 @@ return {
 		git = {
 			-- Return true to automatically git add/mv/rm files
 			add = function(path)
-				return false
+				return true
 			end,
 			mv = function(src_path, dest_path)
-				return false
+				return true
 			end,
 			rm = function(path)
-				return false
+				return true
 			end,
 		},
 		-- Configuration for the floating window in oil.open_float
@@ -171,6 +171,13 @@ return {
 		-- Configuration for the floating SSH window
 		ssh = {
 			border = "rounded",
+		},
+		-- Configuration for the preview window
+		preview_win = {
+			win_options = {
+				number = false,
+				relativenumber = false,
+			},
 		},
 	},
 }

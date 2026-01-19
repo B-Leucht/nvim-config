@@ -202,16 +202,48 @@ return {
 		})
 		vim.lsp.enable("docker_compose_language_service")
 
-		vim.lsp.config("bzl", {
-			capabilities = capabilities,
-			filetypes = { "bzl", "bazel", "starlark" },
-		})
-		vim.lsp.enable("bzl")
-
 		vim.lsp.config("gradle_ls", {
 			capabilities = capabilities,
 		})
 		vim.lsp.enable("gradle_ls")
+
+		vim.lsp.config("ts_ls", {
+			capabilities = capabilities,
+			filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+			settings = {
+				typescript = {
+					inlayHints = {
+						includeInlayParameterNameHints = "all",
+						includeInlayFunctionParameterTypeHints = true,
+						includeInlayVariableTypeHints = true,
+						includeInlayPropertyDeclarationTypeHints = true,
+						includeInlayFunctionLikeReturnTypeHints = true,
+					},
+				},
+				javascript = {
+					inlayHints = {
+						includeInlayParameterNameHints = "all",
+						includeInlayFunctionParameterTypeHints = true,
+						includeInlayVariableTypeHints = true,
+						includeInlayPropertyDeclarationTypeHints = true,
+						includeInlayFunctionLikeReturnTypeHints = true,
+					},
+				},
+			},
+		})
+		vim.lsp.enable("ts_ls")
+
+		vim.lsp.config("cssls", {
+			capabilities = capabilities,
+			filetypes = { "css", "scss", "less" },
+		})
+		vim.lsp.enable("cssls")
+
+		vim.lsp.config("html", {
+			capabilities = capabilities,
+			filetypes = { "html", "templ" },
+		})
+		vim.lsp.enable("html")
 
 		-- Enable inlay hints globally for all LSP servers that support it
 		vim.api.nvim_create_autocmd("LspAttach", {
