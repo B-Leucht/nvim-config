@@ -2,6 +2,6 @@ return {
 	require("plugins.ui.colorscheme"),
 	require("plugins.ui.noice"),
 	require("plugins.ui.lualine"),
-	require("plugins.ui.trouble"),
+	-- trouble removed: using snacks.picker for diagnostics instead
 	require("plugins.ui.numb"),
 }

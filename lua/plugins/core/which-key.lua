@@ -5,5 +5,11 @@ return {
 	lazy = true,
 	opts = {
 		preset = "helix",
+		win = {
+			border = "rounded",
+			wo = {
+				winblend = 0,
+			},
+		},
 	},
 }

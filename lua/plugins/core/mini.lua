@@ -4,7 +4,7 @@ return {
 	version = false,
 	event = "VeryLazy",
 	config = function()
-		require("mini.comment").setup()
+		-- mini.comment removed - using ts-comments.nvim for better treesitter-aware commenting
 		require("mini.pairs").setup()
 		require("mini.surround").setup()
 		require("mini.icons").setup()

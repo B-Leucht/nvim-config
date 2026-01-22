@@ -1,26 +1,20 @@
--- Snippets
+-- LaTeX snippets only (blink.cmp handles general snippets via friendly-snippets)
 return {
-	{
-		"L3MON4D3/LuaSnip",
-		event = "InsertEnter",
-		dependencies = { "rafamadriz/friendly-snippets" },
+	"iurimateus/luasnip-latex-snippets.nvim",
+	dependencies = {
+		{
+			"L3MON4D3/LuaSnip",
+			lazy = true,
+			config = function()
+				require("luasnip").config.setup({ enable_autosnippets = true })
+			end,
+		},
+		"lervag/vimtex",
 	},
-	{
-		"rafamadriz/friendly-snippets",
-		lazy = true,
-		config = function()
-			require("luasnip.loaders.from_vscode").lazy_load()
-		end,
-	},
-	{
-		"iurimateus/luasnip-latex-snippets.nvim",
-		dependencies = { "L3MON4D3/LuaSnip", "lervag/vimtex" },
-		ft = { "tex", "latex" },
-		config = function()
-			require("luasnip-latex-snippets").setup({
-				use_treesitter = false,
-			})
-			require("luasnip").config.setup({ enable_autosnippets = true })
-		end,
-	},
+	ft = { "tex", "latex" },
+	config = function()
+		require("luasnip-latex-snippets").setup({
+			use_treesitter = false,
+		})
+	end,
 }

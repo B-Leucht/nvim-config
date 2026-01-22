@@ -6,7 +6,7 @@ return {
 			ensure_installed = {
 				-- LSP servers
 				"ltex-ls",
-				"pyright",
+				"basedpyright",
 				"jdtls",
 				"java-test",
 				"java-debug-adapter",

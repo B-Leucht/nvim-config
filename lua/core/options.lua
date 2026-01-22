@@ -73,7 +73,11 @@ end
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax enable") -- Use `enable` instead of `on` (more standard)
 vim.diagnostic.config({
-	virtual_text = false, -- Disable persistent virtual text
+	virtual_text = {
+		prefix = "●",
+		spacing = 2,
+		source = "if_many",
+	},
 	float = {
 		focusable = false,
 		close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
@@ -86,21 +90,6 @@ vim.diagnostic.config({
 	underline = true,
 	update_in_insert = false,
 	severity_sort = true,
-})
-
--- Show diagnostic popup on cursor hold
-vim.api.nvim_create_autocmd("CursorHold", {
-	callback = function()
-		local opts = {
-			focusable = false,
-			close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-			border = "rounded",
-			source = "always",
-			prefix = " ",
-			scope = "cursor",
-		}
-		vim.diagnostic.open_float(nil, opts)
-	end,
 })
 
 -- Neovide-specific settings
@@ -120,3 +109,13 @@ if vim.g.neovide then
 	vim.g.neovide_scale_factor = constants.APPEARANCE.SCALE_FACTOR
 	vim.o.guifont = constants.APPEARANCE.FONT
 end
+
+-- lua/config/options.lua
+vim.g.markdown_fenced_languages = {
+	"python",
+	"lua",
+	"bash",
+	"sh",
+	"json",
+	"vim",
+}

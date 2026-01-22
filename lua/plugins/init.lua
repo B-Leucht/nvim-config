@@ -13,7 +13,6 @@ end
 local plugins = merge_plugins(
 	require("plugins.core"),
 	require("plugins.ui"),
-	require("plugins.navigation"),
 	require("plugins.lsp"),
 	require("plugins.editor"),
 	require("plugins.tools"),
@@ -23,3 +22,4 @@ local plugins = merge_plugins(
 
 -- Setup lazy.nvim with all plugins
 require("lazy").setup(plugins)
+

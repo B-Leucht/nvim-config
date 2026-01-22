@@ -36,7 +36,9 @@ return {
 				local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 				local workspace_dir = vim.fn.expand("~/.local/share/eclipse/") .. project_name
 
-				local launcher_jar = vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
+				local launcher_jar = vim.fn.glob(
+					vim.fn.stdpath("data") .. "/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"
+				)
 				if launcher_jar == "" then
 					vim.notify("JDTLS launcher jar not found. Install jdtls via Mason.", vim.log.levels.ERROR)
 					return
@@ -67,11 +69,16 @@ return {
 						"-Declipse.product=org.eclipse.jdt.ls.core.product",
 						"-Xms1g",
 						"--add-modules=ALL-SYSTEM",
-						"--add-opens", "java.base/java.util=ALL-UNNAMED",
-						"--add-opens", "java.base/java.lang=ALL-UNNAMED",
-						"-jar", launcher_jar,
-						"-configuration", vim.fn.stdpath("data") .. "/mason/packages/jdtls/" .. config_dir,
-						"-data", workspace_dir,
+						"--add-opens",
+						"java.base/java.util=ALL-UNNAMED",
+						"--add-opens",
+						"java.base/java.lang=ALL-UNNAMED",
+						"-jar",
+						launcher_jar,
+						"-configuration",
+						vim.fn.stdpath("data") .. "/mason/packages/jdtls/" .. config_dir,
+						"-data",
+						workspace_dir,
 					},
 					root_dir = jdtls_setup.find_root({ ".git", "mvnw", "gradlew", "build.gradle", "pom.xml" }),
 					settings = {
@@ -127,13 +134,20 @@ return {
 					},
 					init_options = {
 						bundles = {
-							vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", true),
-							vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/java-test/extension/server/*.jar", true),
+							vim.fn.glob(
+								vim.fn.stdpath("data")
+									.. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+								true
+							),
+							vim.fn.glob(
+								vim.fn.stdpath("data") .. "/mason/packages/java-test/extension/server/*.jar",
+								true
+							),
 						},
 					},
 					on_attach = function(client, bufnr)
 						jdtls_setup.add_commands()
-						
+
 						-- Enable inlay hints
 						if client.server_capabilities.inlayHintProvider then
 							vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
@@ -141,14 +155,39 @@ return {
 
 						-- Java debugging
 						jdtls.setup_dap({ hotcodereplace = "auto" })
-						
+
 						-- Enhanced keymaps
-						vim.keymap.set("n", "<leader>jo", jdtls.organize_imports, { desc = "Organize Imports", buffer = bufnr })
-						vim.keymap.set("n", "<leader>jv", jdtls.extract_variable, { desc = "Extract Variable", buffer = bufnr })
-						vim.keymap.set("n", "<leader>jc", jdtls.extract_constant, { desc = "Extract Constant", buffer = bufnr })
-						vim.keymap.set("v", "<leader>jm", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]], { desc = "Extract Method", buffer = bufnr })
+						vim.keymap.set(
+							"n",
+							"<leader>jo",
+							jdtls.organize_imports,
+							{ desc = "Organize Imports", buffer = bufnr }
+						)
+						vim.keymap.set(
+							"n",
+							"<leader>jv",
+							jdtls.extract_variable,
+							{ desc = "Extract Variable", buffer = bufnr }
+						)
+						vim.keymap.set(
+							"n",
+							"<leader>jc",
+							jdtls.extract_constant,
+							{ desc = "Extract Constant", buffer = bufnr }
+						)
+						vim.keymap.set(
+							"v",
+							"<leader>jm",
+							[[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
+							{ desc = "Extract Method", buffer = bufnr }
+						)
 						vim.keymap.set("n", "<leader>jt", jdtls.test_class, { desc = "Test Class", buffer = bufnr })
-						vim.keymap.set("n", "<leader>jn", jdtls.test_nearest_method, { desc = "Test Nearest Method", buffer = bufnr })
+						vim.keymap.set(
+							"n",
+							"<leader>jn",
+							jdtls.test_nearest_method,
+							{ desc = "Test Nearest Method", buffer = bufnr }
+						)
 
 						-- Gradle-specific keymaps
 						local gradle_wrapper = find_gradle_wrapper(vim.fn.expand("%:p"))
@@ -173,10 +212,13 @@ return {
 								vim.cmd("!./gradlew bootRun")
 							end, { desc = "Spring Boot Run", buffer = bufnr })
 						end
-						
+
 						-- Toggle inlay hints
 						vim.keymap.set("n", "<leader>uh", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+							vim.lsp.inlay_hint.enable(
+								not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }),
+								{ bufnr = bufnr }
+							)
 						end, { desc = "Toggle Inlay Hints", buffer = bufnr })
 					end,
 				}
@@ -203,4 +245,3 @@ return {
 		end,
 	},
 }
-

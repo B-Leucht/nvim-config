@@ -31,6 +31,23 @@ return {
 					VisualNOS = { bg = colors.surface1, fg = "NONE" },
 					-- Highlight current line number
 					CursorLineNr = { fg = colors.peach, bold = true },
+					-- Transparent floating windows
+					NormalFloat = { bg = "NONE" },
+					FloatBorder = { bg = "NONE", fg = colors.lavender },
+					FloatTitle = { bg = "NONE", fg = colors.lavender },
+					-- Which-key
+					WhichKeyFloat = { bg = "NONE" },
+					WhichKeyBorder = { bg = "NONE", fg = colors.lavender },
+					-- Snacks
+					SnacksNormal = { bg = "NONE" },
+					SnacksPicker = { bg = "NONE" },
+					SnacksPickerBorder = { bg = "NONE", fg = colors.lavender },
+					SnacksNotifierHistory = { bg = "NONE" },
+					-- Noice
+					NoicePopup = { bg = "NONE" },
+					NoicePopupBorder = { bg = "NONE", fg = colors.lavender },
+					NoiceCmdlinePopup = { bg = "NONE" },
+					NoiceCmdlinePopupBorder = { bg = "NONE", fg = colors.lavender },
 				}
 			end,
 		})

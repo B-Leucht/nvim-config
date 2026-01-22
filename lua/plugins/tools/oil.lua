@@ -1,12 +1,14 @@
 -- File management
 return {
 	"stevearc/oil.nvim",
+	lazy = false, -- Load early to take over directory buffers and register keymaps
+
 	keys = {
 		{
 			"-",
 			function()
 				local ft = vim.bo.filetype
-				if ft == "snacks_terminal" or ft == "terminal" or ft == "trouble" then
+				if ft == "snacks_terminal" or ft == "terminal" then
 					return
 				end
 				require("oil").open()

@@ -3,10 +3,10 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
+		"saghen/blink.cmp",
 	},
 	config = function()
-		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 		-- Ensure Mason path is set (cross-platform)
 		local mason_path = vim.fn.stdpath("data") .. "/mason/bin"
@@ -15,7 +15,7 @@ return {
 			vim.env.PATH = mason_path .. path_separator .. vim.env.PATH
 		end
 
-		vim.lsp.config("pyright", {
+		vim.lsp.config("basedpyright", {
 			capabilities = capabilities,
 			settings = {
 				python = {
@@ -28,7 +28,7 @@ return {
 				},
 			},
 		})
-		vim.lsp.enable("pyright")
+		vim.lsp.enable("basedpyright")
 
 		vim.lsp.config("hls", {
 			capabilities = capabilities,
@@ -87,7 +87,7 @@ return {
 					trace = { server = "verbose" }, -- optional for debugging
 				},
 			},
-			on_attach = function(client, bufnr)
+			on_attach = function(_, _)
 				-- You can add your on_attach logic here
 			end,
 		})

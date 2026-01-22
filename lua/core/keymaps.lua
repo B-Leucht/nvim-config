@@ -130,6 +130,7 @@ if which_key_ok then
 		{ "<leader>w", group = "+workspace" },
 		{ "<leader>x", group = "+diagnostics" },
 		{ "<leader>a", group = "+ai/claude" },
+		{ "<leader>o", group = "+obsidian" },
 		{ "<leader>s", group = "+saga/show/search" },
 		{ "<leader>e", group = "+edit" },
 		{ "<leader>u", group = "+ui" },

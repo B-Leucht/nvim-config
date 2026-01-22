@@ -59,7 +59,7 @@ local TABLINE_CONFIG = {
 
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "folke/noice.nvim", "cameronr/lualine-pretty-path", "nvim-tree/nvim-web-devicons" },
+	dependencies = { "folke/noice.nvim", "cameronr/lualine-pretty-path" }, -- mini.icons mocks nvim-web-devicons
 	event = "VeryLazy",
 	init = function()
 		vim.g.lualine_minimal = true

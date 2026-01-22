@@ -588,35 +588,6 @@ return {
 			desc = "Zoxide",
 		},
 
-		-- Quickfile operations
-		{
-			"<leader>qn",
-			function()
-				Snacks.quickfile.new()
-			end,
-			desc = "New File",
-		},
-		{
-			"<leader>qd",
-			function()
-				Snacks.quickfile.delete()
-			end,
-			desc = "Delete File",
-		},
-		{
-			"<leader>qc",
-			function()
-				Snacks.quickfile.copy()
-			end,
-			desc = "Copy File",
-		},
-		{
-			"<leader>qm",
-			function()
-				Snacks.quickfile.move()
-			end,
-			desc = "Move File",
-		},
 
 		-- Rename operations
 		{
@@ -738,6 +709,7 @@ return {
 		toggle = { enabled = true },
 		debug = { enabled = true },
 		dim = { enabled = false },
+		image = { enabled = true },
 
 		dashboard = {
 			enabled = true,
@@ -785,22 +757,34 @@ return {
 
 		notifier = {
 			enabled = true,
-			timeout = 1500,
-			style = "minimal",
+			timeout = 5000,
+			style = "compact",
 			top_down = false,
+			width = { min = 40, max = 80 },
 		},
 
 		picker = {
 			enabled = true,
-			width = require("core.constants").FLOAT.WIDTH,
-			height = require("core.constants").FLOAT.HEIGHT,
+			win = {
+				input = {
+					wo = { winblend = 0 },
+				},
+				list = {
+					wo = { winblend = 0 },
+				},
+				preview = {
+					wo = { winblend = 0 },
+				},
+			},
 		},
 
 		terminal = {
 			enabled = true,
 			win = {
+				border = "rounded",
 				wo = {
 					winbar = "",
+					winblend = 0,
 				},
 			},
 			bo = {
