@@ -5,7 +5,8 @@ return {
 		require("mason-tool-installer").setup({
 			ensure_installed = {
 				-- LSP servers
-				"ltex-ls",
+				"ltex-ls-plus",
+				"alex",
 				"basedpyright",
 				"jdtls",
 				"java-test",
@@ -22,9 +23,9 @@ return {
 				"typescript-language-server",
 				"css-lsp",
 				"html-lsp",
+				"codebook",
 				-- Formatters
 				"stylua",
-				"black",
 				"google-java-format",
 				"jq",
 				"clang-format",
@@ -32,6 +33,7 @@ return {
 				"prettier",
 				"latexindent",
 				"bibtex-tidy",
+				"mdsf",
 				-- Linters
 				"ruff",
 				"shellcheck",

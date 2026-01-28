@@ -5,23 +5,126 @@ return {
 	ft = "markdown",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"ibhagwan/fzf-lua",
+		-- "ibhagwan/fzf-lua",
 	},
 	keys = {
-		{ "<leader>od", function() vim.cmd("Obsidian today") end, desc = "Daily Note" },
-		{ "<leader>oy", function() vim.cmd("Obsidian yesterday") end, desc = "Yesterday" },
-		{ "<leader>oT", function() vim.cmd("Obsidian tomorrow") end, desc = "Tomorrow" },
-		{ "<leader>on", function() vim.cmd("Obsidian new") end, desc = "New Note" },
-		{ "<leader>oN", function() vim.cmd("Obsidian new_from_template") end, desc = "New from Template" },
-		{ "<leader>os", function() vim.cmd("Obsidian search") end, desc = "Search Notes" },
-		{ "<leader>oq", function() vim.cmd("Obsidian quick_switch") end, desc = "Quick Switch" },
-		{ "<leader>ob", function() vim.cmd("Obsidian backlinks") end, desc = "Backlinks" },
-		{ "<leader>ot", function() vim.cmd("Obsidian tags") end, desc = "Tags" },
-		{ "<leader>ol", function() vim.cmd("Obsidian links") end, desc = "Links" },
-		{ "<leader>oc", function() vim.cmd("Obsidian toc") end, desc = "Table of Contents" },
-		{ "<leader>or", function() vim.cmd("Obsidian rename") end, desc = "Rename Note" },
-		{ "<leader>oi", function() vim.cmd("Obsidian paste_img") end, desc = "Paste Image" },
-		{ "<leader>oo", function() vim.cmd("Obsidian open") end, desc = "Open in Obsidian App" },
+		{
+			"<leader>od",
+			function()
+				vim.cmd("Obsidian today")
+			end,
+			desc = "Daily Note",
+		},
+		{
+			"<leader>oy",
+			function()
+				vim.cmd("Obsidian yesterday")
+			end,
+			desc = "Yesterday",
+		},
+		{
+			"<leader>oT",
+			function()
+				vim.cmd("Obsidian tomorrow")
+			end,
+			desc = "Tomorrow",
+		},
+		{
+			"<leader>on",
+			function()
+				vim.cmd("Obsidian new")
+			end,
+			desc = "New Note",
+		},
+		{
+			"<leader>oN",
+			function()
+				vim.cmd("Obsidian new_from_template")
+			end,
+			desc = "New from Template",
+		},
+		{
+			"<leader>os",
+			function()
+				vim.cmd("Obsidian search")
+			end,
+			desc = "Search Notes",
+		},
+		{
+			"<leader>oq",
+			function()
+				vim.cmd("Obsidian quick_switch")
+			end,
+			desc = "Quick Switch",
+		},
+		{
+			"<leader>ob",
+			function()
+				vim.cmd("Obsidian backlinks")
+			end,
+			desc = "Backlinks",
+		},
+		{
+			"<leader>ot",
+			function()
+				vim.cmd("Obsidian tags")
+			end,
+			desc = "Tags",
+		},
+		{
+			"<leader>ol",
+			function()
+				vim.cmd("Obsidian links")
+			end,
+			desc = "Links",
+		},
+		{
+			"<leader>oc",
+			function()
+				vim.cmd("Obsidian toc")
+			end,
+			desc = "Table of Contents",
+		},
+		{
+			"<leader>or",
+			function()
+				vim.cmd("Obsidian rename")
+			end,
+			desc = "Rename Note",
+		},
+		{
+			"<leader>oi",
+			function()
+				vim.cmd("Obsidian paste_img")
+			end,
+			desc = "Paste Image",
+		},
+		{
+			"<leader>oo",
+			function()
+				vim.cmd("Obsidian open")
+			end,
+			desc = "Open in Obsidian App",
+		},
+		{
+			"<leader>oO",
+			function()
+				local vault = "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
+				local current_file = vim.fn.expand("%:p")
+				-- Exclude 05_Meta and current file
+				local exclude_globs = { "!05_Meta/**" }
+				if current_file:find(vault, 1, true) then
+					local rel = current_file:gsub(vault .. "/", "")
+					table.insert(exclude_globs, "!" .. rel)
+				end
+				Snacks.picker.grep({
+					cwd = vault,
+					search = "- \\[ \\].*TODO",
+					glob = exclude_globs,
+				})
+			end,
+			desc = "Open Tasks",
+		},
 		{
 			"<leader>om",
 			function()
@@ -73,10 +176,10 @@ return {
 			folder = "05_Meta/Templates",
 		},
 		attachments = {
-			img_folder = "05_Meta/Attachments",
+			folder = "05_Meta/Attachments",
 		},
 		picker = {
-			name = "fzf-lua",
+			name = "snacks",
 		},
 	},
 }

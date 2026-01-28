@@ -1,9 +1,14 @@
 local constants = require("core.constants")
 
+-- Python provider configuration
+vim.g.python3_host_prog = vim.fn.expand("~/.venvs/neovim/bin/python")
+-- Disable PYTHONSTARTUP for the Neovim Python provider to avoid interference
+vim.env.PYTHONSTARTUP = nil
+
 -- Disable netrw (using Oil.nvim instead)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-
+vim.opt.cmdheight = 0
 -- Lualine LSP names display
 vim.g.custom_lualine_show_lsp_names = true
 
@@ -21,7 +26,7 @@ opt.autoindent = true -- Copy indent from current line when starting a new one
 opt.number = true -- Show line numbers
 opt.relativenumber = true -- Relative line numbers
 opt.numberwidth = 1 -- Minimum width of line number gutter
-opt.signcolumn = "yes" -- Sign column on left side only
+opt.signcolumn = "auto:2" -- Sign column on left side only
 opt.foldcolumn = "0" -- No fold column to eliminate right padding
 opt.cursorline = true -- Enable cursorline for CursorLineNr highlight
 opt.wrap = true -- Enable line wrap
@@ -30,7 +35,7 @@ opt.formatoptions = "tcqjrn1" -- Auto-wrap text and comments, insert comment lea
 opt.wrapmargin = 0 -- Use textwidth instead of wrapmargin
 opt.scrolloff = 8 -- Keep 8 lines above/below cursor
 opt.sidescrolloff = 8
-opt.conceallevel = 0 -- Show all text including markers
+opt.conceallevel = 1 -- Show all text including markers
 opt.concealcursor = "" -- Show concealed text when cursor is on the line
 
 -- Search
@@ -86,7 +91,20 @@ vim.diagnostic.config({
 		prefix = " ",
 		scope = "cursor",
 	},
-	signs = true,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "",
+			[vim.diagnostic.severity.WARN] = "",
+			[vim.diagnostic.severity.INFO] = "",
+			[vim.diagnostic.severity.HINT] = "",
+		},
+		numhl = {
+			[vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+			[vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
+			[vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
+			[vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
+		},
+	},
 	underline = true,
 	update_in_insert = false,
 	severity_sort = true,
@@ -119,3 +137,6 @@ vim.g.markdown_fenced_languages = {
 	"json",
 	"vim",
 }
+
+vim.opt.spell = true
+vim.opt.spelllang = { "en", "de" }

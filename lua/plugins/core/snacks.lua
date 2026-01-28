@@ -3,6 +3,106 @@ return {
 	"folke/snacks.nvim",
 	priority = 1000,
 	lazy = false,
+	config = function(_, opts)
+		local Snacks = require("snacks")
+		-- Set LaTeX math rendering color (Catppuccin Mocha text)
+		vim.api.nvim_set_hl(0, "SnacksImageMath", { fg = "#cdd6f4" })
+		Snacks.setup(opts)
+		-- Register custom dashboard section for obsidian tasks
+		if Snacks.dashboard and Snacks.dashboard.sections then
+			Snacks.dashboard.sections.obsidian_tasks = function(item)
+				return function(self)
+					local limit = item.limit or 10
+					local height = item.height or 10
+					local width = item.width or (self.opts.width - (item.indent or 0))
+					local vault = item.cwd
+						or "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
+
+					-- Collect tasks
+					local lines = {}
+					local handle = io.popen(
+						"rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null"
+					)
+					if handle then
+						for line in handle:lines() do
+							if #lines >= limit then
+								break
+							end
+							local file, _, text = line:match("^(.+):(%d+):(.*)$")
+							if file and text then
+								-- Get filename without extension
+								local filename = vim.fn.fnamemodify(file, ":t:r")
+								table.insert(lines, text .. " [[" .. filename .. "]]")
+							end
+						end
+						handle:close()
+					end
+
+					if #lines == 0 then
+						return {}
+					end
+
+					-- Create markdown buffer with fake path so obsidian.nvim attaches
+					local buf = vim.api.nvim_create_buf(false, true)
+					vim.api.nvim_buf_set_name(buf, vault .. "/.dashboard-tasks.md")
+					vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+					vim.bo[buf].filetype = "markdown"
+					vim.bo[buf].buftype = "nofile"
+					vim.bo[buf].modifiable = false
+
+					-- Add 't' keymap on dashboard to open task picker
+					vim.keymap.set("n", "t", function()
+						Snacks.picker.grep({
+							cwd = vault,
+							search = "- \\[ \\].*TODO",
+							glob = { "!05_Meta/**" },
+						})
+					end, { buffer = self.buf, desc = "Open task picker" })
+
+					local win ---@type integer?
+
+					return {
+						{
+							text = string.rep("\n", height),
+							render = function(_, pos)
+								win = vim.api.nvim_open_win(buf, false, {
+									bufpos = { pos[1] - 1, pos[2] + 1 },
+									col = item.indent or 0,
+									focusable = true,
+									height = height,
+									noautocmd = true,
+									relative = "win",
+									row = 0,
+									zindex = Snacks.config.styles.dashboard.zindex + 1,
+									style = "minimal",
+									width = width,
+									win = self.win,
+									border = "none",
+								})
+								-- Trigger obsidian.nvim rendering
+								vim.schedule(function()
+									if win and vim.api.nvim_win_is_valid(win) then
+										vim.api.nvim_win_call(win, function()
+											vim.cmd("doautocmd BufEnter")
+										end)
+									end
+								end)
+								-- Cleanup on dashboard close
+								vim.api.nvim_create_autocmd("BufWipeout", {
+									buffer = self.buf,
+									once = true,
+									callback = function()
+										pcall(vim.api.nvim_win_close, win, true)
+										pcall(vim.api.nvim_buf_delete, buf, { force = true })
+									end,
+								})
+							end,
+						},
+					}
+				end
+			end
+		end
+	end,
 	keys = {
 		-- Terminal keymaps
 		{
@@ -113,6 +213,15 @@ return {
 			mode = { "n", "v" },
 		},
 
+		{
+			"<leader>gi",
+			function()
+				Snacks.picker.gh_issue()
+			end,
+			desc = "Open GitHub Issues",
+			mode = { "n", "v" },
+		},
+
 		-- Toggle utilities
 		{
 			"<leader>ur",
@@ -180,43 +289,6 @@ return {
 				})
 			end,
 			desc = "Toggle Zen Mode (Writing)",
-		},
-
-		-- Git operations
-		{
-			"<leader>gbl",
-			function()
-				Snacks.git.blame_line()
-			end,
-			desc = "Git Blame Line",
-		},
-		{
-			"<leader>gbf",
-			function()
-				Snacks.git.blame_file()
-			end,
-			desc = "Git Blame File",
-		},
-		{
-			"<leader>gR",
-			function()
-				Snacks.git.browse()
-			end,
-			desc = "Browse Git Repository",
-		},
-		{
-			"<leader>gO",
-			function()
-				Snacks.git.browse({ what = "file" })
-			end,
-			desc = "Open File in Git Web",
-		},
-		{
-			"<leader>gfl",
-			function()
-				Snacks.git.log({ what = "file" })
-			end,
-			desc = "Git Log for File",
 		},
 
 		-- Picker keymaps
@@ -588,7 +660,6 @@ return {
 			desc = "Zoxide",
 		},
 
-
 		-- Rename operations
 		{
 			"<leader>rn",
@@ -598,45 +669,21 @@ return {
 			desc = "Rename File",
 		},
 		{
-			"<leader>rr",
+			"<leader>lr",
 			function()
 				Snacks.rename.rename()
 			end,
-			desc = "LSP Rename",
+			desc = "Rename",
 		},
 		{
-			"<leader>rp",
+			"<leader>lp",
 			function()
 				Snacks.rename.rename({ preview = true })
 			end,
-			desc = "LSP Rename (Preview)",
+			desc = "Rename (Preview)",
 		},
 
-		-- Layout management
-		{
-			"<leader>wl",
-			function()
-				-- Create a simple two-pane layout
-				local layout = Snacks.layout.new({
-					{ "top", height = 0.5 },
-					{ "bottom", height = 0.5 },
-				})
-				layout:toggle()
-			end,
-			desc = "Toggle Horizontal Layout",
-		},
-		{
-			"<leader>wv",
-			function()
-				-- Create a simple vertical split layout
-				local layout = Snacks.layout.new({
-					{ "left", width = 0.5 },
-					{ "right", width = 0.5 },
-				})
-				layout:toggle()
-			end,
-			desc = "Toggle Vertical Layout",
-		},
+		-- Window management
 		{
 			"<leader>wm",
 			function()
@@ -648,12 +695,12 @@ return {
 		{
 			"<leader>wf",
 			function()
-				local constants = require("core.constants") -- Require constants here
-				-- Create floating window with current buffer
+				local constants = require("core.constants")
 				Snacks.win({
 					position = "float",
 					width = constants.UI.WINDOW_SCALE,
 					height = constants.UI.WINDOW_SCALE,
+					border = "rounded",
 					buf = vim.api.nvim_get_current_buf(),
 				})
 			end,
@@ -683,7 +730,6 @@ return {
 			end,
 			desc = "Split Vertical",
 		},
-
 	},
 	opts = {
 		lazygit = { enabled = true },
@@ -695,8 +741,8 @@ return {
 		indent = { enabled = true },
 		zen = { enabled = true },
 		statuscolumn = { enabled = true },
-		statusline = { enabled = false }, -- Disabled: using lualine instead
 		git = { enabled = true },
+		gh = { enabled = true },
 		animate = { enabled = true },
 		quickfile = { enabled = true },
 		rename = { enabled = true },
@@ -709,7 +755,27 @@ return {
 		toggle = { enabled = true },
 		debug = { enabled = true },
 		dim = { enabled = false },
-		image = { enabled = true },
+		profiler = { enabled = true },
+		styles = { enabled = true },
+		image = {
+			enabled = true,
+			doc = {
+				enabled = true,
+				inline = true,
+				float = true,
+				max_width = 80,
+				max_height = 40,
+			},
+			math = {
+				enabled = true,
+				typst = {},
+				latex = {
+					font_size = "small",
+					dpi = 300,
+					packages = { "amsmath", "amssymb", "amsfonts", "amscd", "mathtools", "lmodern" },
+				},
+			},
+		},
 
 		dashboard = {
 			enabled = true,
@@ -723,6 +789,20 @@ return {
 			sections = {
 				{ section = "header" },
 				{ section = "keys", gap = 1, padding = 1 },
+				{
+					icon = " ",
+					title = "Tasks",
+					section = "obsidian_tasks",
+					enabled = function()
+						local cwd = vim.fn.getcwd()
+						return cwd:find("obsidian") ~= nil or cwd:find("Vault") ~= nil
+					end,
+					limit = 10,
+					height = 10,
+					indent = 2,
+					padding = 1,
+				},
+
 				{ icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
 				{
 					icon = " ",
@@ -765,9 +845,20 @@ return {
 
 		picker = {
 			enabled = true,
+			actions = {
+				sidekick_send = function(...)
+					return require("sidekick.cli.picker.snacks").send(...)
+				end,
+			},
 			win = {
 				input = {
 					wo = { winblend = 0 },
+					keys = {
+						["<a-a>"] = {
+							"sidekick_send",
+							mode = { "n", "i" },
+						},
+					},
 				},
 				list = {
 					wo = { winblend = 0 },

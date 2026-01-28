@@ -1,22 +1,44 @@
--- Syntax highlighting with nvim-treesitter (new API - v1.0+)
 local parsers = {
-	"latex", "nu", "python", "java", "json", "bash", "yaml", "cpp", "c",
-	"haskell", "markdown", "markdown_inline", "rust", "toml", "lua",
-	"vim", "vimdoc", "html", "css", "javascript", "typescript", "tsx",
+	"latex",
+	"nu",
+	"python",
+	"java",
+	"json",
+	"bash",
+	"yaml",
+	"cpp",
+	"c",
+	"haskell",
+	"markdown",
+	"markdown_inline",
+	"rust",
+	"toml",
+	"lua",
+	"vim",
+	"vimdoc",
+	"html",
+	"css",
+	"javascript",
+	"typescript",
+	"tsx",
+	"scss",
+	"svelte",
+	"typst",
+	"vue",
 }
 
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		event = { "BufReadPost", "BufNewFile" },
-		lazy = vim.fn.argc(-1) == 0,
+		lazy = false,
 		config = function()
-			-- Create command to install all parsers (run manually when needed)
+			local ts = require("nvim-treesitter")
+			-- Install markdown parsers
+			ts.install({ "markdown", "markdown_inline" })
+			-- Create command to install all parsers
 			vim.api.nvim_create_user_command("TSInstallAll", function()
-				for _, parser in ipairs(parsers) do
-					vim.cmd("TSInstall! " .. parser)
-				end
+				ts.install(parsers)
 			end, { desc = "Install all configured treesitter parsers" })
 		end,
 	},

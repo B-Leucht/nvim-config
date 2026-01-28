@@ -9,7 +9,7 @@ local SEPARATORS = {
 local PRETTY_PATH_PROVIDERS = { default = "base", "toggleterm", "oil", "trouble", "dapui" }
 
 local DISABLED_FILETYPES = {
-	statusline = { "snacks_dashboard" },
+	statusline = { "snacks_dashboard" }, -- Disable statusline in Oil to prevent git process spam
 	winbar = {
 		"lazy",
 		"mason",
@@ -22,6 +22,8 @@ local DISABLED_FILETYPES = {
 		"dap-view-term",
 		"dap-repl",
 		"terminal",
+		"oil",
+		"oil_preview",
 	},
 	tabline = { "snacks_dashboard" },
 }
@@ -73,7 +75,7 @@ return {
 			globalstatus = true,
 			disabled_filetypes = DISABLED_FILETYPES,
 			always_divide_middle = true,
-			refresh = { statusline = 1000, tabline = 2000, winbar = 3000 },
+			refresh = { statusline = 2000, tabline = 5000, winbar = 5000 },
 		},
 		sections = {
 			lualine_a = {

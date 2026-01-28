@@ -1,7 +1,6 @@
 # Neovim Configuration
 
 Welcome to my custom Neovim configuration! This setup is designed to elevate your coding experience with carefully chosen plugins, optimized settings, and seamless integration.
-
 ---
 
 ## Table of Contents
@@ -14,7 +13,6 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - [Troubleshooting](#troubleshooting)
 
 ---
-
 ## Features
 
 ### General Setup
@@ -23,20 +21,24 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - **VS Code Detection:** Automatically loads lightweight configurations for Neovim in VS Code.
 - **Keymaps:** Intuitive shortcuts for efficient navigation and editing.
 - **Core Configuration:** Predefined options for a smooth and productive development environment.
+- **Smart Dashboard:** Custom dashboard with project shortcuts, git status, and Obsidian task integration (when in vault directory).
 
 ### Unique Features
 
-- **AI Assistance:** Claude Code TUI integration for chat-based coding assistance.
-- **Snacks.nvim:** Modern all-in-one plugin providing picker, terminal, lazygit, file explorer, notifications, zen mode, and more.
-- **Enhanced Git Integration:** Git interface with Snacks git features, `diffview.nvim`, and lazygit integration.
-- **LaTeX & Typst Support:** Comprehensive document editing with `vimtex` for LaTeX and Typst support.
+- **AI Assistance:** Multiple AI integrations including OpenCode, Sidekick, and GitHub Copilot for chat-based coding assistance.
+- **Snacks.nvim:** Modern all-in-one plugin providing picker, terminal, lazygit, file explorer, notifications, zen mode, image rendering (including LaTeX math), and more.
+- **Enhanced Git Integration:** Git interface with Snacks git features, `diffview.nvim`, lazygit integration, and GitHub issue picker.
+- **LaTeX & Typst Support:** Comprehensive document editing with `vimtex` for LaTeX and Typst support with inline math rendering.
 - **Terminal Management:** Seamless terminal integration with Snacks terminal (supports floating, horizontal, vertical layouts, IPython, SSH).
 - **Picker:** Blazing fast fuzzy finder powered by Snacks picker for files, grep, git operations, LSP, and more.
 - **Rust Development:** Enhanced Rust support with `rustaceanvim` and `crates.nvim`.
 - **Java Development:** Full Java support with `nvim-jdtls`.
-- **Code Execution:** Run code snippets directly with `sniprun`.
-- **Markdown Rendering:** Beautiful markdown rendering with `markview.nvim` and mathematical notation with `nabla.nvim`.
-- **File Navigation:** Modern file explorer with `oil.nvim` and Snacks explorer.
+- **C/C++ Development:** Configured with clangd and debugging support.
+- **Code Execution:** Multiple execution backends - `sniprun` for snippets, `molten.nvim` for Jupyter-like notebook experience with image support.
+- **Markdown Support:** Enhanced markdown with `obsidian.nvim`, `otter.nvim` for LSP in code blocks, and LaTeX math rendering.
+- **Obsidian Integration:** Full Obsidian vault integration with daily notes, templates, backlinks, and task tracking on dashboard.
+- **File Navigation:** Modern file explorer with `oil.nvim` (including extras) and Snacks explorer.
+- **Task Runner:** Task automation with `overseer.nvim`.
 
 ---
 
@@ -130,8 +132,8 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `gI` | Goto implementation |
 | `gy` | Goto type definition |
 | `<leader>la` | Code actions |
-| `<leader>rr` | LSP rename |
-| `<leader>rp` | LSP rename (with preview) |
+| `<leader>lr` | LSP rename |
+| `<leader>lp` | LSP rename (with preview) |
 
 ### Git
 
@@ -151,6 +153,10 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>gR` | Browse git repository |
 | `<leader>gs` | Git status |
 | `<leader>gS` | Git stash |
+| `<leader>gi` | GitHub issues |
+| `<leader>gdo` | Diffview open |
+| `<leader>gdc` | Diffview close |
+| `<leader>gdh` | Diffview file history |
 
 ### Terminal
 
@@ -163,26 +169,20 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>py` | IPython terminal |
 | `<leader>ss` | SSH terminal |
 
-### Quickfile Operations
-
-| Key | Description |
-|-----|-------------|
-| `<leader>qn` | New file |
-| `<leader>qd` | Delete file |
-| `<leader>qc` | Copy file |
-| `<leader>qm` | Move file |
-| `<leader>rn` | Rename file |
-
 ### Window Management
 
 | Key | Description |
 |-----|-------------|
-| `<leader>wl` | Toggle horizontal layout |
-| `<leader>wv` | Toggle vertical layout |
 | `<leader>wm` | Maximize window |
 | `<leader>wf` | Float current buffer |
 | `<leader>ws` | Split horizontal |
 | `<leader>wS` | Split vertical |
+
+### File Operations
+
+| Key | Description |
+|-----|-------------|
+| `<leader>rn` | Rename file |
 
 ### Debug (DAP)
 
@@ -253,27 +253,88 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 |-----|-------------|
 | `<leader>p` | Toggle Nabla/RenderMarkdown preview |
 
-### Claude Code
+Note: Markdown files automatically activate `otter.nvim` for LSP features in embedded code blocks.
 
+### AI Assistants
+
+#### OpenCode
 | Key | Description |
 |-----|-------------|
-| `<leader>ac` | Toggle Claude |
-| `<leader>af` | Focus Claude |
-| `<leader>ar` | Resume Claude |
-| `<leader>aC` | Continue Claude |
+| `<leader>ac` | Toggle OpenCode |
+| `<leader>af` | Focus OpenCode |
+| `<leader>ar` | Resume/Ask OpenCode |
+| `<leader>aC` | Continue OpenCode |
 | `<leader>ab` | Add current buffer |
-| `<leader>as` | Send to Claude (visual) |
+| `<leader>as` | Send to OpenCode (visual) |
 | `<leader>aa` | Accept diff |
 | `<leader>ad` | Deny diff |
+| `<C-a>` | Ask OpenCode... |
+| `<C-x>` | Execute OpenCode action... |
+| `<C-.>` | Toggle OpenCode |
+| `go` | Add range to OpenCode (operator) |
+| `goo` | Add line to OpenCode |
+| `<S-C-u>` | Scroll OpenCode up |
+| `<S-C-d>` | Scroll OpenCode down |
 
-### Session (Persistence)
+#### Sidekick
+| Key | Description |
+|-----|-------------|
+| `<C-.>` | Toggle Sidekick |
+| `<leader>aa` | Toggle Sidekick CLI |
+| `<leader>as` | Select CLI |
+| `<leader>ad` | Detach CLI session |
+| `<leader>at` | Send this (visual/normal) |
+| `<leader>af` | Send file |
+| `<leader>av` | Send visual selection |
+| `<leader>ap` | Sidekick select prompt |
+
+### Obsidian
 
 | Key | Description |
 |-----|-------------|
-| `<leader>qs` | Load session |
-| `<leader>qS` | Select session |
-| `<leader>ql` | Load last session |
-| `<leader>qd` | Stop persistence |
+| `<leader>od` | Daily note |
+| `<leader>oy` | Yesterday |
+| `<leader>oT` | Tomorrow |
+| `<leader>on` | New note |
+| `<leader>oN` | New from template |
+| `<leader>os` | Search notes |
+| `<leader>oq` | Quick switch |
+| `<leader>ob` | Backlinks |
+| `<leader>ot` | Tags |
+| `<leader>ol` | Links |
+| `<leader>oc` | Table of contents |
+| `<leader>or` | Rename note |
+| `<leader>oi` | Paste image |
+| `<leader>oo` | Open in Obsidian app |
+| `<leader>oO` | Open tasks |
+| `<leader>om` | Move note |
+
+### Molten (Jupyter)
+
+| Key | Description |
+|-----|-------------|
+| `<leader>mi` | Initialize Molten |
+| `<leader>me` | Evaluate operator |
+| `<leader>ml` | Evaluate line |
+| `<leader>mr` | Re-evaluate cell |
+| `<leader>md` | Delete cell |
+| `<leader>mo` | Show output |
+| `<leader>mh` | Hide output |
+| `<leader>mx` | Interrupt kernel |
+| `<leader>mc` | Enter output window |
+| `<leader>mb` | Evaluate code block |
+| `<leader>r` | Evaluate selection (visual) |
+
+### Overseer (Tasks)
+
+| Key | Description |
+|-----|-------------|
+| `<leader>Oo` | Toggle Overseer |
+| `<leader>Or` | Run task |
+| `<leader>Ob` | Build |
+| `<leader>Oa` | Task action |
+| `<leader>Oq` | Quick action |
+| `<leader>Ol` | Restart last task |
 
 ### Diffview
 
@@ -310,14 +371,22 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 | `<leader>un` | Toggle lualine names    |
 | `<leader>uC` | Colorschemes picker     |
 
+Note: When on the dashboard in an Obsidian vault, press `t` to open task picker.
+
 ---
 
 ## Plugins
 
 ### Core Plugins
 
-- **folke/snacks.nvim:** All-in-one modern plugin (picker, terminal, notifications, lazygit, explorer, zen mode, git blame, rename, etc.)
+- **folke/snacks.nvim:** All-in-one modern plugin (picker, terminal, notifications, lazygit, explorer, zen mode, git blame, rename, image rendering, etc.)
 - **echasnovski/mini.nvim:** Collection of minimal, independent Lua modules
+
+### AI & Coding Assistants
+
+- **NickvanDyke/opencode.nvim:** AI-powered code assistant integration
+- **folke/sidekick.nvim:** Advanced AI assistant with NES (edit suggestions) and CLI support
+- **zbirenbaum/copilot.lua:** GitHub Copilot integration
 
 ### UI & Themes
 
@@ -360,15 +429,21 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - **Saecki/crates.nvim:** Rust crate management
 - **mfussenegger/nvim-jdtls:** Java language server integration
 - **lervag/vimtex:** LaTeX support
-- **MeanderingProgrammer/render-markdown.nvim:** Markdown rendering
 - **chomosuke/typst-preview.nvim:** Typst document preview
+- **jmbuhr/otter.nvim:** LSP features for embedded code blocks in markdown
+
+### Markdown & Note-Taking
+
+- **obsidian-nvim/obsidian.nvim:** Full Obsidian vault integration with Snacks picker support
+- **benlubas/molten-nvim:** Jupyter-like notebook experience with inline image rendering
 
 ### Tools
 
 - **folke/lazydev.nvim:** Lua development for Neovim config
 - **michaelb/sniprun:** Run code snippets
-- **folke/persistence.nvim:** Session management
+- **stevearc/overseer.nvim:** Task runner and build automation
 - **sindrets/diffview.nvim:** Git diff viewer
+- **stevearc/oil.nvim:** File explorer that lets you edit your filesystem like a buffer
 
 ---
 

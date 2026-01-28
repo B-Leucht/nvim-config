@@ -18,6 +18,16 @@ return {
 		vim.lsp.config("basedpyright", {
 			capabilities = capabilities,
 			settings = {
+				basedpyright = {
+					analysis = {
+						typeCheckingMode = "standard", -- "off", "basic", "standard", "strict", "all"
+						diagnosticSeverityOverrides = {
+							reportUnusedImport = "information",
+							reportUnusedVariable = "information",
+							reportMissingTypeStubs = false,
+						},
+					},
+				},
 				python = {
 					analysis = {
 						inlayHints = {
@@ -42,56 +52,6 @@ return {
 			root_markers = { "*.cabal", "stack.yaml", "cabal.project", "hie.yaml", ".git" },
 		})
 		vim.lsp.enable("hls")
-
-		-- jdtls is handled by nvim-jdtls plugin, not lspconfig
-		-- Function to switch ltex language
-		local function switch_ltex_language()
-			local current_clients = vim.lsp.get_clients({ name = "ltex" })
-			if #current_clients == 0 then
-				vim.notify("LTeX server not running", vim.log.levels.WARN)
-				return
-			end
-
-			local current_lang = current_clients[1].config.settings.ltex.language
-			local new_lang = current_lang == "en-US" and "de-DE" or "en-US"
-
-			-- Update settings for all ltex clients
-			for _, client in pairs(current_clients) do
-				client.config.settings.ltex.language = new_lang
-				client.notify("workspace/didChangeConfiguration", {
-					settings = client.config.settings,
-				})
-			end
-
-			vim.notify("LTeX language switched to " .. new_lang, vim.log.levels.INFO)
-		end
-
-		-- Make function globally accessible
-		_G.switch_ltex_language = switch_ltex_language
-
-		vim.lsp.config("ltex", {
-			capabilities = capabilities,
-			settings = {
-				ltex = {
-					language = "de-DE", -- default to German
-					additionalRules = {
-						enablePickyRules = true,
-						-- languageModel = "~/models/ngrams/",
-					},
-					dictionary = {
-						-- custom words, optional
-						["en-US"] = { "Neovim", "Lua", "LSP" },
-						["de-DE"] = { "Neovim", "Lua", "LSP" },
-					},
-					disabledRules = {},
-					trace = { server = "verbose" }, -- optional for debugging
-				},
-			},
-			on_attach = function(_, _)
-				-- You can add your on_attach logic here
-			end,
-		})
-		vim.lsp.enable("ltex")
 
 		vim.lsp.config("texlab", {
 			capabilities = capabilities,
@@ -207,6 +167,10 @@ return {
 		})
 		vim.lsp.enable("gradle_ls")
 
+		vim.lsp.enable("alex")
+
+		-- vim.lsp.enable("codebook")
+
 		vim.lsp.config("ts_ls", {
 			capabilities = capabilities,
 			filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
@@ -244,6 +208,38 @@ return {
 			filetypes = { "html", "templ" },
 		})
 		vim.lsp.enable("html")
+
+		-- vim.lsp.config("harper_ls", {
+		-- 	capabilities = capabilities,
+		-- 	settings = {
+		-- 		["harper-ls"] = {
+		-- 			linters = {
+		-- 				SentenceCapitalization = false,
+		-- 				SpellCheck = false,
+		-- 			},
+		-- 		},
+		-- 	},
+		-- })
+		-- vim.lsp.enable("harper_ls")
+
+		vim.lsp.config("ltex_plus", {
+			cmd = { "ltex-ls-plus" },
+			capabilities = capabilities,
+			filetypes = { "markdown", "text", "latex", "tex", "bib", "typst" },
+			settings = {
+				ltex = {
+					language = "auto",
+					completionEnabled = false, -- Disabled - prefer dictionary completions
+					additionalRules = {
+						enablePickyRules = true,
+						motherTongue = "de",
+						languageModel = vim.fn.expand("~/ngrams"),
+					},
+					checkFrequency = "edit",
+				},
+			},
+		})
+		vim.lsp.enable("ltex_plus")
 
 		-- Enable inlay hints globally for all LSP servers that support it
 		vim.api.nvim_create_autocmd("LspAttach", {

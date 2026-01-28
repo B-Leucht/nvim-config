@@ -2,7 +2,18 @@
 return {
 	"stevearc/oil.nvim",
 	lazy = false, -- Load early to take over directory buffers and register keymaps
-
+	config = function(_, opts)
+		require("oil").setup(opts)
+		-- Integrate with Snacks rename for LSP file rename support
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "OilActionsPost",
+			callback = function(event)
+				if event.data.actions[1].type == "move" then
+					Snacks.rename.on_rename_file(event.data.actions[1].src_url, event.data.actions[1].dest_url)
+				end
+			end,
+		})
+	end,
 	keys = {
 		{
 			"-",
@@ -38,7 +49,7 @@ return {
 		-- Window-local options to use for oil buffers
 		win_options = {
 			wrap = false,
-			signcolumn = "yes:2",
+			signcolumn = "auto:2",
 			cursorcolumn = false,
 			foldcolumn = "0",
 			spell = false,

@@ -63,45 +63,26 @@ end, { desc = "Force delete buffer" })
 -- keymap("n", "<leader>bp", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
 
 -- Clear highlights
-keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
+keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Clear highlights" })
 
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 
--- Move text up and down
-keymap("v", "<A-j>", ":m .+1<CR>==", opts)
-keymap("v", "<A-k>", ":m .-2<CR>==", opts)
+-- Move text up and down (J/K in visual mode)
+-- Note: Alt+j/k handled by mini.move
 keymap("v", "J", ":m '>+1<CR>gv=gv", opts)
 keymap("v", "K", ":m '<-2<CR>gv=gv", opts)
-keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
-keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
 -- ===============================================
 -- ADDITIONAL USEFUL KEYMAPS
 -- ===============================================
 
--- Quick save
-keymap("n", "<leader>w", "<cmd>w<CR>", opts)
-
--- Quick quit
-keymap("n", "<leader>q", "<cmd>q<CR>", opts)
-
--- Force quit
-keymap("n", "<leader>Q", "<cmd>q!<CR>", opts)
-
--- Save and quit
-keymap("n", "<leader>x", "<cmd>x<CR>", opts)
-
--- New line above/below without entering insert mode
-keymap("n", "<leader>o", "o<Esc>", opts)
-keymap("n", "<leader>O", "O<Esc>", opts)
-
 -- Yank to system clipboard
-keymap({ "n", "v" }, "<leader>y", '"+y', opts)
+keymap({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
 
 -- Paste from system clipboard
-keymap({ "n", "v" }, "<leader>P", '"+p', opts)
+keymap({ "n", "v" }, "<leader>P", '"+p', { desc = "Paste from clipboard" })
 
 -- ===============================================
 -- WHICH-KEY DESCRIPTIONS & HELPER
@@ -117,27 +98,6 @@ keymap("n", "<leader>ut", function()
 	toggle_transparency()
 end, { desc = "Toggle transparency" })
 
--- Register descriptions for which-key
-local which_key_ok, which_key = pcall(require, "which-key")
-if which_key_ok then
-	which_key.add({
-		{ "<leader>f", group = "+find" },
-		{ "<leader>g", group = "+git" },
-		{ "<leader>l", group = "+lsp" },
-		{ "<leader>t", group = "+terminal" },
-		{ "<leader>q", group = "+quickfile" },
-		{ "<leader>r", group = "+run/rename" },
-		{ "<leader>w", group = "+workspace" },
-		{ "<leader>x", group = "+diagnostics" },
-		{ "<leader>a", group = "+ai/claude" },
-		{ "<leader>o", group = "+obsidian" },
-		{ "<leader>s", group = "+saga/show/search" },
-		{ "<leader>e", group = "+edit" },
-		{ "<leader>u", group = "+ui" },
-		{ "<leader>vt", group = "+vimtex" },
-	})
-end
-
 -- ===============================================
 -- DISABLE ARROW KEYS (OPTIONAL)
 -- ===============================================
@@ -149,18 +109,54 @@ keymap("n", "<left>", "<nop>", opts)
 keymap("n", "<right>", "<nop>", opts)
 
 -- ===============================================
--- LSP KEYMAPS
+-- LSP KEYMAPS (using Snacks.keymap for LSP-aware keymaps)
+-- Deferred until Snacks is loaded
 -- ===============================================
 
--- Code actions
-keymap("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
-keymap("v", "<leader>la", vim.lsp.buf.code_action, { desc = "Code actions" })
+vim.api.nvim_create_autocmd("User", {
+	pattern = "VeryLazy",
+	callback = function()
+		-- Code actions (only active when LSP supports it)
+		Snacks.keymap.set({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, {
+			lsp = { method = "textDocument/codeAction" },
+			desc = "Code actions",
+		})
 
--- LTeX language switch
-keymap("n", "<leader>ls", "<cmd>lua switch_ltex_language()<CR>", { desc = "Switch LTeX language (EN/DE)" })
+		-- Hover documentation
+		Snacks.keymap.set("n", "K", vim.lsp.buf.hover, {
+			lsp = { method = "textDocument/hover" },
+			desc = "Hover documentation",
+		})
 
--- ===============================================
--- PLUGIN-SPECIFIC KEYMAPS
--- ===============================================
--- Plugin-specific keymaps are now defined in their respective plugin configurations
--- using the `keys` field for optimal lazy loading performance.
+
+		-- Signature help
+		Snacks.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, {
+			lsp = { method = "textDocument/signatureHelp" },
+			desc = "Signature help",
+		})
+
+		-- Format document
+		Snacks.keymap.set("n", "<leader>lf", function()
+			vim.lsp.buf.format({ async = true })
+		end, {
+			lsp = { method = "textDocument/formatting" },
+			desc = "Format document",
+		})
+
+		-- Format selection
+		Snacks.keymap.set("v", "<leader>lf", function()
+			vim.lsp.buf.format({ async = true })
+		end, {
+			lsp = { method = "textDocument/rangeFormatting" },
+			desc = "Format selection",
+		})
+
+		-- Toggle inlay hints
+		Snacks.keymap.set("n", "<leader>lh", function()
+			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+		end, {
+			lsp = { method = "textDocument/inlayHint" },
+			desc = "Toggle inlay hints",
+		})
+	end,
+})

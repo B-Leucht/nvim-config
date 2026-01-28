@@ -73,9 +73,6 @@ return {
 			require("opencode").command("session.half.page.down")
 		end, { desc = "Scroll opencode down" })
 
-		-- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
-		vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
-		vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+		-- Note: Use default Vim <C-a> and <C-x> for increment/decrement (+ and - conflict with other mappings)
 	end,
 }
-

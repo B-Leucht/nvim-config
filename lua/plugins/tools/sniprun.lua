@@ -5,9 +5,9 @@ return {
 	build = "sh install.sh",
 	dependencies = { "folke/snacks.nvim" },
 	keys = {
-		{ "<leader>r", "<Plug>SnipRun", desc = "Run code snippet", mode = { "n", "v" } },
-		{ "<leader>rc", "<Plug>SnipClose", desc = "Close sniprun" },
-		{ "<leader>rt", "<Plug>SnipTerminate", desc = "Terminate sniprun" },
+		{ "<leader>xr", "<Plug>SnipRun", desc = "Sniprun", mode = { "n", "v" } },
+		{ "<leader>xc", "<Plug>SnipClose", desc = "Close Sniprun" },
+		{ "<leader>xx", "<Plug>SnipTerminate", desc = "Terminate Sniprun" },
 	},
 	opts = {
 		display = { "TerminalOk" },

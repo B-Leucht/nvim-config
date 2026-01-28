@@ -3,16 +3,23 @@ return {
 	"stevearc/conform.nvim",
 	event = { "BufWritePre" },
 	cmd = { "ConformInfo" },
+	init = function()
+		-- Ensure Mason bin is in PATH for formatters
+		local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+		if not string.find(vim.env.PATH or "", mason_bin, 1, true) then
+			vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+		end
+	end,
 	opts = {
 		formatters_by_ft = {
 			lua = { "stylua" },
-			python = { "black" },
+			python = { "ruff_format" },
 			java = { "google-java-format" },
 			json = { "jq" },
 			c = { "clang-format" },
 			cpp = { "clang-format" },
 			haskell = { "fourmolu" },
-			markdown = { "prettier" },
+			markdown = { "mdsf" }, --injected
 			tex = { "latexindent" },
 			latex = { "latexindent" },
 			bib = { "bibtex-tidy" },

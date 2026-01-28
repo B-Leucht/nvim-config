@@ -3,5 +3,5 @@ return {
 	require("plugins.ui.noice"),
 	require("plugins.ui.lualine"),
 	-- trouble removed: using snacks.picker for diagnostics instead
-	require("plugins.ui.numb"),
+	-- require("plugins.ui.numb"),
 }
