@@ -1,4 +1,39 @@
 -- Snacks.nvim - modern plugin collection
+
+-- Helper: open Obsidian tasks picker sorted by date
+local function open_obsidian_tasks_picker()
+	local Snacks = require("snacks")
+	local vault = "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
+	local task_items = {}
+	local handle = io.popen(
+		"rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null"
+	)
+	if handle then
+		for line in handle:lines() do
+			local file, lnum, text = line:match("^(.+):(%d+):(.*)$")
+			if file and text then
+				local date = text:match("%[due::%s*(%d%d%d%d%-%d%d%-%d%d)%]") or "9999-99-99"
+				table.insert(task_items, { file = file, lnum = tonumber(lnum), text = text, date = date })
+			end
+		end
+		handle:close()
+	end
+	table.sort(task_items, function(a, b)
+		return a.date < b.date
+	end)
+	local picker_items = {}
+	for _, task in ipairs(task_items) do
+		table.insert(picker_items, { text = task.text, file = task.file, pos = { task.lnum, 0 } })
+	end
+	Snacks.picker({
+		title = "Obsidian Tasks (by date)",
+		items = picker_items,
+		format = function(item)
+			return { { item.text, "Normal" } }
+		end,
+	})
+end
+
 return {
 	"folke/snacks.nvim",
 	priority = 1000,
@@ -18,24 +53,31 @@ return {
 					local vault = item.cwd
 						or "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
 
-					-- Collect tasks
-					local lines = {}
+					-- Collect and sort tasks by date
+					local task_items = {}
 					local handle = io.popen(
 						"rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null"
 					)
 					if handle then
 						for line in handle:lines() do
-							if #lines >= limit then
-								break
-							end
 							local file, _, text = line:match("^(.+):(%d+):(.*)$")
 							if file and text then
-								-- Get filename without extension
+								local date = text:match("%[due::%s*(%d%d%d%d%-%d%d%-%d%d)%]") or "9999-99-99"
 								local filename = vim.fn.fnamemodify(file, ":t:r")
-								table.insert(lines, text .. " [[" .. filename .. "]]")
+								table.insert(task_items, { text = text .. " [[" .. filename .. "]]", date = date })
 							end
 						end
 						handle:close()
+					end
+					table.sort(task_items, function(a, b)
+						return a.date < b.date
+					end)
+					local lines = {}
+					for i, task in ipairs(task_items) do
+						if i > limit then
+							break
+						end
+						table.insert(lines, task.text)
 					end
 
 					if #lines == 0 then
@@ -50,14 +92,8 @@ return {
 					vim.bo[buf].buftype = "nofile"
 					vim.bo[buf].modifiable = false
 
-					-- Add 't' keymap on dashboard to open task picker
-					vim.keymap.set("n", "t", function()
-						Snacks.picker.grep({
-							cwd = vault,
-							search = "- \\[ \\].*TODO",
-							glob = { "!05_Meta/**" },
-						})
-					end, { buffer = self.buf, desc = "Open task picker" })
+					-- Add 't' keymap on dashboard to open task picker (sorted by date)
+					vim.keymap.set("n", "t", open_obsidian_tasks_picker, { buffer = self.buf, desc = "Open task picker" })
 
 					local win ---@type integer?
 
@@ -660,6 +696,13 @@ return {
 			desc = "Zoxide",
 		},
 
+		-- Obsidian tasks (sorted by date)
+		{
+			"<leader>oO",
+			open_obsidian_tasks_picker,
+			desc = "Obsidian Tasks (by date)",
+		},
+
 		-- Rename operations
 		{
 			"<leader>rn",
@@ -759,6 +802,12 @@ return {
 		styles = { enabled = true },
 		image = {
 			enabled = true,
+			resolve = function(path, src)
+				local api = require("obsidian.api")
+				if api.path_is_note(path) then
+					return api.resolve_attachment_path(src)
+				end
+			end,
 			doc = {
 				enabled = true,
 				inline = true,

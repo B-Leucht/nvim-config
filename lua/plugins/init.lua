@@ -16,10 +16,8 @@ local plugins = merge_plugins(
 	require("plugins.lsp"),
 	require("plugins.editor"),
 	require("plugins.tools"),
-	require("plugins.git"),
 	require("plugins.lang")
 )
 
 -- Setup lazy.nvim with all plugins
 require("lazy").setup(plugins)
-

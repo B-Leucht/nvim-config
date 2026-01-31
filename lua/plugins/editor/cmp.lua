@@ -108,6 +108,22 @@ return {
 							vim.fn.stdpath("config") .. "/spell/en.utf-8.add",
 						},
 						min_keyword_length = 3,
+						get_documentation = function(item)
+							return {
+								get_command = function()
+									return vim.fn.executable("wn-de") == 1 and "wn-de" or ""
+								end,
+								get_command_args = function()
+									return { item }
+								end,
+								resolve_documentation = function(output)
+									return output
+								end,
+								on_error = function()
+									return false
+								end,
+							}
+						end,
 					},
 				},
 				git = {

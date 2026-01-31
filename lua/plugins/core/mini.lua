@@ -18,7 +18,12 @@ return {
 				},
 			},
 		})
-		Snacks.keymap.set("n", "<leader>gD", MiniDiff.toggle_overlay, { desc = "Toggle diff overlay" })
+		vim.keymap.set("n", "<leader>gD", MiniDiff.toggle_overlay, { desc = "Toggle diff overlay" })
+
+		-- Git commands and blame
+		require("mini.git").setup()
+		vim.keymap.set("n", "<leader>gB", MiniGit.show_at_cursor, { desc = "Git blame line" })
+		vim.keymap.set("v", "<leader>gB", MiniGit.show_at_cursor, { desc = "Git blame selection" })
 
 		-- Enhanced text objects (vaq = around quotes, vab = around brackets, etc.)
 		require("mini.ai").setup({
@@ -26,18 +31,7 @@ return {
 		})
 
 		-- Move lines/selections with Alt+hjkl
-		require("mini.move").setup({
-			mappings = {
-				left = "<A-h>",
-				right = "<A-l>",
-				down = "<A-j>",
-				up = "<A-k>",
-				line_left = "<A-h>",
-				line_right = "<A-l>",
-				line_down = "<A-j>",
-				line_up = "<A-k>",
-			},
-		})
+		require("mini.move").setup()
 
 		-- Toggle single/multiline (gS to split, gJ to join)
 		require("mini.splitjoin").setup()
@@ -51,6 +45,58 @@ return {
 			autowrite = true,
 			directory = vim.fn.stdpath("state") .. "/sessions/",
 		})
+
+		-- File explorer
+		local show_dotfiles = true
+		local filter_show = function()
+			return true
+		end
+		local filter_hide = function(fs_entry)
+			return not vim.startswith(fs_entry.name, ".")
+		end
+		local toggle_dotfiles = function()
+			show_dotfiles = not show_dotfiles
+			local new_filter = show_dotfiles and filter_show or filter_hide
+			MiniFiles.refresh({ content = { filter = new_filter } })
+		end
+
+		require("mini.files").setup({
+			mappings = {
+				close = "q",
+				go_in = "l",
+				go_in_plus = "<CR>",
+				go_out = "h",
+				go_out_plus = "H",
+				reset = "<BS>",
+				reveal_cwd = "@",
+				show_help = "g?",
+				synchronize = "=",
+				trim_left = "<",
+				trim_right = ">",
+			},
+			options = {
+				use_as_default_explorer = false,
+			},
+			windows = {
+				max_number = 3,
+				preview = true,
+				width_preview = 40,
+			},
+		})
+
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "MiniFilesBufferCreate",
+			callback = function(args)
+				vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = args.data.buf_id, desc = "Toggle dotfiles" })
+			end,
+		})
+
+		vim.keymap.set("n", "-", function()
+			MiniFiles.open(vim.api.nvim_buf_get_name(0))
+		end, { desc = "Explorer (current file)" })
+		vim.keymap.set("n", "_", function()
+			MiniFiles.open()
+		end, { desc = "Explorer (cwd)" })
 
 		MiniIcons.mock_nvim_web_devicons()
 	end,

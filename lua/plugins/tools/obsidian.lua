@@ -107,25 +107,6 @@ return {
 			desc = "Open in Obsidian App",
 		},
 		{
-			"<leader>oO",
-			function()
-				local vault = "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
-				local current_file = vim.fn.expand("%:p")
-				-- Exclude 05_Meta and current file
-				local exclude_globs = { "!05_Meta/**" }
-				if current_file:find(vault, 1, true) then
-					local rel = current_file:gsub(vault .. "/", "")
-					table.insert(exclude_globs, "!" .. rel)
-				end
-				Snacks.picker.grep({
-					cwd = vault,
-					search = "- \\[ \\].*TODO",
-					glob = exclude_globs,
-				})
-			end,
-			desc = "Open Tasks",
-		},
-		{
 			"<leader>om",
 			function()
 				local vault = "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault/"
@@ -179,7 +160,7 @@ return {
 			folder = "05_Meta/Attachments",
 		},
 		picker = {
-			name = "snacks",
+			name = "snacks.picker",
 		},
 	},
 }

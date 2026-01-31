@@ -1,7 +1,7 @@
 -- Jupyter-like code execution in Neovim
 return {
 	"benlubas/molten-nvim",
-	lazy = false,
+	ft = { "python", "markdown", "quarto" },
 	build = ":UpdateRemotePlugins",
 	dependencies = {
 		"folke/snacks.nvim",

@@ -1,14 +1,12 @@
--- Linting
+-- Linting (only for things LSP doesn't cover)
 return {
 	"mfussenegger/nvim-lint",
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
-		-- lua/config/nvim-lint.lua
 		local lint = require("lint")
 
-		-- Configure linters by filetype
 		lint.linters_by_ft = {
-			-- Web Development
+			-- Web (eslint for style rules ts_ls doesn't catch)
 			javascript = { "eslint_d" },
 			typescript = { "eslint_d" },
 			javascriptreact = { "eslint_d" },
@@ -16,24 +14,17 @@ return {
 			svelte = { "eslint_d" },
 			vue = { "eslint_d" },
 
-			-- Python
+			-- Python (ruff for style, basedpyright does types)
 			python = { "ruff" },
 
-			-- Shell
+			-- Shell (bashls is limited)
 			sh = { "shellcheck" },
 			bash = { "shellcheck" },
 			zsh = { "shellcheck" },
 
-			-- Lua
-			lua = { "luacheck" },
-
-			-- Markdown
+			-- Markup
 			markdown = { "markdownlint" },
-
-			-- YAML
 			yaml = { "yamllint" },
-
-			-- JSON
 			json = { "jsonlint" },
 
 			-- Docker
@@ -43,39 +34,15 @@ return {
 			css = { "stylelint" },
 			scss = { "stylelint" },
 
-			-- Go
-			go = { "golangcilint" },
-
-			-- Rust
-			rust = { "clippy" },
-
-			-- PHP
-			php = { "phpstan" },
-
 			-- Java
 			java = { "checkstyle" },
-
-			-- C/C++
-			c = { "cpplint" },
-			cpp = { "cpplint" },
-
-			-- Haskell
-			haskell = { "hlint" },
 
 			-- LaTeX
 			tex = { "chktex" },
 			latex = { "chktex" },
-		}
 
-		-- Configure specific linters if needed
-		lint.linters.luacheck.args = {
-			"--globals",
-			"vim",
-			"--formatter",
-			"plain",
-			"--codes",
-			"--ranges",
-			"-",
+			-- SQL
+			sql = { "sqlfluff" },
 		}
 
 		-- Configure checkstyle for Java
@@ -95,10 +62,12 @@ return {
 		}
 		lint.linters.chktex.ignore_exitcode = true
 
-	
-		-- Manual linting command
 		vim.keymap.set("n", "<leader>cl", function()
 			lint.try_lint()
 		end, { desc = "Trigger linting for current file" })
+
+		vim.keymap.set("n", "<leader>cL", function()
+			vim.diagnostic.reset(nil, 0)
+		end, { desc = "Clear linting diagnostics" })
 	end,
 }

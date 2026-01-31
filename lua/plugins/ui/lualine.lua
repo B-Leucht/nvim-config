@@ -6,7 +6,7 @@ local SEPARATORS = {
 	empty = { left = "", right = "" },
 }
 
-local PRETTY_PATH_PROVIDERS = { default = "base", "toggleterm", "oil", "trouble", "dapui" }
+local PRETTY_PATH_PROVIDERS = { default = "base", "toggleterm", "oil", "trouble", "dapui", "minifiles" }
 
 local DISABLED_FILETYPES = {
 	statusline = { "snacks_dashboard" }, -- Disable statusline in Oil to prevent git process spam
@@ -24,6 +24,7 @@ local DISABLED_FILETYPES = {
 		"terminal",
 		"oil",
 		"oil_preview",
+		"minifiles",
 	},
 	tabline = { "snacks_dashboard" },
 }
@@ -45,6 +46,7 @@ local TABLINE_CONFIG = {
 			symbols = { modified = "_󰷥", alternate_file = "", directory = " " },
 			filetype_names = {
 				oil = "",
+				minifiles = "",
 				trouble = "Trouble",
 				lazy = "Lazy",
 				mason = "Mason",

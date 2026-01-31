@@ -19,7 +19,6 @@ return {
 			{ "<leader>d", group = "debug" },
 			{ "<leader>f", group = "find" },
 			{ "<leader>g", group = "git" },
-			{ "<leader>gd", group = "diffview" },
 			{ "<leader>j", group = "java" },
 			{ "<leader>l", group = "lsp" },
 			{ "<leader>m", group = "molten" },
@@ -35,3 +34,4 @@ return {
 		})
 	end,
 }
+
