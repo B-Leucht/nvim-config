@@ -1,7 +1,7 @@
 -- Shared configuration constants
 local SEPARATORS = {
-	round2 = { left = "", right = "" },
-	round1 = { left = "", right = "" },
+	round2 = { left = "\u{e0b4}", right = "\u{e0b6}" },
+	round1 = { left = "\u{e0b6}", right = "\u{e0b4}" },
 	lines = { left = "┃", right = "┃" },
 	empty = { left = "", right = "" },
 }
@@ -102,7 +102,7 @@ return {
 		options = {
 			theme = require("core.constants").APPEARANCE.THEME,
 			component_separators = { left = "", right = "" },
-			section_separators = { left = "", right = "" },
+			section_separators = SEPARATORS.round1,
 			globalstatus = true,
 			disabled_filetypes = DISABLED_FILETYPES,
 			always_divide_middle = true,
