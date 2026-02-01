@@ -12,6 +12,8 @@ Welcome to my custom Neovim configuration! This setup is designed to elevate you
 - [Usage](#usage)
 - [Troubleshooting](#troubleshooting)
 
+
+
 ---
 ## Features
 

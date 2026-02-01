@@ -5,9 +5,8 @@ local function open_obsidian_tasks_picker()
 	local Snacks = require("snacks")
 	local vault = "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
 	local task_items = {}
-	local handle = io.popen(
-		"rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null"
-	)
+	local handle =
+		io.popen("rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null")
 	if handle then
 		for line in handle:lines() do
 			local file, lnum, text = line:match("^(.+):(%d+):(.*)$")
@@ -93,7 +92,12 @@ return {
 					vim.bo[buf].modifiable = false
 
 					-- Add 't' keymap on dashboard to open task picker (sorted by date)
-					vim.keymap.set("n", "t", open_obsidian_tasks_picker, { buffer = self.buf, desc = "Open task picker" })
+					vim.keymap.set(
+						"n",
+						"t",
+						open_obsidian_tasks_picker,
+						{ buffer = self.buf, desc = "Open task picker" }
+					)
 
 					local win ---@type integer?
 

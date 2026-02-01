@@ -14,7 +14,9 @@ local plugins = merge_plugins(
 	require("plugins.core"),
 	require("plugins.ui"),
 	require("plugins.lsp"),
-	require("plugins.editor"),
+	require("plugins.syntax"),
+	require("plugins.ai"),
+	require("plugins.debug"),
 	require("plugins.tools"),
 	require("plugins.lang")
 )

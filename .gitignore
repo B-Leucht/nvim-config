@@ -3,3 +3,6 @@ backup/
 *.swo
 *~
 dict/
+spell/
+lazy-lock*
+startup_before.log

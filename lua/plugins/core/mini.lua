@@ -2,7 +2,7 @@
 return {
 	"echasnovski/mini.nvim",
 	version = false,
-	event = "VeryLazy",
+	lazy = false,
 	config = function()
 		-- mini.comment removed - using ts-comments.nvim for better treesitter-aware commenting
 		require("mini.pairs").setup()
@@ -75,10 +75,9 @@ return {
 				trim_right = ">",
 			},
 			options = {
-				use_as_default_explorer = false,
+				use_as_default_explorer = true,
 			},
 			windows = {
-				max_number = 3,
 				preview = true,
 				width_preview = 40,
 			},

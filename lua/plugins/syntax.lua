@@ -1,0 +1,7 @@
+return {
+	require("plugins.syntax.treesitter"),
+	require("plugins.syntax.conform"),
+	require("plugins.syntax.nvim-lint"),
+	require("plugins.syntax.todo-comments"),
+	-- require("plugins.syntax.luasnip"),
+}

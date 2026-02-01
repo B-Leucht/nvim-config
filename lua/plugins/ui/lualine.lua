@@ -1,12 +1,41 @@
 -- Shared configuration constants
 local SEPARATORS = {
-	round2 = { left = "", right = "" },
-	round1 = { left = "", right = "" },
+	round2 = { left = "", right = "" },
+	round1 = { left = "", right = "" },
 	lines = { left = "┃", right = "┃" },
 	empty = { left = "", right = "" },
 }
 
-local PRETTY_PATH_PROVIDERS = { default = "base", "toggleterm", "oil", "trouble", "dapui", "minifiles" }
+-- Custom extensions
+local extensions = {
+	lazy = {
+		sections = {
+			lualine_a = { { function() return "󰒲 Lazy" end, separator = SEPARATORS.round1 } },
+			lualine_z = { { "location", separator = SEPARATORS.round1 } },
+		},
+		filetypes = { "lazy" },
+	},
+	mason = {
+		sections = {
+			lualine_a = { { function() return " Mason" end, separator = SEPARATORS.round1 } },
+			lualine_z = { { "location", separator = SEPARATORS.round1 } },
+		},
+		filetypes = { "mason" },
+	},
+}
+
+local PRETTY_PATH_PROVIDERS = {
+	default = "base",
+	"toggleterm",
+	"oil",
+	"trouble",
+	"dapui",
+	"minifiles",
+	"snacks_scratch",
+	"snacks_terminal",
+	"snacks_explorer",
+	"snacks_picker",
+}
 
 local DISABLED_FILETYPES = {
 	statusline = { "snacks_dashboard" }, -- Disable statusline in Oil to prevent git process spam
@@ -107,15 +136,90 @@ return {
 				{ "branch", separator = SEPARATORS.empty },
 				{
 					"diff",
-					symbols = { added = " ", modified = " ", removed = " " },
+					symbols = { added = "", modified = "", removed = "" },
 					separator = SEPARATORS.empty,
 				},
 			},
 			lualine_x = {
 				{
 					"diagnostics",
-					symbols = { error = " ", warn = " ", info = " ", hint = " " },
+					symbols = { error = "", warn = "", info = "", hint = "" },
 					update_in_insert = false,
+					separator = SEPARATORS.empty,
+				},
+				-- Overseer Tasks
+				{
+					function()
+						local ok, overseer = pcall(require, "overseer")
+						if not ok then
+							return ""
+						end
+						local tasks = overseer.list_tasks({ recent_first = true })
+						local running = 0
+						local success = 0
+						local failure = 0
+						for _, task in ipairs(tasks) do
+							if task.status == "RUNNING" then
+								running = running + 1
+							elseif task.status == "SUCCESS" then
+								success = success + 1
+							elseif task.status == "FAILURE" then
+								failure = failure + 1
+							end
+						end
+						if running > 0 then
+							return "󰑮 " .. running
+						elseif failure > 0 then
+							return "󰅚 " .. failure
+						elseif success > 0 then
+							return "󰄴 " .. success
+						end
+						return ""
+					end,
+					cond = function()
+						local ok, overseer = pcall(require, "overseer")
+						if not ok then
+							return false
+						end
+						local tasks = overseer.list_tasks({ recent_first = true })
+						return #tasks > 0
+					end,
+					color = function()
+						local ok, overseer = pcall(require, "overseer")
+						if not ok then
+							return { fg = "#6c7086" }
+						end
+						local tasks = overseer.list_tasks({ recent_first = true })
+						for _, task in ipairs(tasks) do
+							if task.status == "RUNNING" then
+								return { fg = "#f9e2af" } -- Yellow for running
+							elseif task.status == "FAILURE" then
+								return { fg = "#f38ba8" } -- Red for failure
+							end
+						end
+						return { fg = "#a6e3a1" } -- Green for success
+					end,
+					separator = SEPARATORS.empty,
+				},
+				-- Molten Kernel Status
+				{
+					function()
+						-- Check if molten is available via vim variable
+						if vim.g.molten_initialized then
+							-- Try to get kernel info from buffer variable
+							local kernel = vim.b.molten_kernel_name
+							if kernel and kernel ~= "" then
+								return "󱘖 " .. kernel
+							end
+							-- Fallback: just show that molten is active
+							return "󱘖"
+						end
+						return ""
+					end,
+					cond = function()
+						return vim.g.molten_initialized == 1
+					end,
+					color = { fg = "#89b4fa" }, -- Blue
 					separator = SEPARATORS.empty,
 				},
 				{
@@ -164,7 +268,12 @@ return {
 			lualine_x = { "location" },
 		},
 		tabline = {},
-		extensions = { "lazy", "mason", "quickfix", "overseer" },
+		extensions = {
+			extensions.lazy,
+			extensions.mason,
+			"quickfix",
+			"overseer",
+		},
 	},
 	config = function(_, opts)
 		require("lualine").setup(opts)
