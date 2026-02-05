@@ -34,8 +34,8 @@ return {
 		lazy = false,
 		config = function()
 			local ts = require("nvim-treesitter")
-			-- Install markdown parsers
-			ts.install({ "markdown", "markdown_inline" })
+			-- Install essential parsers
+			ts.install({ "markdown", "markdown_inline", "python", "lua" })
 			-- Create command to install all parsers
 			vim.api.nvim_create_user_command("TSInstallAll", function()
 				ts.install(parsers)

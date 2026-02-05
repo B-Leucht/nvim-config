@@ -22,4 +22,8 @@ local plugins = merge_plugins(
 )
 
 -- Setup lazy.nvim with all plugins
-require("lazy").setup(plugins)
+require("lazy").setup(plugins, {
+	ui = {
+		border = "rounded",
+	},
+})

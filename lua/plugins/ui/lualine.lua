@@ -10,14 +10,24 @@ local SEPARATORS = {
 local extensions = {
 	lazy = {
 		sections = {
-			lualine_a = { { function() return "󰒲 Lazy" end, separator = SEPARATORS.round1 } },
+			lualine_a = { {
+				function()
+					return "󰒲 Lazy"
+				end,
+				separator = SEPARATORS.round1,
+			} },
 			lualine_z = { { "location", separator = SEPARATORS.round1 } },
 		},
 		filetypes = { "lazy" },
 	},
 	mason = {
 		sections = {
-			lualine_a = { { function() return " Mason" end, separator = SEPARATORS.round1 } },
+			lualine_a = { {
+				function()
+					return " Mason"
+				end,
+				separator = SEPARATORS.round1,
+			} },
 			lualine_z = { { "location", separator = SEPARATORS.round1 } },
 		},
 		filetypes = { "mason" },
@@ -58,46 +68,10 @@ local DISABLED_FILETYPES = {
 	tabline = { "snacks_dashboard" },
 }
 
-local TABLINE_CONFIG = {
-	lualine_a = {
-		{
-			"buffers",
-			mode = 2,
-			use_mode_colors = true,
-			icons_enabled = true,
-			separator = SEPARATORS.round1,
-			component_separators = { left = "┃", right = "┃" },
-			show_filename_only = true,
-			show_modified_status = true,
-			max_length = function()
-				return vim.o.columns -- Use full screen width
-			end,
-			symbols = { modified = "_󰷥", alternate_file = "", directory = " " },
-			filetype_names = {
-				oil = "",
-				minifiles = "",
-				trouble = "Trouble",
-				lazy = "Lazy",
-				mason = "Mason",
-				snacks_picker_input = "",
-				snacks_picker_list = "󰙅",
-				snacks_picker_preview = "",
-				snacks_dashboard = "󰕮",
-			},
-			buffers_color = { active = "lualine_a_normal", inactive = "lualine_b_normal" },
-		},
-	},
-	lualine_z = {},
-}
-
 return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "folke/noice.nvim", "cameronr/lualine-pretty-path" }, -- mini.icons mocks nvim-web-devicons
 	event = "VeryLazy",
-	init = function()
-		vim.g.lualine_minimal = true
-		vim.opt.showtabline = 0 -- Hide tabline by default
-	end,
 	opts = {
 		options = {
 			theme = require("core.constants").APPEARANCE.THEME,
@@ -143,62 +117,8 @@ return {
 			lualine_x = {
 				{
 					"diagnostics",
-					symbols = { error = "", warn = "", info = "", hint = "" },
+					symbols = { error = "", warn = "", info = "", hint = "󰌶" },
 					update_in_insert = false,
-					separator = SEPARATORS.empty,
-				},
-				-- Overseer Tasks
-				{
-					function()
-						local ok, overseer = pcall(require, "overseer")
-						if not ok then
-							return ""
-						end
-						local tasks = overseer.list_tasks({ recent_first = true })
-						local running = 0
-						local success = 0
-						local failure = 0
-						for _, task in ipairs(tasks) do
-							if task.status == "RUNNING" then
-								running = running + 1
-							elseif task.status == "SUCCESS" then
-								success = success + 1
-							elseif task.status == "FAILURE" then
-								failure = failure + 1
-							end
-						end
-						if running > 0 then
-							return "󰑮 " .. running
-						elseif failure > 0 then
-							return "󰅚 " .. failure
-						elseif success > 0 then
-							return "󰄴 " .. success
-						end
-						return ""
-					end,
-					cond = function()
-						local ok, overseer = pcall(require, "overseer")
-						if not ok then
-							return false
-						end
-						local tasks = overseer.list_tasks({ recent_first = true })
-						return #tasks > 0
-					end,
-					color = function()
-						local ok, overseer = pcall(require, "overseer")
-						if not ok then
-							return { fg = "#6c7086" }
-						end
-						local tasks = overseer.list_tasks({ recent_first = true })
-						for _, task in ipairs(tasks) do
-							if task.status == "RUNNING" then
-								return { fg = "#f9e2af" } -- Yellow for running
-							elseif task.status == "FAILURE" then
-								return { fg = "#f38ba8" } -- Red for failure
-							end
-						end
-						return { fg = "#a6e3a1" } -- Green for success
-					end,
 					separator = SEPARATORS.empty,
 				},
 				-- Molten Kernel Status
@@ -272,29 +192,9 @@ return {
 			extensions.lazy,
 			extensions.mason,
 			"quickfix",
-			"overseer",
 		},
 	},
 	config = function(_, opts)
 		require("lualine").setup(opts)
 	end,
-	keys = {
-		{
-			"<leader>ul",
-			function()
-				vim.g.lualine_minimal = not vim.g.lualine_minimal
-				local opts = require("lazy.core.plugin").values(
-					require("lazy.core.config").spec.plugins["lualine.nvim"],
-					"opts",
-					false
-				)
-				opts.tabline = vim.g.lualine_minimal and {} or vim.deepcopy(TABLINE_CONFIG)
-				vim.opt.showtabline = vim.g.lualine_minimal and 0 or 2
-				require("lualine").setup(opts)
-				vim.cmd("redrawtabline")
-				vim.cmd("redrawstatus!")
-			end,
-			desc = "Toggle Tabline",
-		},
-	},
 }

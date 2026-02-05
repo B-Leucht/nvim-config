@@ -1,4 +1,3 @@
--- Bootstrap lazy.nvim plugin manager
 require("core.bootstrap").setup()
 
 -- Handle VS Code Neovim integration

@@ -5,5 +5,6 @@ return {
 	require("plugins.tools.molten"),
 	require("plugins.tools.sniprun"),
 	require("plugins.tools.overseer"),
+	require("plugins.tools.compiler"),
 	require("plugins.tools.pantran"),
 }

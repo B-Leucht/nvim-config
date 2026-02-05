@@ -3,25 +3,9 @@
 -- Helper: open Obsidian tasks picker sorted by date
 local function open_obsidian_tasks_picker()
 	local Snacks = require("snacks")
-	local vault = "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
-	local task_items = {}
-	local handle =
-		io.popen("rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null")
-	if handle then
-		for line in handle:lines() do
-			local file, lnum, text = line:match("^(.+):(%d+):(.*)$")
-			if file and text then
-				local date = text:match("%[due::%s*(%d%d%d%d%-%d%d%-%d%d)%]") or "9999-99-99"
-				table.insert(task_items, { file = file, lnum = tonumber(lnum), text = text, date = date })
-			end
-		end
-		handle:close()
-	end
-	table.sort(task_items, function(a, b)
-		return a.date < b.date
-	end)
+	local tasks = require("utils.obsidian").fetch_tasks()
 	local picker_items = {}
-	for _, task in ipairs(task_items) do
+	for _, task in ipairs(tasks) do
 		table.insert(picker_items, { text = task.text, file = task.file, pos = { task.lnum, 0 } })
 	end
 	Snacks.picker({
@@ -49,34 +33,14 @@ return {
 					local limit = item.limit or 10
 					local height = item.height or 10
 					local width = item.width or (self.opts.width - (item.indent or 0))
-					local vault = item.cwd
-						or "/Users/b.leucht/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
-
-					-- Collect and sort tasks by date
-					local task_items = {}
-					local handle = io.popen(
-						"rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null"
-					)
-					if handle then
-						for line in handle:lines() do
-							local file, _, text = line:match("^(.+):(%d+):(.*)$")
-							if file and text then
-								local date = text:match("%[due::%s*(%d%d%d%d%-%d%d%-%d%d)%]") or "9999-99-99"
-								local filename = vim.fn.fnamemodify(file, ":t:r")
-								table.insert(task_items, { text = text .. " [[" .. filename .. "]]", date = date })
-							end
-						end
-						handle:close()
-					end
-					table.sort(task_items, function(a, b)
-						return a.date < b.date
-					end)
+					local vault = item.cwd or require("core.constants").PATHS.OBSIDIAN_VAULT
+					local tasks = require("utils.obsidian").fetch_tasks(vault)
 					local lines = {}
-					for i, task in ipairs(task_items) do
+					for i, task in ipairs(tasks) do
 						if i > limit then
 							break
 						end
-						table.insert(lines, task.text)
+						table.insert(lines, task.text .. " [[" .. task.filename .. "]]")
 					end
 
 					if #lines == 0 then

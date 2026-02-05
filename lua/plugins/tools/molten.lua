@@ -35,7 +35,7 @@ return {
 		vim.g.molten_enter_output_behavior = "open_and_enter" -- Open and enter immediately
 
 		-- Virtual text output settings
-		vim.g.molten_virt_text_output = false -- Show output in floating window instead
+		vim.g.molten_virt_text_output = true
 		vim.g.molten_virt_text_max_lines = 12
 		vim.g.molten_virt_lines_off_by_1 = true
 

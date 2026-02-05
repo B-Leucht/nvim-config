@@ -4,4 +4,5 @@ return {
 	require("plugins.lang.lazydev"),
 	require("plugins.lang.typst"),
 	require("plugins.lang.otter"),
+	require("plugins.lang.markview"),
 }

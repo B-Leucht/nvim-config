@@ -29,7 +29,7 @@ opt.numberwidth = 1 -- Minimum width of line number gutter
 opt.signcolumn = "auto:2" -- Sign column on left side only
 opt.foldcolumn = "0" -- No fold column to eliminate right padding
 opt.cursorline = true -- Enable cursorline for CursorLineNr highlight
-opt.wrap = true -- Enable line wrap
+opt.wrap = false -- Disable line wrap
 opt.textwidth = 80 -- Set line width for hard wrapping
 opt.formatoptions = "tcqjrn1" -- Auto-wrap text and comments, insert comment leader, break long lines
 opt.wrapmargin = 0 -- Use textwidth instead of wrapmargin
@@ -79,9 +79,20 @@ vim.cmd("filetype plugin indent on")
 vim.cmd("syntax enable") -- Use `enable` instead of `on` (more standard)
 vim.diagnostic.config({
 	virtual_text = {
-		prefix = "●",
-		spacing = 2,
-		source = "if_many",
+		spacing = 4,
+		prefix = function(diagnostic)
+			local icons = { "󰅚", "󰀪", "󰋽", "󰌶" }
+			return icons[diagnostic.severity]
+		end,
+		format = function(diagnostic)
+			-- Truncate long messages
+			local max_width = 60
+			local message = diagnostic.message:gsub("\n", " ")
+			if #message > max_width then
+				message = message:sub(1, max_width) .. "…"
+			end
+			return message
+		end,
 	},
 	float = {
 		focusable = false,

@@ -87,11 +87,23 @@ return {
 			pattern = "MiniFilesBufferCreate",
 			callback = function(args)
 				vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = args.data.buf_id, desc = "Toggle dotfiles" })
+				vim.keymap.set("n", "gx", function()
+					local entry = MiniFiles.get_fs_entry()
+					if entry and entry.path then
+						vim.ui.open(entry.path)
+					end
+				end, { buffer = args.data.buf_id, desc = "Open with system handler" })
 			end,
 		})
 
 		vim.keymap.set("n", "-", function()
-			MiniFiles.open(vim.api.nvim_buf_get_name(0))
+			local bufname = vim.api.nvim_buf_get_name(0)
+			-- Don't try to open minifiles:// paths
+			if bufname:match("^minifiles://") then
+				MiniFiles.go_out()
+			else
+				MiniFiles.open(bufname)
+			end
 		end, { desc = "Explorer (current file)" })
 		vim.keymap.set("n", "_", function()
 			MiniFiles.open()

@@ -12,7 +12,7 @@ return {
 			c = { "clang-format" },
 			cpp = { "clang-format" },
 			haskell = { "fourmolu" },
-			markdown = { "mdsf" }, --injected
+			markdown = { "injected", "mdsf" },
 			tex = { "latexindent" },
 			latex = { "latexindent" },
 			bib = { "bibtex-tidy" },

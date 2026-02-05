@@ -27,6 +27,10 @@ M.PATHS = {
 	INIT_LUA = vim.fn.stdpath("config") .. "/init.lua",
 	KEYMAPS = vim.fn.stdpath("config") .. "/lua/config/keymaps.lua",
 	PLUGINS = vim.fn.stdpath("config") .. "/lua/plugins/init.lua",
+	OBSIDIAN_VAULT = (function()
+		local path = os.getenv("OBSIDIAN_VAULT")
+		return path
+	end)(),
 }
 
 -- Keybinding options

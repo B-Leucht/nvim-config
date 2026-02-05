@@ -9,7 +9,11 @@ return {
 		"mason-org/mason.nvim",
 		lazy = false,
 		build = ":MasonUpdate",
-		opts = {},
+		opts = {
+			ui = {
+				border = "rounded",
+			},
+		},
 	},
 	{
 		"mason-org/mason-lspconfig.nvim",
@@ -36,6 +40,7 @@ return {
 				"texlab",
 				"tinymist",
 				"ts_ls",
+				-- "harper_ls",
 			},
 		},
 	},

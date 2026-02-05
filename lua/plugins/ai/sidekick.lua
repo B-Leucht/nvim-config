@@ -4,6 +4,19 @@ return {
 		nes = {
 			enabled = true,
 		},
+		cli = {
+			win = {
+				layout = "right", -- "float", "left", "bottom", "top", "right"
+				float = {
+					width = 0.4,
+					height = 0.6,
+				},
+				split = {
+					width = 50,
+					height = 15,
+				},
+			},
+		},
 	},
 	config = function(_, opts)
 		vim.lsp.enable("copilot")

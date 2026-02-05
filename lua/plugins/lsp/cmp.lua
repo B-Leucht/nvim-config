@@ -132,6 +132,9 @@ return {
 				},
 			},
 		},
+		cmdline = {
+			enabled = false, -- Let noice handle cmdline completion
+		},
 		fuzzy = {
 			sorts = {
 				function(a, b)

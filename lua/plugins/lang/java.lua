@@ -9,29 +9,6 @@ return {
 			local jdtls = require("jdtls")
 			local jdtls_setup = require("jdtls.setup")
 
-			-- Gradle wrapper detection
-			local function find_gradle_wrapper(fname)
-				return vim.fs.find("gradlew", {
-					path = fname,
-					upward = true,
-				})[1]
-			end
-
-			-- Spring Boot project detection
-			local function is_spring_boot_project(root_dir)
-				local spring_indicators = {
-					"src/main/resources/application.properties",
-					"src/main/resources/application.yml",
-					"src/main/resources/application.yaml",
-				}
-				for _, indicator in ipairs(spring_indicators) do
-					if vim.fn.filereadable(root_dir .. "/" .. indicator) == 1 then
-						return true
-					end
-				end
-				return false
-			end
-
 			local function get_jdtls_config()
 				local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 				local workspace_dir = vim.fn.expand("~/.local/share/eclipse/") .. project_name
@@ -188,30 +165,6 @@ return {
 							jdtls.test_nearest_method,
 							{ desc = "Test Nearest Method", buffer = bufnr }
 						)
-
-						-- Gradle-specific keymaps
-						local gradle_wrapper = find_gradle_wrapper(vim.fn.expand("%:p"))
-						if gradle_wrapper then
-							vim.keymap.set("n", "<leader>gb", function()
-								vim.cmd("!./gradlew build")
-							end, { desc = "Gradle Build", buffer = bufnr })
-
-							vim.keymap.set("n", "<leader>gt", function()
-								vim.cmd("!./gradlew test")
-							end, { desc = "Gradle Test", buffer = bufnr })
-
-							vim.keymap.set("n", "<leader>gr", function()
-								vim.cmd("!./gradlew bootRun")
-							end, { desc = "Gradle Boot Run", buffer = bufnr })
-						end
-
-						-- Spring Boot specific keymaps
-						local root_dir = jdtls_setup.find_root({ ".git", "mvnw", "gradlew", "build.gradle", "pom.xml" })
-						if is_spring_boot_project(root_dir) then
-							vim.keymap.set("n", "<leader>sb", function()
-								vim.cmd("!./gradlew bootRun")
-							end, { desc = "Spring Boot Run", buffer = bufnr })
-						end
 
 						-- Toggle inlay hints
 						vim.keymap.set("n", "<leader>uh", function()
