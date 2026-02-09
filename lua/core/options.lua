@@ -1,82 +1,67 @@
-local constants = require("core.constants")
-
--- Python provider configuration
 vim.g.python3_host_prog = vim.fn.expand("~/.venvs/neovim/bin/python")
--- Disable PYTHONSTARTUP for the Neovim Python provider to avoid interference
 vim.env.PYTHONSTARTUP = nil
 
--- Disable netrw (using Oil.nvim instead)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.cmdheight = 0
--- Lualine LSP names display
 vim.g.custom_lualine_show_lsp_names = true
 
 local opt = vim.opt
 
--- Tabs and indentation
-opt.tabstop = 2 -- Number of spaces tabs count for
-opt.shiftwidth = 2 -- Number of spaces for auto-indent
-opt.softtabstop = 2 -- Number of spaces for tab input
-opt.expandtab = true -- Use spaces instead of tabs
-opt.smartindent = true -- Smart autoindenting on new lines
-opt.autoindent = true -- Copy indent from current line when starting a new one
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.softtabstop = 2
+opt.expandtab = true
+opt.smartindent = true
+opt.autoindent = true
 
--- UI
-opt.number = true -- Show line numbers
-opt.relativenumber = true -- Relative line numbers
-opt.numberwidth = 1 -- Minimum width of line number gutter
-opt.signcolumn = "auto:2" -- Sign column on left side only
-opt.foldcolumn = "0" -- No fold column to eliminate right padding
-opt.cursorline = true -- Enable cursorline for CursorLineNr highlight
-opt.wrap = false -- Disable line wrap
-opt.textwidth = 80 -- Set line width for hard wrapping
-opt.formatoptions = "tcqjrn1" -- Auto-wrap text and comments, insert comment leader, break long lines
-opt.wrapmargin = 0 -- Use textwidth instead of wrapmargin
-opt.scrolloff = 8 -- Keep 8 lines above/below cursor
+opt.number = true
+opt.relativenumber = true
+opt.numberwidth = 1
+opt.signcolumn = "auto:2"
+opt.foldcolumn = "0"
+opt.cursorline = true
+opt.wrap = false
+opt.textwidth = 80
+opt.formatoptions = "tcqjrn1"
+opt.wrapmargin = 0
+opt.scrolloff = 8
 opt.sidescrolloff = 8
 opt.conceallevel = 2
-opt.concealcursor = "" -- Show concealed text when cursor is on the line
+opt.concealcursor = ""
 
--- Search
-opt.ignorecase = true -- Case insensitive search...
-opt.smartcase = true -- ...unless capitals are used
-opt.hlsearch = true -- Highlight search results
-opt.incsearch = true -- Show search results as typing
+opt.ignorecase = true
+opt.smartcase = true
+opt.hlsearch = true
+opt.incsearch = true
 
--- Behavior
-opt.mouse = "a" -- Enable mouse
+opt.mouse = "a"
 opt.mousemodel = "popup"
-opt.clipboard = "unnamedplus" -- Use system clipboard
-opt.undofile = true -- Persistent undo
+opt.clipboard = "unnamedplus"
+opt.undofile = true
 opt.backup = true
-opt.backupdir = constants.PATHS.BACKUP_DIR
-opt.swapfile = false -- No swap files
+opt.backupdir = vim.fn.stdpath("config") .. "/backup/"
+opt.swapfile = false
 
--- Splits
-opt.splitbelow = true -- Horizontal splits below
-opt.splitright = true -- Vertical splits to the right
+opt.splitbelow = true
+opt.splitright = true
 
--- Appearance
-opt.termguicolors = true -- True color support
-opt.showmode = false -- Don’t show mode (use statusline instead)
-opt.laststatus = 2 -- Global statusline
+opt.termguicolors = true
+opt.showmode = false
+opt.laststatus = 2
+vim.o.winborder = "rounded"
 
--- Performance
-opt.updatetime = constants.UI.UPDATE_TIME
-opt.timeoutlen = constants.UI.TIMEOUT
+opt.updatetime = 1000
+opt.timeoutlen = 400
 
--- Fix terminal rendering issues in windowed mode
 local term_program = os.getenv("TERM_PROGRAM")
 if term_program == "iTerm.app" or term_program == "Apple_Terminal" then
 	vim.opt.ttyfast = true
 	vim.opt.ttimeout = true
-	-- vim.opt.ttimeoutlen = 50
 end
 
--- File detection
 vim.cmd("filetype plugin indent on")
-vim.cmd("syntax enable") -- Use `enable` instead of `on` (more standard)
+vim.cmd("syntax enable")
 vim.diagnostic.config({
 	virtual_text = {
 		spacing = 4,
@@ -85,7 +70,6 @@ vim.diagnostic.config({
 			return icons[diagnostic.severity]
 		end,
 		format = function(diagnostic)
-			-- Truncate long messages
 			local max_width = 60
 			local message = diagnostic.message:gsub("\n", " ")
 			if #message > max_width then
@@ -121,25 +105,21 @@ vim.diagnostic.config({
 	severity_sort = true,
 })
 
--- Neovide-specific settings
 if vim.g.neovide then
-	-- Platform-specific key handling
 	if vim.fn.has("macunix") == 1 then
-		vim.g.neovide_input_use_logo = 1 -- Use Cmd key on macOS
+		vim.g.neovide_input_use_logo = 1
 		vim.g.neovide_input_macos_options_key_is_meta = "only_left"
 	end
 
 	vim.g.neovide_title_hidden = 1
 	vim.g.neovide_frame = "buttonless"
-	-- Disable cursor animations to prevent flickering
 	vim.g.neovide_cursor_animation_length = 0
 	vim.g.neovide_cursor_trail_size = 0
-	vim.g.neovide_opacity = constants.APPEARANCE.OPACITY
-	vim.g.neovide_scale_factor = constants.APPEARANCE.SCALE_FACTOR
-	vim.o.guifont = constants.APPEARANCE.FONT
+	vim.g.neovide_opacity = 0.95
+	vim.g.neovide_scale_factor = 1.0
+	vim.o.guifont = "FiraCode Nerd Font:h18"
 end
 
--- lua/config/options.lua
 vim.g.markdown_fenced_languages = {
 	"python",
 	"lua",

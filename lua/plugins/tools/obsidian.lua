@@ -109,7 +109,7 @@ return {
 		{
 			"<leader>om",
 			function()
-				local vault = require("core.constants").PATHS.OBSIDIAN_VAULT .. "/"
+				local vault = os.getenv("OBSIDIAN_VAULT") .. "/"
 				local current_file = vim.fn.expand("%:p")
 				local current_name = vim.fn.expand("%:t")
 
@@ -145,7 +145,7 @@ return {
 		workspaces = {
 			{
 				name = "personal",
-				path = require("core.constants").PATHS.OBSIDIAN_VAULT,
+				path = os.getenv("OBSIDIAN_VAULT"),
 			},
 		},
 		daily_notes = {

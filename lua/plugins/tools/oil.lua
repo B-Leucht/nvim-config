@@ -1,6 +1,6 @@
--- File management
 return {
 	"stevearc/oil.nvim",
+	enabled = false,
 	lazy = false,
 	config = function(_, opts)
 		require("oil").setup(opts)
@@ -49,9 +49,9 @@ return {
 			end,
 		},
 		float = {
-			padding = require("core.constants").FLOAT.PADDING,
-			max_width = require("core.constants").FLOAT.WIDTH,
-			max_height = require("core.constants").FLOAT.HEIGHT,
+			padding = 2,
+			max_width = 0.8,
+			max_height = 0.8,
 			border = "rounded",
 			win_options = {
 				winblend = 0,

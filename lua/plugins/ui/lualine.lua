@@ -1,4 +1,3 @@
--- Shared configuration constants
 local SEPARATORS = {
 	round2 = { left = "\u{e0b4}", right = "\u{e0b6}" },
 	round1 = { left = "\u{e0b6}", right = "\u{e0b4}" },
@@ -6,7 +5,6 @@ local SEPARATORS = {
 	empty = { left = "", right = "" },
 }
 
--- Custom extensions
 local extensions = {
 	lazy = {
 		sections = {
@@ -37,13 +35,11 @@ local extensions = {
 local PRETTY_PATH_PROVIDERS = {
 	default = "base",
 	"toggleterm",
-	"oil",
 	"trouble",
 	"dapui",
 	"minifiles",
 	"snacks_scratch",
 	"snacks_terminal",
-	"snacks_explorer",
 	"snacks_picker",
 }
 
@@ -61,8 +57,6 @@ local DISABLED_FILETYPES = {
 		"dap-view-term",
 		"dap-repl",
 		"terminal",
-		"oil",
-		"oil_preview",
 		"minifiles",
 	},
 	tabline = { "snacks_dashboard" },
@@ -70,11 +64,11 @@ local DISABLED_FILETYPES = {
 
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "folke/noice.nvim", "cameronr/lualine-pretty-path" }, -- mini.icons mocks nvim-web-devicons
+	dependencies = { "folke/noice.nvim", "cameronr/lualine-pretty-path" },
 	event = "VeryLazy",
 	opts = {
 		options = {
-			theme = require("core.constants").APPEARANCE.THEME,
+			theme = "catppuccin",
 			component_separators = { left = "", right = "" },
 			section_separators = SEPARATORS.round1,
 			globalstatus = true,

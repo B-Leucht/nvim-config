@@ -17,25 +17,21 @@ Personal Neovim setup with lazy.nvim, snacks.nvim, and modern LSP integration.
 
 Use `<leader>?` to show buffer keymaps or press any key to see which-key suggestions.
 
-| Prefix | Category |
-|--------|----------|
-| `<leader>f` | Find (files, buffers, projects) |
+| Prefix      | Category                            |
+| ----------- | ----------------------------------- |
+| `<leader>f` | Find (files, buffers, projects)     |
 | `<leader>s` | Search (grep, diagnostics, symbols) |
 | `<leader>g` | Git (lazygit, branches, log, blame) |
-| `<leader>l` | LSP (actions, rename) |
-| `<leader>t` | Terminal |
-| `<leader>d` | Debug |
-| `<leader>o` | Obsidian |
-| `<leader>m` | Molten (Jupyter) |
-| `<leader>a` | AI/Sidekick |
-| `<leader>u` | UI toggles |
-| `s` / `S` | Flash jump / treesitter |
-
-
-
+| `<leader>l` | LSP (actions, rename)               |
+| `<leader>t` | Terminal                            |
+| `<leader>d` | Debug                               |
+| `<leader>o` | Obsidian                            |
+| `<leader>m` | Molten (Jupyter)                    |
+| `<leader>a` | AI/Sidekick                         |
+| `<leader>u` | UI toggles                          |
+| `s` / `S`   | Flash jump / treesitter             |
 
 ## Installation
-
 
 ```bash
 git clone https://github.com/B-Leucht/nvim-config ~/.config/nvim

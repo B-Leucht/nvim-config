@@ -1,10 +1,8 @@
--- Mini.nvim collection
 return {
 	"echasnovski/mini.nvim",
 	version = false,
 	lazy = false,
 	config = function()
-		-- mini.comment removed - using ts-comments.nvim for better treesitter-aware commenting
 		require("mini.pairs").setup()
 		require("mini.surround").setup()
 		require("mini.icons").setup()
@@ -80,6 +78,7 @@ return {
 			windows = {
 				preview = true,
 				width_preview = 40,
+				border = "rounded",
 			},
 		})
 

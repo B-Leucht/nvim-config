@@ -1,4 +1,3 @@
--- Noice: cmdline popup + messages routed to split for long output
 return {
 	"folke/noice.nvim",
 	event = "VeryLazy",
@@ -12,11 +11,11 @@ return {
 		},
 		messages = {
 			enabled = true,
-			view = "mini", -- Short messages show as mini popup
+			view = "mini",
 			view_error = "notify",
-			view_warn = "notify",
+			view_warn = "mini",
 			view_history = "messages",
-			view_search = "virtualtext",
+			view_search = false,
 		},
 		popupmenu = {
 			enabled = true,
@@ -25,12 +24,12 @@ return {
 		lsp = {
 			progress = {
 				enabled = true,
-				view = "mini", -- Shows as small popup in corner
+				view = "mini",
 			},
-			signature = { enabled = false }, -- blink.cmp handles this
+			signature = { enabled = false },
 			hover = {
 				enabled = true,
-				view = nil, -- use default
+				view = nil,
 				opts = {
 					border = {
 						style = "rounded",
@@ -45,52 +44,59 @@ return {
 			},
 		},
 		notify = {
-			enabled = false, -- snacks.notifier handles this
+			enabled = false,
 		},
 		routes = {
-			-- Use classic confirm dialog (fixes mini.files sync confirmation)
 			{
-				filter = {
-					event = "msg_show",
-					kind = "confirm",
-				},
+				filter = { event = "msg_show", kind = "confirm" },
 				view = "confirm",
 			},
-			-- Skip jdtls (Java) progress spam
 			{
-				filter = {
-					event = "lsp",
-					kind = "progress",
-					cond = function(message)
-						local client = vim.tbl_get(message.opts, "progress", "client")
-						return client == "jdtls"
-					end,
-				},
-				opts = { skip = true },
-			},
-			-- Route long messages (like :TSInstall output) to a split buffer
-			{
-				filter = {
-					event = "msg_show",
-					min_height = 5,
-				},
+				filter = { event = "msg_show", min_height = 5 },
 				view = "split",
 			},
-			-- Skip "written" messages
 			{
-				filter = {
-					event = "msg_show",
-					kind = "",
-					find = "written",
-				},
+				filter = { event = "lsp", kind = "progress" },
 				opts = { skip = true },
 			},
-			-- Skip search count messages
 			{
-				filter = {
-					event = "msg_show",
-					kind = "search_count",
-				},
+				filter = { event = "msg_show", kind = "", find = "written" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", kind = "search_count" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", find = "%d+ lines? " },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", find = "%d+ more lines?" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", find = "%d+ fewer lines?" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", find = "%d+ substitution" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", find = "Already at" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", find = "search hit" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", find = "Pattern not found" },
+				opts = { skip = true },
+			},
+			{
+				filter = { event = "msg_show", max_length = 1 },
 				opts = { skip = true },
 			},
 		},

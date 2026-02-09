@@ -1,11 +1,9 @@
--- Obsidian utility functions
 local M = {}
 
---- Fetch open tasks from the Obsidian vault, sorted by due date
----@param vault string? Optional vault path (defaults to constants.PATHS.OBSIDIAN_VAULT)
----@return table[] tasks Array of {file, lnum, text, date, filename}
+---@param vault string?
+---@return table[]
 function M.fetch_tasks(vault)
-	vault = vault or require("core.constants").PATHS.OBSIDIAN_VAULT
+	vault = vault or os.getenv("OBSIDIAN_VAULT")
 	local tasks = {}
 	local handle = io.popen(
 		"rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null"

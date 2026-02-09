@@ -1,6 +1,3 @@
--- Snacks.nvim - modern plugin collection
-
--- Helper: open Obsidian tasks picker sorted by date
 local function open_obsidian_tasks_picker()
 	local Snacks = require("snacks")
 	local tasks = require("utils.obsidian").fetch_tasks()
@@ -23,17 +20,15 @@ return {
 	lazy = false,
 	config = function(_, opts)
 		local Snacks = require("snacks")
-		-- Set LaTeX math rendering color (Catppuccin Mocha text)
 		vim.api.nvim_set_hl(0, "SnacksImageMath", { fg = "#cdd6f4" })
 		Snacks.setup(opts)
-		-- Register custom dashboard section for obsidian tasks
 		if Snacks.dashboard and Snacks.dashboard.sections then
 			Snacks.dashboard.sections.obsidian_tasks = function(item)
 				return function(self)
 					local limit = item.limit or 10
 					local height = item.height or 10
 					local width = item.width or (self.opts.width - (item.indent or 0))
-					local vault = item.cwd or require("core.constants").PATHS.OBSIDIAN_VAULT
+					local vault = item.cwd or os.getenv("OBSIDIAN_VAULT")
 					local tasks = require("utils.obsidian").fetch_tasks(vault)
 					local lines = {}
 					for i, task in ipairs(tasks) do
@@ -47,7 +42,7 @@ return {
 						return {}
 					end
 
-					-- Create markdown buffer with fake path so obsidian.nvim attaches
+					-- Fake path so obsidian.nvim attaches
 					local buf = vim.api.nvim_create_buf(false, true)
 					vim.api.nvim_buf_set_name(buf, vault .. "/.dashboard-tasks.md")
 					vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
@@ -55,7 +50,6 @@ return {
 					vim.bo[buf].buftype = "nofile"
 					vim.bo[buf].modifiable = false
 
-					-- Add 't' keymap on dashboard to open task picker (sorted by date)
 					vim.keymap.set(
 						"n",
 						"t",
@@ -83,7 +77,6 @@ return {
 									win = self.win,
 									border = "none",
 								})
-								-- Trigger obsidian.nvim rendering
 								vim.schedule(function()
 									if win and vim.api.nvim_win_is_valid(win) then
 										vim.api.nvim_win_call(win, function()
@@ -91,7 +84,6 @@ return {
 										end)
 									end
 								end)
-								-- Cleanup on dashboard close
 								vim.api.nvim_create_autocmd("BufWipeout", {
 									buffer = self.buf,
 									once = true,
@@ -108,13 +100,11 @@ return {
 		end
 	end,
 	keys = {
-		-- Terminal keymaps
 		{
 			"<leader>tt",
 			function()
-				local constants = require("core.constants")
 				Snacks.terminal.toggle(nil, {
-					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
+					win = { position = "bottom", height = 10 },
 				})
 			end,
 			desc = "Toggle Terminal",
@@ -122,9 +112,8 @@ return {
 		{
 			"<leader>tf",
 			function()
-				local constants = require("core.constants")
 				Snacks.terminal.open(nil, {
-					win = { position = "float", width = constants.UI.WINDOW_SCALE, height = constants.UI.WINDOW_SCALE },
+					win = { position = "float", width = 0.8, height = 0.8 },
 				})
 			end,
 			desc = "Open Float Terminal",
@@ -132,9 +121,8 @@ return {
 		{
 			"<leader>th",
 			function()
-				local constants = require("core.constants")
 				Snacks.terminal.open(nil, {
-					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
+					win = { position = "bottom", height = 10 },
 				})
 			end,
 			desc = "Open Horizontal Terminal",
@@ -142,9 +130,8 @@ return {
 		{
 			"<leader>tv",
 			function()
-				local constants = require("core.constants")
 				Snacks.terminal.open(nil, {
-					win = { position = "right", width = constants.UI.SIDEBAR_WIDTH },
+					win = { position = "right", width = 10 },
 				})
 			end,
 			desc = "Open Vertical Terminal",
@@ -152,9 +139,8 @@ return {
 		{
 			"<leader>py",
 			function()
-				local constants = require("core.constants")
 				Snacks.terminal.toggle("ipython", {
-					win = { position = "float", width = constants.UI.WINDOW_SCALE, height = constants.UI.WINDOW_SCALE },
+					win = { position = "float", width = 0.8, height = 0.8 },
 				})
 			end,
 			desc = "Toggle IPython Terminal",
@@ -162,36 +148,22 @@ return {
 		{
 			"<leader>ss",
 			function()
-				local constants = require("core.constants")
 				Snacks.terminal.open("ssh", {
-					win = { position = "bottom", height = constants.UI.PANEL_HEIGHT },
+					win = { position = "bottom", height = 10 },
 				})
 			end,
 			desc = "Open SSH Terminal",
 		},
-
-		-- Lazygit
 		{
 			"<leader>gg",
 			function()
-				local constants = require("core.constants") -- Require constants here
 				Snacks.lazygit.open({
-					win = { width = constants.UI.WINDOW_SCALE, height = constants.UI.WINDOW_SCALE },
+					win = { width = 0.8, height = 0.8 },
 				})
 			end,
 			desc = "Toggle Lazygit",
 		},
 
-		-- File Explorer
-		{
-			"<leader>e",
-			function()
-				Snacks.explorer()
-			end,
-			desc = "Toggle Explorer",
-		},
-
-		-- Scratch buffer
 		{
 			"<leader>ns",
 			function()
@@ -207,7 +179,6 @@ return {
 			desc = "Select Scratch Buffer",
 		},
 
-		-- Git browse
 		{
 			"<leader>go",
 			function()
@@ -226,7 +197,6 @@ return {
 			mode = { "n", "v" },
 		},
 
-		-- Toggle utilities
 		{
 			"<leader>ur",
 			function()
@@ -295,8 +265,6 @@ return {
 			desc = "Toggle Zen Mode (Writing)",
 		},
 
-		-- Picker keymaps
-		-- Top Pickers & Explorer
 		{
 			"<leader><space>",
 			function()
@@ -325,7 +293,6 @@ return {
 			end,
 			desc = "Find Notifications",
 		},
-		-- find
 		{
 			"<leader>fb",
 			function()
@@ -368,7 +335,6 @@ return {
 			end,
 			desc = "Recent",
 		},
-		-- git
 		{
 			"<leader>gb",
 			function()
@@ -418,7 +384,6 @@ return {
 			end,
 			desc = "Git Log File",
 		},
-		-- Grep
 		{
 			"<leader>sb",
 			function()
@@ -448,7 +413,6 @@ return {
 			desc = "Visual selection or word",
 			mode = { "n", "x" },
 		},
-		-- search
 		{
 			'<leader>"',
 			function()
@@ -589,7 +553,6 @@ return {
 			end,
 			desc = "Colorschemes",
 		},
-		-- LSP
 		{
 			"gd",
 			function()
@@ -640,7 +603,6 @@ return {
 			end,
 			desc = "LSP Workspace Symbols",
 		},
-		-- folke/todo-comments.nvim integration
 		{
 			"<leader>st",
 			function()
@@ -655,7 +617,6 @@ return {
 			end,
 			desc = "Todo/Fix/Fixme Comments",
 		},
-		-- Zoxide
 		{
 			"<leader>fz",
 			function()
@@ -664,14 +625,12 @@ return {
 			desc = "Zoxide",
 		},
 
-		-- Obsidian tasks (sorted by date)
 		{
 			"<leader>oO",
 			open_obsidian_tasks_picker,
 			desc = "Obsidian Tasks (by date)",
 		},
 
-		-- Rename operations
 		{
 			"<leader>rn",
 			function()
@@ -694,11 +653,9 @@ return {
 			desc = "Rename (Preview)",
 		},
 
-		-- Window management
 		{
 			"<leader>wm",
 			function()
-				-- Maximize current window
 				vim.cmd("only")
 			end,
 			desc = "Maximize Window",
@@ -706,11 +663,10 @@ return {
 		{
 			"<leader>wf",
 			function()
-				local constants = require("core.constants")
 				Snacks.win({
 					position = "float",
-					width = constants.UI.WINDOW_SCALE,
-					height = constants.UI.WINDOW_SCALE,
+					width = 0.8,
+					height = 0.8,
 					border = "rounded",
 					buf = vim.api.nvim_get_current_buf(),
 				})
@@ -720,7 +676,6 @@ return {
 		{
 			"<leader>ws",
 			function()
-				-- Split current buffer horizontally
 				Snacks.win({
 					position = "bottom",
 					height = 0.3,
@@ -732,7 +687,6 @@ return {
 		{
 			"<leader>wS",
 			function()
-				-- Split current buffer vertically using Snacks win
 				Snacks.win({
 					position = "right",
 					width = 0.5,
@@ -760,7 +714,7 @@ return {
 		layout = { enabled = true },
 		win = { enabled = true },
 		bigfile = { enabled = true },
-		explorer = { enabled = true },
+		explorer = { enabled = false },
 		scratch = { enabled = true },
 		gitbrowse = { enabled = true },
 		toggle = { enabled = true },
@@ -806,20 +760,6 @@ return {
 			sections = {
 				{ section = "header" },
 				{ section = "keys", gap = 1, padding = 1 },
-				{
-					icon = " ",
-					title = "Tasks",
-					section = "obsidian_tasks",
-					enabled = function()
-						local cwd = vim.fn.getcwd()
-						return cwd:find("obsidian") ~= nil or cwd:find("Vault") ~= nil
-					end,
-					limit = 10,
-					height = 10,
-					indent = 2,
-					padding = 1,
-				},
-
 				{ icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
 				{
 					icon = " ",
@@ -834,6 +774,19 @@ return {
 					ttl = 5 * 60,
 					indent = 3,
 				},
+				{
+					icon = " ",
+					title = "Tasks",
+					section = "obsidian_tasks",
+					enabled = function()
+						local cwd = vim.fn.getcwd()
+						return cwd:find("obsidian") ~= nil or cwd:find("Vault") ~= nil
+					end,
+					limit = 10,
+					height = 10,
+					indent = 2,
+					padding = 1,
+				},
 				{ section = "startup" },
 			},
 			keys = {
@@ -842,15 +795,21 @@ return {
 				{ icon = "", key = "g", desc = "Live Grep", action = ":lua Snacks.picker.grep()" },
 				{ icon = "", key = "b", desc = "Bookmarks", action = ":lua Snacks.picker.marks()" },
 				{
+					icon = "󰦛",
+					key = "s",
+					desc = "Restore Session",
+					action = ":lua MiniSessions.read(MiniSessions.get_latest())",
+				},
+				{
 					icon = "",
 					key = "c",
 					desc = "Configuration",
-					action = ":e " .. require("core.constants").PATHS.INIT_LUA,
+					action = ":e " .. vim.fn.stdpath("config") .. "/init.lua",
 				},
+				{ icon = "󰒲", key = "l", desc = "Lazy", action = ":Lazy" },
 				{ icon = "", key = "q", desc = "Quit", action = ":qa" },
 			},
 		},
-		--
 
 		notifier = {
 			enabled = true,
@@ -869,6 +828,7 @@ return {
 			},
 			win = {
 				input = {
+					border = "rounded",
 					wo = { winblend = 0 },
 					keys = {
 						["<a-a>"] = {
@@ -878,9 +838,11 @@ return {
 					},
 				},
 				list = {
+					border = "rounded",
 					wo = { winblend = 0 },
 				},
 				preview = {
+					border = "rounded",
 					wo = { winblend = 0 },
 				},
 			},

@@ -1,19 +1,15 @@
--- Autocompletion with blink.cmp
-
 return {
 	"saghen/blink.cmp",
 	version = "*",
 	event = "InsertEnter",
 	dependencies = {
 		"rafamadriz/friendly-snippets",
-		-- copilot.lua is configured separately in plugins/editor/copilot.lua
 		"giuxtaposition/blink-cmp-copilot",
 		{
 			"Kaiser-Yang/blink-cmp-dictionary",
 			dependencies = { "nvim-lua/plenary.nvim" },
 		},
 		"Kaiser-Yang/blink-cmp-git",
-		-- "ribru17/blink-cmp-spell",
 	},
 	opts = {
 		keymap = {
@@ -23,7 +19,7 @@ return {
 			["<CR>"] = { "accept", "fallback" },
 			["<Tab>"] = {
 				"snippet_forward",
-				function() -- sidekick next edit suggestion
+				function()
 					return require("sidekick").nes_jump_or_apply()
 				end,
 				"fallback",
@@ -76,7 +72,7 @@ return {
 			default = { "lsp", "path", "snippets", "buffer", "copilot", "dictionary", "lazydev", "git" },
 			providers = {
 				lsp = {
-					score_offset = 100, -- Same priority as copilot
+					score_offset = 100,
 				},
 				buffer = {
 					score_offset = 20,
@@ -133,7 +129,7 @@ return {
 			},
 		},
 		cmdline = {
-			enabled = false, -- Let noice handle cmdline completion
+			enabled = false,
 		},
 		fuzzy = {
 			sorts = {
@@ -143,7 +139,6 @@ return {
 						return sort.label(a, b)
 					end
 				end,
-				-- This is the normal default order, which we fall back to
 				"score",
 				"kind",
 				"label",
