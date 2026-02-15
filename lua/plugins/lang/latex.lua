@@ -1,6 +1,10 @@
 -- LaTeX support
 return {
 	{
+		"let-def/texpresso.vim",
+		ft = { "tex", "latex" },
+	},
+	{
 		"lervag/vimtex",
 		ft = { "tex", "latex", "bib" },
 		keys = {

@@ -39,6 +39,21 @@ return {
 			},
 		})
 
+		vim.lsp.config("hls", {
+			settings = {
+				haskell = {
+					plugin = {
+						["ghcide-type-lenses"] = {
+							globalOn = true,
+							config = { mode = "always" },
+						},
+						importLens = {
+							globalOn = false,
+						},
+					},
+				},
+			},
+		})
 		vim.lsp.enable("hls")
 
 		vim.lsp.config("markdown_oxide", {

@@ -44,7 +44,6 @@ end
 
 function M:render()
 	return table.concat({
-		self:render_icon() or "",
 		self:render_filename() or "",
 		self:render_symbols() or "",
 	}, "")

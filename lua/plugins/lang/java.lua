@@ -31,9 +31,6 @@ return {
 
 				-- Build runtimes from environment variables if available
 				local runtimes = {}
-				if os.getenv("JAVA17_HOME") then
-					table.insert(runtimes, { name = "JavaSE-17", path = os.getenv("JAVA17_HOME") })
-				end
 				if os.getenv("JAVA21_HOME") then
 					table.insert(runtimes, { name = "JavaSE-21", path = os.getenv("JAVA21_HOME") })
 				end
@@ -65,7 +62,7 @@ return {
 							},
 							configuration = {
 								updateBuildConfiguration = "interactive",
-								runtimes = runtimes, -- Uses JAVA17_HOME, JAVA21_HOME env vars if set
+								runtimes = runtimes, -- Uses JAVA21_HOME env var if set
 							},
 							maven = {
 								downloadSources = true,

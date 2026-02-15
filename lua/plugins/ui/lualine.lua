@@ -44,7 +44,7 @@ local PRETTY_PATH_PROVIDERS = {
 }
 
 local DISABLED_FILETYPES = {
-	statusline = { "snacks_dashboard" }, -- Disable statusline in Oil to prevent git process spam
+	statusline = { "snacks_dashboard" },
 	winbar = {
 		"lazy",
 		"mason",
@@ -104,7 +104,7 @@ return {
 				{ "branch", separator = SEPARATORS.empty },
 				{
 					"diff",
-					symbols = { added = "", modified = "", removed = "" },
+					symbols = { added = "", modified = "", removed = "" },
 					separator = SEPARATORS.empty,
 				},
 			},
@@ -116,26 +116,7 @@ return {
 					separator = SEPARATORS.empty,
 				},
 				-- Molten Kernel Status
-				{
-					function()
-						-- Check if molten is available via vim variable
-						if vim.g.molten_initialized then
-							-- Try to get kernel info from buffer variable
-							local kernel = vim.b.molten_kernel_name
-							if kernel and kernel ~= "" then
-								return "󱘖 " .. kernel
-							end
-							-- Fallback: just show that molten is active
-							return "󱘖"
-						end
-						return ""
-					end,
-					cond = function()
-						return vim.g.molten_initialized == 1
-					end,
-					color = { fg = "#89b4fa" }, -- Blue
-					separator = SEPARATORS.empty,
-				},
+
 				{
 					function()
 						local ok, noice = pcall(require, "noice")

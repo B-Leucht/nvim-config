@@ -207,7 +207,9 @@ return {
 		{
 			"<leader>uw",
 			function()
-				Snacks.toggle.option("wrap")
+				vim.o.wrap = not vim.o.wrap
+				local state = vim.o.wrap and "enabled" or "disabled"
+				vim.notify("Line wrap " .. state, vim.log.levels.INFO)
 			end,
 			desc = "Toggle Line Wrap",
 		},

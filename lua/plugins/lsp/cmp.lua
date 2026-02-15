@@ -32,12 +32,24 @@ return {
 		appearance = {
 			use_nvim_cmp_as_default = false,
 			nerd_font_variant = "mono",
+			kind_icons = {
+				claude = "󰋦",
+				openai = "󱢆",
+				codestral = "󱎥",
+				gemini = "",
+				Groq = "",
+				Openrouter = "󱂇",
+				Ollama = "󰳆",
+				["Llama.cpp"] = "󰳆",
+				Deepseek = "",
+			},
 		},
 
 		completion = {
 			accept = {
 				auto_brackets = { enabled = true },
 			},
+			trigger = { prefetch_on_insert = false },
 			documentation = {
 				auto_show = true,
 				auto_show_delay_ms = 200,
@@ -69,7 +81,7 @@ return {
 			},
 		},
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "copilot", "dictionary", "lazydev", "git" },
+			default = { "lsp", "path", "snippets", "buffer", "dictionary", "lazydev", "git" },
 			providers = {
 				lsp = {
 					score_offset = 100,

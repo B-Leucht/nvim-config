@@ -14,9 +14,6 @@ return {
 			svelte = { "eslint_d" },
 			vue = { "eslint_d" },
 
-			-- Python (ruff for style, basedpyright does types)
-			python = { "ruff" },
-
 			-- Shell (bashls is limited)
 			sh = { "shellcheck" },
 			bash = { "shellcheck" },
