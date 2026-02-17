@@ -18,87 +18,6 @@ return {
 	"folke/snacks.nvim",
 	priority = 1000,
 	lazy = false,
-	config = function(_, opts)
-		local Snacks = require("snacks")
-		vim.api.nvim_set_hl(0, "SnacksImageMath", { fg = "#cdd6f4" })
-		Snacks.setup(opts)
-		if Snacks.dashboard and Snacks.dashboard.sections then
-			Snacks.dashboard.sections.obsidian_tasks = function(item)
-				return function(self)
-					local limit = item.limit or 10
-					local height = item.height or 10
-					local width = item.width or (self.opts.width - (item.indent or 0))
-					local vault = item.cwd or os.getenv("OBSIDIAN_VAULT")
-					local tasks = require("utils.obsidian").fetch_tasks(vault)
-					local lines = {}
-					for i, task in ipairs(tasks) do
-						if i > limit then
-							break
-						end
-						table.insert(lines, task.text .. " [[" .. task.filename .. "]]")
-					end
-
-					if #lines == 0 then
-						return {}
-					end
-
-					-- Fake path so obsidian.nvim attaches
-					local buf = vim.api.nvim_create_buf(false, true)
-					vim.api.nvim_buf_set_name(buf, vault .. "/.dashboard-tasks.md")
-					vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-					vim.bo[buf].filetype = "markdown"
-					vim.bo[buf].buftype = "nofile"
-					vim.bo[buf].modifiable = false
-
-					vim.keymap.set(
-						"n",
-						"t",
-						open_obsidian_tasks_picker,
-						{ buffer = self.buf, desc = "Open task picker" }
-					)
-
-					local win ---@type integer?
-
-					return {
-						{
-							text = string.rep("\n", height),
-							render = function(_, pos)
-								win = vim.api.nvim_open_win(buf, false, {
-									bufpos = { pos[1] - 1, pos[2] + 1 },
-									col = item.indent or 0,
-									focusable = true,
-									height = height,
-									noautocmd = true,
-									relative = "win",
-									row = 0,
-									zindex = Snacks.config.styles.dashboard.zindex + 1,
-									style = "minimal",
-									width = width,
-									win = self.win,
-									border = "none",
-								})
-								vim.schedule(function()
-									if win and vim.api.nvim_win_is_valid(win) then
-										vim.api.nvim_win_call(win, function()
-											vim.cmd("doautocmd BufEnter")
-										end)
-									end
-								end)
-								vim.api.nvim_create_autocmd("BufWipeout", {
-									buffer = self.buf,
-									once = true,
-									callback = function()
-										pcall(vim.api.nvim_win_close, win, true)
-										pcall(vim.api.nvim_buf_delete, buf, { force = true })
-									end,
-								})
-							end,
-						},
-					}
-				end
-			end
-		end
-	end,
 	keys = {
 		{
 			"<leader>tt",
@@ -752,64 +671,13 @@ return {
 
 		dashboard = {
 			enabled = true,
-			preset = {
-				header = [[
-
-
-]],
-			},
-
+			preset = { header = {} },
 			sections = {
 				{ section = "header" },
-				{ section = "keys", gap = 1, padding = 1 },
-				{ icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
-				{
-					icon = " ",
-					title = "Git Status",
-					section = "terminal",
-					enabled = function()
-						return Snacks.git.get_root() ~= nil
-					end,
-					cmd = "git status --short --branch --renames",
-					height = 5,
-					padding = 1,
-					ttl = 5 * 60,
-					indent = 3,
-				},
-				{
-					icon = " ",
-					title = "Tasks",
-					section = "obsidian_tasks",
-					enabled = function()
-						local cwd = vim.fn.getcwd()
-						return cwd:find("obsidian") ~= nil or cwd:find("Vault") ~= nil
-					end,
-					limit = 10,
-					height = 10,
-					indent = 2,
-					padding = 1,
-				},
+				{ icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
+				{ icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+				{ icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
 				{ section = "startup" },
-			},
-			keys = {
-				{ icon = "", key = "f", desc = "Find File", action = ":lua Snacks.picker.files()" },
-				{ icon = "", key = "r", desc = "Recent Files", action = ":lua Snacks.picker.recent()" },
-				{ icon = "", key = "g", desc = "Live Grep", action = ":lua Snacks.picker.grep()" },
-				{ icon = "", key = "b", desc = "Bookmarks", action = ":lua Snacks.picker.marks()" },
-				{
-					icon = "󰦛",
-					key = "s",
-					desc = "Restore Session",
-					action = ":lua MiniSessions.read(MiniSessions.get_latest())",
-				},
-				{
-					icon = "",
-					key = "c",
-					desc = "Configuration",
-					action = ":e " .. vim.fn.stdpath("config") .. "/init.lua",
-				},
-				{ icon = "󰒲", key = "l", desc = "Lazy", action = ":Lazy" },
-				{ icon = "", key = "q", desc = "Quit", action = ":qa" },
 			},
 		},
 

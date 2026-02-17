@@ -58,8 +58,15 @@ return {
 
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = { "markdown" },
-				callback = function()
-					require("otter").activate()
+				callback = function(args)
+					-- Guard against duplicate activation (E95: buffer name already exists)
+					if vim.b[args.buf].otter_activated then
+						return
+					end
+					local ok = pcall(require("otter").activate)
+					if ok then
+						vim.b[args.buf].otter_activated = true
+					end
 				end,
 			})
 		end,

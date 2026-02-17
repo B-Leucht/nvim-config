@@ -23,7 +23,9 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 		opts = {
-			automatic_enable = true,
+			automatic_enable = {
+				exclude = { "hls", "jdtls", "rust_analyzer" },
+			},
 			ensure_installed = {
 				"basedpyright",
 				"bashls",

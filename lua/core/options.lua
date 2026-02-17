@@ -20,6 +20,10 @@ opt.relativenumber = true
 opt.numberwidth = 1
 opt.signcolumn = "auto:2"
 opt.foldcolumn = "0"
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
 opt.cursorline = true
 opt.wrap = false
 opt.textwidth = 80
@@ -37,6 +41,12 @@ opt.incsearch = true
 
 opt.mouse = "a"
 opt.mousemodel = "popup"
+
+-- Override built-in right-click "Show All Diagnostics" to handle deleted buffers (otter.nvim)
+vim.cmd([[
+  aunmenu PopUp.Show\ All\ Diagnostics
+  amenu PopUp.Show\ All\ Diagnostics <cmd>lua pcall(vim.diagnostic.setqflist)<CR>
+]])
 opt.clipboard = "unnamedplus"
 opt.undofile = true
 opt.backup = true
@@ -51,7 +61,7 @@ opt.showmode = false
 opt.laststatus = 2
 vim.o.winborder = "rounded"
 
-opt.updatetime = 1000
+opt.updatetime = 250
 opt.timeoutlen = 400
 
 local term_program = os.getenv("TERM_PROGRAM")
@@ -60,24 +70,8 @@ if term_program == "iTerm.app" or term_program == "Apple_Terminal" then
 	vim.opt.ttimeout = true
 end
 
-vim.cmd("filetype plugin indent on")
-vim.cmd("syntax enable")
 vim.diagnostic.config({
-	virtual_text = {
-		spacing = 4,
-		prefix = function(diagnostic)
-			local icons = { "󰅚", "󰀪", "󰋽", "󰌶" }
-			return icons[diagnostic.severity]
-		end,
-		format = function(diagnostic)
-			local max_width = 60
-			local message = diagnostic.message:gsub("\n", " ")
-			if #message > max_width then
-				message = message:sub(1, max_width) .. "…"
-			end
-			return message
-		end,
-	},
+	virtual_text = false, -- diagflow handles this
 	float = {
 		focusable = false,
 		close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
@@ -131,3 +125,4 @@ vim.g.markdown_fenced_languages = {
 
 vim.opt.spell = true
 vim.opt.spelllang = { "en", "de" }
+

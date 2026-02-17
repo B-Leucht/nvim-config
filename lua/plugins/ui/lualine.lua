@@ -30,6 +30,19 @@ local extensions = {
 		},
 		filetypes = { "mason" },
 	},
+	quickfix = {
+		sections = {
+			lualine_a = { {
+				function()
+					return vim.fn.getloclist(0, { filewinid = 1 }).filewinid ~= 0 and " Location List"
+						or " Quickfix List"
+				end,
+				separator = SEPARATORS.round1,
+			} },
+			lualine_z = { { "location", separator = SEPARATORS.round1 } },
+		},
+		filetypes = { "qf" },
+	},
 }
 
 local PRETTY_PATH_PROVIDERS = {
@@ -166,7 +179,7 @@ return {
 		extensions = {
 			extensions.lazy,
 			extensions.mason,
-			"quickfix",
+			extensions.quickfix,
 		},
 	},
 	config = function(_, opts)

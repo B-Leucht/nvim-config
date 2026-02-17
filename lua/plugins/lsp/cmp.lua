@@ -4,7 +4,6 @@ return {
 	event = "InsertEnter",
 	dependencies = {
 		"rafamadriz/friendly-snippets",
-		"giuxtaposition/blink-cmp-copilot",
 		{
 			"Kaiser-Yang/blink-cmp-dictionary",
 			dependencies = { "nvim-lua/plenary.nvim" },
@@ -67,9 +66,7 @@ return {
 					columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "kind" } },
 				},
 			},
-			ghost_text = {
-				enabled = false,
-			},
+			ghost_text = { enabled = false },
 		},
 
 		signature = {
@@ -92,13 +89,7 @@ return {
 				snippets = {
 					score_offset = 30,
 				},
-				copilot = {
-					name = "copilot",
-					module = "blink-cmp-copilot",
-					score_offset = 100,
-					async = true,
-				},
-				lazydev = {
+					lazydev = {
 					name = "LazyDev",
 					module = "lazydev.integrations.blink",
 					score_offset = 100,
@@ -138,7 +129,7 @@ return {
 					name = "Git",
 					module = "blink-cmp-git",
 				},
-			},
+				},
 		},
 		cmdline = {
 			enabled = false,

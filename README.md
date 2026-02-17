@@ -12,26 +12,26 @@ Personal Neovim setup with lazy.nvim, snacks.nvim, and modern LSP integration.
 - **Code Execution:** molten.nvim (Jupyter), sniprun (snippets)
 - **Debug:** nvim-dap with dap-view UI (Python, C/C++, Rust)
 - **Syntax:** treesitter, conform.nvim (formatting), nvim-lint (linting)
-- **UI:** Catppuccin Mocha (transparent), lualine, noice.nvim, incline.nvim, navic
+- **UI:** Catppuccin Mocha (transparent), lualine, noice.nvim, incline.nvim
 
 ## Key Bindings
 
 Use `<leader>?` to show buffer keymaps or press any key to see which-key suggestions.
 
-| Prefix | Category |
-|---|---|
-| `<leader>f` | Find (files, buffers, projects) |
+| Prefix      | Category                            |
+| ----------- | ----------------------------------- |
+| `<leader>f` | Find (files, buffers, projects)     |
 | `<leader>s` | Search (grep, diagnostics, symbols) |
 | `<leader>g` | Git (lazygit, branches, log, blame) |
-| `<leader>l` | LSP (actions, rename, format) |
-| `<leader>c` | Code (format, lint) |
-| `<leader>t` | Terminal |
-| `<leader>d` | Debug |
-| `<leader>o` | Obsidian |
-| `<leader>m` | Molten (Jupyter) |
-| `<leader>a` | AI/Sidekick |
-| `<leader>u` | UI toggles |
-| `s` / `S` | Flash jump / treesitter |
+| `<leader>l` | LSP (actions, rename, format)       |
+| `<leader>c` | Code (format, lint)                 |
+| `<leader>t` | Terminal                            |
+| `<leader>d` | Debug                               |
+| `<leader>o` | Obsidian                            |
+| `<leader>m` | Molten (Jupyter)                    |
+| `<leader>a` | AI/Sidekick                         |
+| `<leader>u` | UI toggles                          |
+| `s` / `S`   | Flash jump / treesitter             |
 
 ## Requirements
 

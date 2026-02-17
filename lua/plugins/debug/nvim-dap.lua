@@ -52,7 +52,7 @@ return {
 		local dap = require("dap")
 
 		-- Setup nvim-dap-python
-		require("dap-python").setup("python3")
+		require("dap-python").setup(vim.g.python3_host_prog or "python3")
 
 		-- Setup C/C++ debugging with codelldb
 		dap.adapters.codelldb = {
@@ -106,19 +106,5 @@ return {
 		}
 
 		dap.configurations.cpp = dap.configurations.c
-
-		-- Rust debugging
-		dap.configurations.rust = {
-			{
-				name = "Launch",
-				type = "codelldb",
-				request = "launch",
-				program = function()
-					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
-				end,
-				cwd = "${workspaceFolder}",
-				stopOnEntry = false,
-			},
-		}
 	end,
 }

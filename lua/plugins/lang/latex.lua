@@ -32,9 +32,10 @@ return {
 				options = { "-pdflua", "-interaction=nonstopmode", "-synctex=1" },
 			}
 
-			vim.cmd([[
-		  autocmd BufNewFile,BufRead *.tex VimtexCompile
-		]])
+			vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+				pattern = "*.tex",
+				command = "VimtexCompile",
+			})
 		end,
 	},
 }

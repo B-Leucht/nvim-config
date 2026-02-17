@@ -18,10 +18,6 @@ return {
 			},
 		},
 	},
-	config = function(_, opts)
-		vim.lsp.enable("copilot")
-		require("sidekick").setup(opts)
-	end,
 	keys = {
 		-- {
 		-- 	"<tab>",

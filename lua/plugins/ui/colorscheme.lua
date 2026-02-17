@@ -38,6 +38,7 @@ return {
 					NoicePopupBorder = { bg = "NONE", fg = colors.lavender },
 					NoiceCmdlinePopup = { bg = "NONE" },
 					NoiceCmdlinePopupBorder = { bg = "NONE", fg = colors.lavender },
+					LspCodeLens = { fg = colors.teal, italic = true },
 				}
 			end,
 		})
@@ -47,7 +48,7 @@ return {
 		vim.api.nvim_set_hl(0, "Visual", { bg = "#3e4451", fg = "NONE" })
 		vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#3e4451", fg = "NONE" })
 
-		_G.toggle_transparency = function()
+		vim.keymap.set("n", "<leader>ut", function()
 			vim.g.catppuccin_transparent = not vim.g.catppuccin_transparent
 			require("catppuccin").setup({
 				flavor = "mocha",
@@ -59,6 +60,6 @@ return {
 
 			local status = vim.g.catppuccin_transparent and "enabled" or "disabled"
 			vim.notify("Transparency " .. status, vim.log.levels.INFO)
-		end
+		end, { desc = "Toggle transparency" })
 	end,
 }

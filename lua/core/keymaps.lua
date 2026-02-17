@@ -62,9 +62,6 @@ keymap("n", "<leader>?", function()
 	require("which-key").show({ global = false })
 end, { desc = "Buffer Local Keymaps (which-key)" })
 
-keymap("n", "<leader>ut", function()
-	toggle_transparency()
-end, { desc = "Toggle transparency" })
 
 keymap("n", "<up>", "<nop>", opts)
 keymap("n", "<down>", "<nop>", opts)

@@ -1,5 +1,8 @@
 return {
+	require("plugins.lang.clangd"),
+	require("plugins.lang.haskell"),
 	require("plugins.lang.java"),
+	require("plugins.lang.rust"),
 	require("plugins.lang.latex"),
 	require("plugins.lang.lazydev"),
 	require("plugins.lang.typst"),

@@ -9,6 +9,8 @@ return {
 		vim.lsp.config("*", {
 			capabilities = require("blink.cmp").get_lsp_capabilities(),
 		})
+
+
 		-- Ensure Mason path is set (cross-platform)
 		local mason_path = vim.fn.stdpath("data") .. "/mason/bin"
 		local path_separator = vim.fn.has("win32") == 1 and ";" or ":"
@@ -16,7 +18,16 @@ return {
 			vim.env.PATH = mason_path .. path_separator .. vim.env.PATH
 		end
 
+		vim.lsp.enable("pyright", false)
+
 		vim.lsp.config("basedpyright", {
+			before_init = function(_, config)
+				local venv = vim.fn.getcwd() .. "/.venv"
+				if vim.fn.isdirectory(venv) == 1 then
+					config.settings.python = config.settings.python or {}
+					config.settings.python.pythonPath = venv .. "/bin/python"
+				end
+			end,
 			settings = {
 				basedpyright = {
 					analysis = {
@@ -39,31 +50,14 @@ return {
 			},
 		})
 
-		vim.lsp.config("hls", {
-			settings = {
-				haskell = {
-					plugin = {
-						["ghcide-type-lenses"] = {
-							globalOn = true,
-							config = { mode = "always" },
-						},
-						importLens = {
-							globalOn = false,
-						},
-					},
-				},
-			},
-		})
-		vim.lsp.enable("hls")
-
 		vim.lsp.config("markdown_oxide", {
-			capabilities = vim.tbl_deep_extend("force", require("blink.cmp").get_lsp_capabilities(), {
+			capabilities = {
 				workspace = {
 					didChangeWatchedFiles = {
 						dynamicRegistration = true,
 					},
 				},
-			}),
+			},
 		})
 
 		vim.lsp.config("clangd", {
@@ -82,20 +76,6 @@ return {
 				clangdFileStatus = true,
 			},
 		})
-
-		vim.lsp.config("rust_analyzer", {
-			settings = {
-				["rust-analyzer"] = {
-					cargo = {
-						allFeatures = true,
-					},
-					checkOnSave = {
-						command = "clippy",
-					},
-				},
-			},
-		})
-		vim.lsp.enable("rust_analyzer")
 
 		vim.lsp.config("tinymist", {
 			settings = {
@@ -122,12 +102,23 @@ return {
 			},
 		})
 
-		-- Enable inlay hints globally for all LSP servers that support it
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(args)
 				local client = vim.lsp.get_client_by_id(args.data.client_id)
-				if client and client.server_capabilities.inlayHintProvider then
+				if not client then
+					return
+				end
+				if client.server_capabilities.inlayHintProvider and client.name ~= "haskell-tools.nvim" then
 					vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+				end
+				if client.server_capabilities.codeLensProvider then
+					vim.lsp.codelens.refresh({ bufnr = args.buf })
+					vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
+						buffer = args.buf,
+						callback = function()
+							vim.lsp.codelens.refresh({ bufnr = args.buf })
+						end,
+					})
 				end
 			end,
 		})

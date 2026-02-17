@@ -1,7 +1,8 @@
 return {
 	"dgagn/diagflow.nvim",
-	event = "LspAttach",
+	event = "DiagnosticChanged",
 	opts = {
+		scope = "line",
 		padding_top = 2,
 		max_width = 60,
 		show_borders = true,

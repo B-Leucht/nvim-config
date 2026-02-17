@@ -119,13 +119,8 @@ return {
 							),
 						},
 					},
-					on_attach = function(client, bufnr)
+					on_attach = function(_, bufnr)
 						jdtls_setup.add_commands()
-
-						-- Enable inlay hints
-						if client.server_capabilities.inlayHintProvider then
-							vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-						end
 
 						-- Java debugging
 						jdtls.setup_dap({ hotcodereplace = "auto" })

@@ -40,5 +40,6 @@ return {
 				label = false,
 			},
 		},
+		latex = { enable = false },
 	},
 }

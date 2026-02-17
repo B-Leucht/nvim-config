@@ -27,22 +27,16 @@ return {
 			mysql = { "sql_formatter" },
 			plsql = { "sql_formatter" },
 		},
-		-- Async formatting after save (non-blocking)
-		format_after_save = {
-			lsp_fallback = true,
-		},
+		format_after_save = function()
+			if vim.g.disable_autoformat then
+				return
+			end
+			return { lsp_fallback = true }
+		end,
 		-- Notify on format errors
 		notify_on_error = true,
 	},
 	keys = {
-		{
-			"<leader>cf",
-			function()
-				require("conform").format({ async = true, lsp_fallback = true })
-			end,
-			mode = { "n", "v" },
-			desc = "Format buffer/selection",
-		},
 		{
 			"<leader>cF",
 			function()
@@ -50,6 +44,15 @@ return {
 			end,
 			mode = { "n", "v" },
 			desc = "Format buffer (sync)",
+		},
+		{
+			"<leader>uf",
+			function()
+				vim.g.disable_autoformat = not vim.g.disable_autoformat
+				local status = vim.g.disable_autoformat and "disabled" or "enabled"
+				vim.notify("Format on save " .. status, vim.log.levels.INFO)
+			end,
+			desc = "Toggle format on save",
 		},
 	},
 }

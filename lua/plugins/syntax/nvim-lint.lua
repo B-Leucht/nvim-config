@@ -14,10 +14,12 @@ return {
 			svelte = { "eslint_d" },
 			vue = { "eslint_d" },
 
+			-- Python (ruff catches what basedpyright doesn't)
+			python = { "ruff" },
+
 			-- Shell (bashls is limited)
 			sh = { "shellcheck" },
 			bash = { "shellcheck" },
-			zsh = { "shellcheck" },
 
 			-- Markup
 			markdown = { "markdownlint" },
@@ -58,6 +60,12 @@ return {
 			"-q",
 		}
 		lint.linters.chktex.ignore_exitcode = true
+
+		vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+			callback = function()
+				lint.try_lint()
+			end,
+		})
 
 		vim.keymap.set("n", "<leader>cl", function()
 			lint.try_lint()
