@@ -61,15 +61,46 @@ return {
 		}
 		lint.linters.chktex.ignore_exitcode = true
 
+		-- Only run eslint_d when an ESLint config exists in the project
+		local eslint_config_files = {
+			"eslint.config.js",
+			"eslint.config.mjs",
+			"eslint.config.cjs",
+			"eslint.config.ts",
+			".eslintrc",
+			".eslintrc.js",
+			".eslintrc.cjs",
+			".eslintrc.json",
+			".eslintrc.yml",
+			".eslintrc.yaml",
+		}
+
+		local function has_eslint_config()
+			for _, file in ipairs(eslint_config_files) do
+				if vim.fn.findfile(file, ".;") ~= "" then
+					return true
+				end
+			end
+			return false
+		end
+
+		local function try_lint()
+			local ft = vim.bo.filetype
+			local linters = lint.linters_by_ft[ft] or {}
+			local filtered = vim.tbl_filter(function(name)
+				if name == "eslint_d" then
+					return has_eslint_config()
+				end
+				return true
+			end, linters)
+			lint.try_lint(filtered)
+		end
+
 		vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
-			callback = function()
-				lint.try_lint()
-			end,
+			callback = try_lint,
 		})
 
-		vim.keymap.set("n", "<leader>cl", function()
-			lint.try_lint()
-		end, { desc = "Trigger linting for current file" })
+		vim.keymap.set("n", "<leader>cl", try_lint, { desc = "Trigger linting for current file" })
 
 		vim.keymap.set("n", "<leader>cL", function()
 			vim.diagnostic.reset(nil, 0)

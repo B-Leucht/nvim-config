@@ -26,6 +26,7 @@ return {
 			{ "<leader>O", group = "overseer" },
 			{ "<leader>s", group = "search" },
 			{ "<leader>t", group = "terminal" },
+			{ "<leader>T", group = "test" },
 			{ "<leader>u", group = "ui" },
 			{ "<leader>vt", group = "vimtex" },
 			{ "<leader>w", group = "windows" },

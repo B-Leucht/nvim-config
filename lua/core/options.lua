@@ -25,7 +25,7 @@ opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.cursorline = true
-opt.wrap = false
+opt.wrap = true
 opt.textwidth = 80
 opt.formatoptions = "tcqjrn1"
 opt.wrapmargin = 0
@@ -71,7 +71,8 @@ if term_program == "iTerm.app" or term_program == "Apple_Terminal" then
 end
 
 vim.diagnostic.config({
-	virtual_text = false, -- diagflow handles this
+	virtual_text = false,
+	virtual_lines = { current_line = true },
 	float = {
 		focusable = false,
 		close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
@@ -95,10 +96,11 @@ vim.diagnostic.config({
 		},
 	},
 	underline = true,
-	update_in_insert = false,
+	update_in_insert = true,
 	severity_sort = true,
 })
 
+vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 if vim.g.neovide then
 	if vim.fn.has("macunix") == 1 then
 		vim.g.neovide_input_use_logo = 1

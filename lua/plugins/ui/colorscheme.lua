@@ -39,6 +39,11 @@ return {
 					NoiceCmdlinePopup = { bg = "NONE" },
 					NoiceCmdlinePopupBorder = { bg = "NONE", fg = colors.lavender },
 					LspCodeLens = { fg = colors.teal, italic = true },
+					BlinkPairsOrange = { fg = colors.peach },
+					BlinkPairsPurple = { fg = colors.mauve },
+					BlinkPairsBlue = { fg = colors.blue },
+					BlinkPairsUnmatched = { fg = colors.red },
+					BlinkPairsMatchParen = { fg = colors.yellow, bold = true },
 				}
 			end,
 		})

@@ -1,18 +1,7 @@
 # Neovim Configuration
 
-Personal Neovim setup with lazy.nvim, snacks.nvim, and modern LSP integration.
-
-## Features
-
-- **Core:** lazy.nvim plugin management, snacks.nvim (picker, terminal, lazygit, explorer, notifications, zen mode), mini.nvim modules
-- **AI:** Sidekick with NES suggestions, GitHub Copilot
-- **LSP:** nvim-lspconfig + mason for auto-installation, blink.cmp completion
-- **Languages:** Java (jdtls), LaTeX (vimtex/texpresso), Typst, Haskell, Rust, C/C++ via LSP
-- **Markdown:** obsidian.nvim integration, otter.nvim for code blocks, markview.nvim rendering
-- **Code Execution:** molten.nvim (Jupyter), sniprun (snippets)
-- **Debug:** nvim-dap with dap-view UI (Python, C/C++, Rust)
-- **Syntax:** treesitter, conform.nvim (formatting), nvim-lint (linting)
-- **UI:** Catppuccin Mocha (transparent), lualine, noice.nvim, incline.nvim
+Personal Neovim setup for Lua, Haskell, Python, Java, Rust Development and Notes
+with WordNet integration and Google Translate.
 
 ## Key Bindings
 
@@ -28,6 +17,7 @@ Use `<leader>?` to show buffer keymaps or press any key to see which-key suggest
 | `<leader>t` | Terminal                            |
 | `<leader>d` | Debug                               |
 | `<leader>o` | Obsidian                            |
+| `<leader>T` | NeoTest                             |
 | `<leader>m` | Molten (Jupyter)                    |
 | `<leader>a` | AI/Sidekick                         |
 | `<leader>u` | UI toggles                          |

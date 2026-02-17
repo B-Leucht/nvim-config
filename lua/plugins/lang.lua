@@ -8,4 +8,6 @@ return {
 	require("plugins.lang.typst"),
 	require("plugins.lang.otter"),
 	require("plugins.lang.markview"),
+	require("plugins.lang.web"),
+	require("plugins.lang.neotest"),
 }

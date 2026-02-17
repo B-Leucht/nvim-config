@@ -3,4 +3,5 @@ return {
 	require("plugins.syntax.conform"),
 	require("plugins.syntax.nvim-lint"),
 	require("plugins.syntax.todo-comments"),
+
 }

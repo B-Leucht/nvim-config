@@ -624,7 +624,7 @@ return {
 		words = { enabled = true },
 		scroll = { enabled = true },
 		bufdelete = { enabled = true },
-		indent = { enabled = true },
+		indent = { enabled = false },
 		zen = { enabled = true },
 		statuscolumn = { enabled = true },
 		git = { enabled = true },

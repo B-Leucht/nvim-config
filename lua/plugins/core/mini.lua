@@ -3,7 +3,6 @@ return {
 	version = false,
 	lazy = false,
 	config = function()
-		require("mini.pairs").setup()
 		require("mini.surround").setup()
 		require("mini.icons").setup()
 		require("mini.diff").setup({
@@ -36,6 +35,9 @@ return {
 
 		-- Bracketed navigation ([b/]b for buffers, [d/]d for diagnostics, etc.)
 		require("mini.bracketed").setup()
+
+		-- Align text (ga/gA in visual mode)
+		require("mini.align").setup()
 
 		-- Session management
 		require("mini.sessions").setup({
@@ -74,6 +76,7 @@ return {
 			},
 			options = {
 				use_as_default_explorer = true,
+				permanent_delete = false,
 			},
 			windows = {
 				preview = true,
