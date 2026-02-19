@@ -13,7 +13,7 @@ return {
 	opts = {
 		keymap = {
 			preset = "default",
-			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+			["<C-d>"] = { "show_documentation", "hide_documentation" },
 			["<C-e>"] = { "hide" },
 			["<CR>"] = { "accept", "fallback" },
 			["<Tab>"] = {
@@ -46,7 +46,7 @@ return {
 
 		completion = {
 			accept = {
-				auto_brackets = { enabled = true },
+				auto_brackets = { enabled = false },
 			},
 			trigger = { prefetch_on_insert = false },
 			documentation = {
@@ -56,14 +56,17 @@ return {
 					border = "rounded",
 					winblend = 0,
 					scrollbar = false,
+					max_width = 60,
+					max_height = 12,
 				},
 			},
 			menu = {
 				border = "rounded",
 				winblend = 0,
+				max_height = 12,
 				winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel",
 				draw = {
-					columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "kind" } },
+					columns = { { "kind_icon" }, { "label", "label_description", gap = 1 } },
 				},
 			},
 			ghost_text = { enabled = false },
@@ -78,7 +81,7 @@ return {
 			},
 		},
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "dictionary", "lazydev", "git" },
+			default = { "lsp", "path", "snippets", "buffer", "dictionary", "lazydev", "git", "minuet", "conventional_commits" },
 			providers = {
 				lsp = {
 					score_offset = 100,
@@ -129,7 +132,19 @@ return {
 					name = "Git",
 					module = "blink-cmp-git",
 				},
+				minuet = {
+					name = "Minuet",
+					module = "minuet.blink",
+					async = true,
+					timeout_ms = 3000,
+					score_offset = 50,
 				},
+				conventional_commits = {
+					name = "Commits",
+					module = "utils.blink-conventional-commits",
+					score_offset = 200,
+				},
+			},
 		},
 		cmdline = {
 			enabled = false,

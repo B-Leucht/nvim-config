@@ -85,6 +85,23 @@ return {
 			},
 		})
 
+		vim.lsp.config("texlab", {
+			settings = {
+				texlab = {
+					build = {
+						executable = "latexmk",
+						args = { "-pdflua", "-interaction=nonstopmode", "-synctex=1", "%f" },
+						onSave = false,
+					},
+					forwardSearch = {
+						executable = "sioyek",
+						args = { "--reuse-window", "--forward-search-file", "%f", "--forward-search-line", "%l", "%p" },
+					},
+					chktex = { onOpenAndSave = true },
+				},
+			},
+		})
+
 		vim.lsp.config("ltex_plus", {
 			cmd = { "ltex-ls-plus" },
 			filetypes = { "markdown", "text", "latex", "tex", "bib", "typst" },

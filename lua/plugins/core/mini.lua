@@ -3,8 +3,19 @@ return {
 	version = false,
 	lazy = false,
 	config = function()
-		require("mini.surround").setup()
+		require("mini.surround").setup({
+			mappings = {
+				add = "gza",
+				delete = "gzd",
+				find = "gzf",
+				find_left = "gzF",
+				highlight = "gzh",
+				replace = "gzr",
+				update_n_lines = "gzn",
+			},
+		})
 		require("mini.icons").setup()
+		require("mini.pairs").setup()
 		require("mini.diff").setup({
 			view = {
 				style = "sign",
@@ -86,6 +97,13 @@ return {
 		})
 
 		vim.api.nvim_create_autocmd("User", {
+			pattern = "MiniFilesActionRename",
+			callback = function(event)
+				Snacks.rename.on_rename_file(event.data.from, event.data.to)
+			end,
+		})
+
+		vim.api.nvim_create_autocmd("User", {
 			pattern = "MiniFilesBufferCreate",
 			callback = function(args)
 				vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = args.data.buf_id, desc = "Toggle dotfiles" })
@@ -112,5 +130,15 @@ return {
 		end, { desc = "Explorer (cwd)" })
 
 		MiniIcons.mock_nvim_web_devicons()
+
+		local hi = require("mini.hipatterns")
+		hi.setup({
+			highlighters = {
+				fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+				hack  = { pattern = "%f[%w]()HACK()%f[%W]",  group = "MiniHipatternsHack" },
+				todo  = { pattern = "%f[%w]()TODO()%f[%W]",  group = "MiniHipatternsTodo" },
+				note  = { pattern = "%f[%w]()NOTE()%f[%W]",  group = "MiniHipatternsNote" },
+			},
+		})
 	end,
 }

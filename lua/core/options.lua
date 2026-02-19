@@ -7,19 +7,17 @@ vim.opt.cmdheight = 0
 vim.g.custom_lualine_show_lsp_names = true
 
 local opt = vim.opt
-
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.softtabstop = 2
 opt.expandtab = true
 opt.smartindent = true
 opt.autoindent = true
-
 opt.number = true
 opt.relativenumber = true
 opt.numberwidth = 1
 opt.signcolumn = "auto:2"
-opt.foldcolumn = "0"
+opt.foldcolumn = "2"
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldlevel = 99
@@ -127,4 +125,3 @@ vim.g.markdown_fenced_languages = {
 
 vim.opt.spell = true
 vim.opt.spelllang = { "en", "de" }
-

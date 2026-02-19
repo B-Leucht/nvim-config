@@ -17,11 +17,13 @@ return {
 			for _, group in ipairs(groups) do
 				vim.api.nvim_set_hl(0, group, { bg = "NONE" })
 			end
-			vim.api.nvim_set_hl(0, "MarkviewCodeInfo", { bg = "NONE", fg = "#7a7a7a" })
+			local ok, palettes = pcall(require, "catppuccin.palettes")
+			local fg = ok and palettes.get_palette().overlay1 or "#7a7a7a"
+			vim.api.nvim_set_hl(0, "MarkviewCodeInfo", { bg = "NONE", fg = fg })
 		end
 		require("markview").setup(opts)
-		clear_code_bg()
-		vim.api.nvim_create_autocmd("ColorScheme", { callback = clear_code_bg })
+		vim.schedule(clear_code_bg)
+		vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, { callback = clear_code_bg })
 	end,
 	opts = {
 		preview = {
@@ -31,6 +33,8 @@ return {
 			linewise_hybrid_mode = true,
 		},
 		markdown = {
+			wrap = false,
+			tables = { wrap = false },
 			code_blocks = {
 				enable = true,
 				style = "simple",

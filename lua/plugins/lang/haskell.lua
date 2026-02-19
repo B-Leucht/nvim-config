@@ -17,14 +17,13 @@ return {
 							vim.lsp.codelens.refresh({ bufnr = bufnr })
 						end,
 					})
-					vim.keymap.set("n", "<leader>cl", vim.lsp.codelens.run, opts("Run code lens"))
 					vim.keymap.set("n", "<leader>hs", ht.hoogle.hoogle_signature, opts("Hoogle signature"))
-					vim.keymap.set("n", "<leader>ea", ht.lsp.buf_eval_all, opts("Evaluate all snippets"))
-					vim.keymap.set("n", "<leader>rr", ht.repl.toggle, opts("Toggle GHCi repl"))
-					vim.keymap.set("n", "<leader>rf", function()
+					vim.keymap.set("n", "<leader>he", ht.lsp.buf_eval_all, opts("Evaluate all snippets"))
+					vim.keymap.set("n", "<leader>hr", ht.repl.toggle, opts("Toggle GHCi repl"))
+					vim.keymap.set("n", "<leader>hf", function()
 						ht.repl.toggle(vim.api.nvim_buf_get_name(0))
 					end, opts("Toggle GHCi repl (buffer)"))
-					vim.keymap.set("n", "<leader>rq", ht.repl.quit, opts("Quit GHCi repl"))
+					vim.keymap.set("n", "<leader>hq", ht.repl.quit, opts("Quit GHCi repl"))
 				end,
 				settings = {
 					haskell = {

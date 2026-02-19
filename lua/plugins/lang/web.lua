@@ -29,7 +29,7 @@ return {
 		ft = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
 		keys = {
 			{
-				"<leader>xe",
+				"<leader>pe",
 				function()
 					require("nvim-emmet").wrap_with_abbreviation()
 				end,

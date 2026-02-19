@@ -32,13 +32,15 @@ local extensions = {
 	},
 	quickfix = {
 		sections = {
-			lualine_a = { {
-				function()
-					return vim.fn.getloclist(0, { filewinid = 1 }).filewinid ~= 0 and " Location List"
-						or " Quickfix List"
-				end,
-				separator = SEPARATORS.round1,
-			} },
+			lualine_a = {
+				{
+					function()
+						return vim.fn.getloclist(0, { filewinid = 1 }).filewinid ~= 0 and " Location List"
+							or " Quickfix List"
+					end,
+					separator = SEPARATORS.round1,
+				},
+			},
 			lualine_z = { { "location", separator = SEPARATORS.round1 } },
 		},
 		filetypes = { "qf" },
@@ -139,7 +141,7 @@ return {
 						local ok, noice = pcall(require, "noice")
 						return ok and noice.api.status.search.has()
 					end,
-					color = { fg = "#ff9e64" },
+					color = function() return { fg = require("catppuccin.palettes").get_palette().peach } end,
 					separator = SEPARATORS.empty,
 				},
 				{
@@ -158,7 +160,7 @@ return {
 						local ok, lazy = pcall(require, "lazy.status")
 						return ok and lazy.has_updates()
 					end,
-					color = { fg = "#ff9e64" },
+					color = function() return { fg = require("catppuccin.palettes").get_palette().peach } end,
 					separator = SEPARATORS.empty,
 				},
 			},

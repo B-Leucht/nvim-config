@@ -45,7 +45,7 @@ keymap("n", "<leader>bD", function()
 	Snacks.bufdelete({ force = true })
 end, { desc = "Force delete buffer" })
 
-keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Clear highlights" })
+keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear highlights" })
 
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
@@ -58,9 +58,7 @@ keymap("v", "K", ":m '<-2<CR>gv=gv", opts)
 keymap({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
 keymap({ "n", "v" }, "<leader>P", '"+p', { desc = "Paste from clipboard" })
 
-keymap("n", "<leader>?", function()
-	require("which-key").show({ global = false })
-end, { desc = "Buffer Local Keymaps (which-key)" })
+	keymap("n", "<leader>am", "<cmd>Minuet blink toggle<CR>", { desc = "Toggle Minuet AI source" })
 
 
 keymap("n", "<up>", "<nop>", opts)
@@ -106,6 +104,18 @@ vim.api.nvim_create_autocmd("User", {
 		end, {
 			lsp = { method = "textDocument/inlayHint" },
 			desc = "Toggle inlay hints",
+		})
+
+		Snacks.keymap.set("n", "<leader>li", function()
+			require("inlayhint-filler").fill()
+		end, {
+			lsp = { method = "textDocument/inlayHint" },
+			desc = "Insert inlay hint",
+		})
+
+		Snacks.keymap.set("n", "<leader>lc", vim.lsp.codelens.run, {
+			lsp = { method = "textDocument/codeLens" },
+			desc = "Run codelens",
 		})
 	end,
 })

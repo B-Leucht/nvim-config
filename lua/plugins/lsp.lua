@@ -3,4 +3,5 @@ return {
 	require("plugins.lsp.mason"),
 	require("plugins.lsp.cmp"),
 	require("plugins.lsp.actions-preview"),
+	require("plugins.lsp.inlayhint-filler"),
 }

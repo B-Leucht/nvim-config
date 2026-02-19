@@ -5,5 +5,4 @@ return {
 	require("plugins.ui.incline"),
 	require("plugins.ui.helpview"),
 	require("plugins.ui.patterns"),
-
 }

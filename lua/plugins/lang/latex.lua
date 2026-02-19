@@ -3,21 +3,24 @@ return {
 	{
 		"let-def/texpresso.vim",
 		ft = { "tex", "latex" },
+		keys = {
+			{ "<leader>vx", "<cmd>TeXpresso %<CR>", desc = "Texpresso open", ft = "tex" },
+		},
 	},
 	{
 		"lervag/vimtex",
 		ft = { "tex", "latex", "bib" },
 		keys = {
-			{ "<leader>vtl", "<cmd>VimtexCompile<CR>", desc = "VimTeX compile" },
-			{ "<leader>vtv", "<cmd>VimtexView<CR>", desc = "VimTeX view" },
-			{ "<leader>vts", "<cmd>VimtexStop<CR>", desc = "VimTeX stop" },
-			{ "<leader>vtc", "<cmd>VimtexClean<CR>", desc = "VimTeX clean" },
-			{ "<leader>vtC", "<cmd>VimtexClean!<CR>", desc = "VimTeX clean all" },
-			{ "<leader>vte", "<cmd>VimtexErrors<CR>", desc = "VimTeX errors" },
-			{ "<leader>vto", "<cmd>VimtexCompileOutput<CR>", desc = "VimTeX output" },
-			{ "<leader>vtg", "<cmd>VimtexStatus<CR>", desc = "VimTeX status" },
-			{ "<leader>vtG", "<cmd>VimtexStatusAll<CR>", desc = "VimTeX status all" },
-			{ "<leader>vtt", "<cmd>VimtexTocToggle<CR>", desc = "VimTeX TOC toggle" },
+			{ "<leader>vl", "<cmd>VimtexCompile<CR>",       desc = "VimTeX compile",     ft = "tex" },
+			{ "<leader>vv", "<cmd>VimtexView<CR>",          desc = "VimTeX view",        ft = "tex" },
+			{ "<leader>vs", "<cmd>VimtexStop<CR>",          desc = "VimTeX stop",        ft = "tex" },
+			{ "<leader>vc", "<cmd>VimtexClean<CR>",         desc = "VimTeX clean",       ft = "tex" },
+			{ "<leader>vC", "<cmd>VimtexClean!<CR>",        desc = "VimTeX clean all",   ft = "tex" },
+			{ "<leader>ve", "<cmd>VimtexErrors<CR>",        desc = "VimTeX errors",      ft = "tex" },
+			{ "<leader>vo", "<cmd>VimtexCompileOutput<CR>", desc = "VimTeX output",      ft = "tex" },
+			{ "<leader>vg", "<cmd>VimtexStatus<CR>",        desc = "VimTeX status",      ft = "tex" },
+			{ "<leader>vG", "<cmd>VimtexStatusAll<CR>",     desc = "VimTeX status all",  ft = "tex" },
+			{ "<leader>vt", "<cmd>VimtexTocToggle<CR>",     desc = "VimTeX TOC toggle",  ft = "tex" },
 		},
 		init = function()
 			vim.g.tex_flavor = "latex"

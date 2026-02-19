@@ -14,23 +14,35 @@ return {
 		local wk = require("which-key")
 		wk.setup(opts)
 		wk.add({
+			{ "<leader>a", group = "ai" },
 			{ "<leader>b", group = "buffer" },
 			{ "<leader>d", group = "debug" },
 			{ "<leader>f", group = "find" },
 			{ "<leader>g", group = "git" },
-			{ "<leader>j", group = "java" },
-			{ "<leader>l", group = "lsp" },
-			{ "<leader>m", group = "molten" },
-			{ "<leader>n", group = "notes" },
-			{ "<leader>o", group = "obsidian" },
-			{ "<leader>O", group = "overseer" },
+			{ "<leader>h", group = "haskell", icon = "󰲒" },
+			{ "<leader>j", group = "java", icon = "󰬷" },
+			{
+				"<leader>l",
+				group = "lsp",
+				icon = function()
+					local icon = MiniIcons.get("filetype", vim.bo.filetype)
+					return icon
+				end,
+			},
+			{ "<leader>m", group = "molten", icon = "" },
+			{ "<leader>n", group = "notes", icon = "󰎜" },
+			{ "<leader>o", group = "obsidian", icon = "󰧑" },
+			{ "<leader>p", group = "web", icon = "󰖟" },
+			{ "<leader>O", group = "overseer", icon = "" },
+			{ "<leader>r", group = "rust", icon = "󱘗" },
 			{ "<leader>s", group = "search" },
 			{ "<leader>t", group = "terminal" },
 			{ "<leader>T", group = "test" },
 			{ "<leader>u", group = "ui" },
-			{ "<leader>vt", group = "vimtex" },
+			{ "<leader>v", group = "vimtex", icon = "" },
 			{ "<leader>w", group = "windows" },
-			{ "<leader>x", group = "execute" },
+			{ "<leader>x", group = "regex", icon = "󰑑" },
+			{ "<leader>c", group = "code", icon = "" },
 		})
 	end,
 }

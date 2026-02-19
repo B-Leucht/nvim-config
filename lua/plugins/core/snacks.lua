@@ -56,24 +56,6 @@ return {
 			desc = "Open Vertical Terminal",
 		},
 		{
-			"<leader>py",
-			function()
-				Snacks.terminal.toggle("ipython", {
-					win = { position = "float", width = 0.8, height = 0.8 },
-				})
-			end,
-			desc = "Toggle IPython Terminal",
-		},
-		{
-			"<leader>ss",
-			function()
-				Snacks.terminal.open("ssh", {
-					win = { position = "bottom", height = 10 },
-				})
-			end,
-			desc = "Open SSH Terminal",
-		},
-		{
 			"<leader>gg",
 			function()
 				Snacks.lazygit.open({
@@ -199,13 +181,6 @@ return {
 				Snacks.picker.command_history()
 			end,
 			desc = "Command History",
-		},
-		{
-			"<leader>n",
-			function()
-				Snacks.notifier.show_history()
-			end,
-			desc = "Notification History",
 		},
 		{
 			"<leader>fn",
@@ -525,20 +500,6 @@ return {
 			desc = "LSP Workspace Symbols",
 		},
 		{
-			"<leader>st",
-			function()
-				Snacks.picker.todo_comments()
-			end,
-			desc = "Todo Comments",
-		},
-		{
-			"<leader>sT",
-			function()
-				Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
-			end,
-			desc = "Todo/Fix/Fixme Comments",
-		},
-		{
 			"<leader>fz",
 			function()
 				Snacks.picker.zoxide()
@@ -553,7 +514,7 @@ return {
 		},
 
 		{
-			"<leader>rn",
+			"<leader>fR",
 			function()
 				Snacks.rename.rename_file()
 			end,
@@ -562,16 +523,9 @@ return {
 		{
 			"<leader>lr",
 			function()
-				Snacks.rename.rename()
+				vim.lsp.buf.rename()
 			end,
 			desc = "Rename",
-		},
-		{
-			"<leader>lp",
-			function()
-				Snacks.rename.rename({ preview = true })
-			end,
-			desc = "Rename (Preview)",
 		},
 
 		{
@@ -624,7 +578,16 @@ return {
 		words = { enabled = true },
 		scroll = { enabled = true },
 		bufdelete = { enabled = true },
-		indent = { enabled = false },
+		indent = {
+			enabled = true,
+			only_scope = true,
+			filter = function(buf, win)
+				return vim.g.snacks_indent ~= false
+					and vim.b[buf].snacks_indent ~= false
+					and vim.bo[buf].buftype == ""
+					and vim.bo[buf].filetype ~= "haskell"
+			end,
+		},
 		zen = { enabled = true },
 		statuscolumn = { enabled = true },
 		git = { enabled = true },
@@ -690,6 +653,7 @@ return {
 		},
 
 		picker = {
+			layout = "default",
 			enabled = true,
 			actions = {
 				sidekick_send = function(...)
