@@ -9,6 +9,7 @@ return {
 			dependencies = { "nvim-lua/plenary.nvim" },
 		},
 		"Kaiser-Yang/blink-cmp-git",
+		"disrupted/blink-cmp-conventional-commits",
 	},
 	opts = {
 		keymap = {
@@ -141,7 +142,7 @@ return {
 				},
 				conventional_commits = {
 					name = "Commits",
-					module = "utils.blink-conventional-commits",
+					module = "blink-cmp-conventional-commits",
 					score_offset = 200,
 				},
 			},
