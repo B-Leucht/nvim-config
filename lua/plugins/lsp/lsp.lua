@@ -4,6 +4,7 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"saghen/blink.cmp",
+		"folke/lazydev.nvim",
 	},
 	config = function()
 		vim.lsp.config("*", {
@@ -17,6 +18,17 @@ return {
 		if not string.find(vim.env.PATH, mason_path, 1, true) then
 			vim.env.PATH = mason_path .. path_separator .. vim.env.PATH
 		end
+
+		vim.lsp.config("lua_ls", {
+			settings = {
+				Lua = {
+					workspace = {
+						library = { vim.env.VIMRUNTIME .. "/lua" },
+						checkThirdParty = false,
+					},
+				},
+			},
+		})
 
 		vim.lsp.enable("pyright", false)
 
@@ -60,6 +72,10 @@ return {
 			},
 		})
 
+		vim.lsp.config("tailwindcss", {
+			filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
+		})
+
 		vim.lsp.config("clangd", {
 			cmd = {
 				"clangd",
@@ -85,6 +101,23 @@ return {
 			},
 		})
 
+		vim.lsp.config("ltex_plus", {
+			cmd = { "ltex-ls-plus" },
+			filetypes = { "markdown", "text", "latex", "tex", "bib", "typst" },
+			settings = {
+				ltex = {
+					language = "auto",
+					completionEnabled = false,
+					additionalRules = {
+						enablePickyRules = false,
+						motherTongue = "de",
+						languageModel = vim.fn.expand("~/ngrams"),
+					},
+					checkFrequency = "edit",
+				},
+			},
+		})
+
 		vim.lsp.config("texlab", {
 			settings = {
 				texlab = {
@@ -102,22 +135,6 @@ return {
 			},
 		})
 
-		vim.lsp.config("ltex_plus", {
-			cmd = { "ltex-ls-plus" },
-			filetypes = { "markdown", "text", "latex", "tex", "bib", "typst" },
-			settings = {
-				ltex = {
-					language = "auto",
-					completionEnabled = false, -- Disabled - prefer dictionary completions
-					additionalRules = {
-						enablePickyRules = false,
-						motherTongue = "de",
-						languageModel = vim.fn.expand("~/ngrams"),
-					},
-					checkFrequency = "edit",
-				},
-			},
-		})
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(args)

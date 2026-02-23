@@ -12,7 +12,7 @@ return {
 		{ "<leader>ml", "<cmd>MoltenEvaluateLine<cr>", desc = "Evaluate line" },
 		{ "<leader>mr", "<cmd>MoltenReevaluateCell<cr>", desc = "Re-evaluate cell" },
 		{ "<leader>md", "<cmd>MoltenDelete<cr>", desc = "Delete cell" },
-		{ "<leader>mo", "<cmd>MoltenShowOutput<cr>", desc = "Show output" },
+		{ "<leader>mo", "<cmd>MoltenShowOutput<cr>", desc = "Show output", ft = { "python", "markdown", "quarto" } },
 		{ "<leader>mh", "<cmd>MoltenHideOutput<cr>", desc = "Hide output" },
 		{ "<leader>mx", "<cmd>MoltenInterrupt<cr>", desc = "Interrupt kernel" },
 		{ "<leader>mc", "<cmd>noautocmd MoltenEnterOutput<cr>", desc = "Enter output window" },
@@ -32,16 +32,15 @@ return {
 		vim.g.molten_output_crop_border = true
 		vim.g.molten_output_show_more = true -- Show "x more lines" (nvim 10.0+)
 		vim.g.molten_output_virt_lines = true -- Pad with virtual lines so float doesn't cover content
-		vim.g.molten_enter_output_behavior = "open_and_enter" -- Open and enter immediately
+		vim.g.molten_enter_output_behavior = "open_then_enter"
 
-		-- Virtual text output settings
 		vim.g.molten_virt_text_output = true
 		vim.g.molten_virt_text_max_lines = 12
 		vim.g.molten_virt_lines_off_by_1 = true
 
 		-- Image settings
 		vim.g.molten_image_provider = "snacks.nvim"
-		vim.g.molten_image_location = "float" -- Show images in output float window
+		vim.g.molten_image_location = "float"
 		vim.g.molten_output_win_zindex = 100
 
 		-- Misc
@@ -86,7 +85,7 @@ return {
 			end,
 		})
 
-		-- Run code block under cursor in markdown
+-- Run code block under cursor in markdown
 		vim.keymap.set("n", "<leader>mb", function()
 			local node = vim.treesitter.get_node()
 			while node do

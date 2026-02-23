@@ -132,6 +132,7 @@ return {
 				git = {
 					name = "Git",
 					module = "blink-cmp-git",
+					score_offset = 150,
 				},
 				minuet = {
 					name = "Minuet",

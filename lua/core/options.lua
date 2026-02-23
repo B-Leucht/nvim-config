@@ -5,7 +5,6 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.cmdheight = 0
 vim.g.custom_lualine_show_lsp_names = true
-
 local opt = vim.opt
 opt.tabstop = 2
 opt.shiftwidth = 2
@@ -123,5 +122,5 @@ vim.g.markdown_fenced_languages = {
 	"vim",
 }
 
-vim.opt.spell = true
+vim.opt.spell = false
 vim.opt.spelllang = { "en", "de" }

@@ -88,8 +88,8 @@ return {
 			section_separators = SEPARATORS.round1,
 			globalstatus = true,
 			disabled_filetypes = DISABLED_FILETYPES,
-			always_divide_middle = true,
-			refresh = { statusline = 2000, tabline = 5000, winbar = 5000 },
+			always_divide_middle = false,
+			always_show_tabline = false,
 		},
 		sections = {
 			lualine_a = {
@@ -130,8 +130,6 @@ return {
 					update_in_insert = false,
 					separator = SEPARATORS.empty,
 				},
-				-- Molten Kernel Status
-
 				{
 					function()
 						local ok, noice = pcall(require, "noice")
@@ -141,7 +139,23 @@ return {
 						local ok, noice = pcall(require, "noice")
 						return ok and noice.api.status.search.has()
 					end,
-					color = function() return { fg = require("catppuccin.palettes").get_palette().peach } end,
+					color = function()
+						return { fg = require("catppuccin.palettes").get_palette().peach }
+					end,
+					separator = SEPARATORS.empty,
+				},
+				{
+					function()
+						local ok, noice = pcall(require, "noice")
+						return ok and noice.api.status.mode.get() or ""
+					end,
+					cond = function()
+						local ok, noice = pcall(require, "noice")
+						return ok and noice.api.status.mode.has()
+					end,
+					color = function()
+						return { fg = require("catppuccin.palettes").get_palette().red }
+					end,
 					separator = SEPARATORS.empty,
 				},
 				{
@@ -160,11 +174,31 @@ return {
 						local ok, lazy = pcall(require, "lazy.status")
 						return ok and lazy.has_updates()
 					end,
-					color = function() return { fg = require("catppuccin.palettes").get_palette().peach } end,
+					color = function()
+						return { fg = require("catppuccin.palettes").get_palette().peach }
+					end,
 					separator = SEPARATORS.empty,
 				},
 			},
-			lualine_y = { { "progress", section_separators = SEPARATORS.round2 } },
+			lualine_y = {
+				{
+					"fileformat",
+					section_separators = SEPARATORS.round2,
+					cond = function()
+						return vim.bo.fileformat ~= "unix"
+					end,
+					separator = SEPARATORS.empty,
+				},
+				{
+					"encoding",
+					section_separators = SEPARATORS.round2,
+					cond = function()
+						return vim.bo.fileencoding ~= "utf-8"
+					end,
+					separator = SEPARATORS.empty,
+				},
+				{ "progress", section_separators = SEPARATORS.round2 },
+			},
 			lualine_z = {
 				{
 					"location",
@@ -177,7 +211,29 @@ return {
 			lualine_c = { { "pretty_path", providers = PRETTY_PATH_PROVIDERS } },
 			lualine_x = { "location" },
 		},
-		tabline = {},
+		tabline = {
+			lualine_a = {
+				{
+					"tabs",
+					separator = SEPARATORS.round1,
+					section_separators = SEPARATORS.round2,
+					mode = 2,
+					max_length = vim.o.columns,
+					cond = function()
+						return vim.fn.tabpagenr("$") > 1
+					end,
+					tabs_color = {
+						active = "lualine_a_normal",
+						inactive = "lualine_b_normal",
+					},
+				},
+			},
+			lualine_b = {},
+			lualine_c = {},
+			lualine_x = {},
+			lualine_y = {},
+			lualine_z = {},
+		},
 		extensions = {
 			extensions.lazy,
 			extensions.mason,
