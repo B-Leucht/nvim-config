@@ -135,22 +135,7 @@ return {
 			end,
 			desc = "Toggle Indent Guides",
 		},
-		{
-			"<leader>un",
-			function()
-				vim.g.custom_lualine_show_names = not vim.g.custom_lualine_show_names
-				-- Force lualine refresh with error handling
-				vim.schedule(function()
-					local ok, lualine = pcall(require, "lualine")
-					if ok then
-						lualine.refresh()
-					end
-				end)
-				local status = vim.g.custom_lualine_show_names and "shown" or "hidden"
-				vim.notify("Lualine names " .. status, vim.log.levels.INFO)
-			end,
-			desc = "Toggle Lualine Names",
-		},
+
 		{
 			"<leader>Z",
 			function()
@@ -329,13 +314,6 @@ return {
 				Snacks.picker.autocmds()
 			end,
 			desc = "Autocmds",
-		},
-		{
-			"<leader>sc",
-			function()
-				Snacks.picker.command_history()
-			end,
-			desc = "Command History",
 		},
 		{
 			"<leader>sC",
@@ -521,14 +499,6 @@ return {
 			desc = "Rename File",
 		},
 		{
-			"<leader>lr",
-			function()
-				vim.lsp.buf.rename()
-			end,
-			desc = "Rename",
-		},
-
-		{
 			"<leader>wm",
 			function()
 				vim.cmd("only")
@@ -685,14 +655,12 @@ return {
 		terminal = {
 			enabled = true,
 			win = {
-				border = "rounded",
 				wo = {
 					winbar = "",
-					winblend = 0,
 				},
-			},
-			bo = {
-				filetype = "terminal",
+				bo = {
+					filetype = "terminal",
+				},
 			},
 		},
 	},

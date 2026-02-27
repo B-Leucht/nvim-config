@@ -31,19 +31,19 @@ return {
 			if vim.g.disable_autoformat then
 				return
 			end
-			return { lsp_fallback = true }
+			return { lsp_format = "fallback" }
 		end,
 		-- Notify on format errors
 		notify_on_error = true,
 	},
 	keys = {
 		{
-			"<leader>cF",
+			"<leader>cf",
 			function()
-				require("conform").format({ async = false, lsp_fallback = true })
+				require("conform").format({ async = true, lsp_format = "fallback" })
 			end,
 			mode = { "n", "v" },
-			desc = "Format buffer (sync)",
+			desc = "Format buffer",
 		},
 		{
 			"<leader>uf",

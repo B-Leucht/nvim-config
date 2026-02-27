@@ -2,7 +2,7 @@ return {
 	-- Inline color highlighting (hex, rgb, hsl, named colors, tailwind)
 	{
 		"brenoprata10/nvim-highlight-colors",
-		event = "BufReadPre",
+		ft = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte", "lua" },
 		opts = {
 			render = "virtual",
 			virtual_symbol = "■",
@@ -21,23 +21,6 @@ return {
 		opts = {
 			server = { override = false, setup = false },
 		},
-	},
-
-	-- Emmet support via LSP
-	{
-		"olrtg/nvim-emmet",
-		ft = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
-		keys = {
-			{
-				"<leader>pe",
-				function()
-					require("nvim-emmet").wrap_with_abbreviation()
-				end,
-				desc = "Emmet Wrap with Abbreviation",
-				mode = { "n", "v" },
-			},
-		},
-		config = function() end,
 	},
 
 	-- package.json dependency management

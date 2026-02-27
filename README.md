@@ -27,7 +27,7 @@ Use `<leader>?` to show buffer keymaps or press any key to see which-key suggest
 
 - Neovim >= 0.10, Nerd Font, `ripgrep`
 - Python venv at `~/.venvs/neovim/` (for python3 host, molten)
-- Optional: `OBSIDIAN_VAULT`, `JAVA21_HOME` env vars
+- Optional: `OBSIDIAN_VAULT` env var
 
 ## Installation
 

@@ -7,14 +7,11 @@ local function catppuccin_setup()
 		term_colors = true,
 		default_integrations = true,
 		integrations = {
-			cmp = true,
+			cmp = false,
+			blink_cmp = true,
 			fzf = true,
 			treesitter = true,
 			mason = true,
-		},
-		highlight = {
-			enable = true,
-			additional_vim_regex_highlighting = false,
 		},
 		custom_highlights = function(colors)
 			return {

@@ -23,14 +23,11 @@ return {
 			settings = {
 				Lua = {
 					workspace = {
-						library = { vim.env.VIMRUNTIME .. "/lua" },
 						checkThirdParty = false,
 					},
 				},
 			},
 		})
-
-		vim.lsp.enable("pyright", false)
 
 		vim.lsp.config("basedpyright", {
 			before_init = function(_, config)
@@ -142,6 +139,9 @@ return {
 				if not client then
 					return
 				end
+
+				vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { buffer = args.buf, desc = "Line diagnostics (float)" })
+
 				if client.server_capabilities.inlayHintProvider and client.name ~= "haskell-tools.nvim" then
 					vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
 				end

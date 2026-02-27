@@ -1,12 +1,12 @@
 -- LaTeX support
 return {
-	{
-		"let-def/texpresso.vim",
-		ft = { "tex", "latex" },
-		keys = {
-			{ "<leader>vx", "<cmd>TeXpresso %<CR>", desc = "Texpresso open", ft = "tex" },
-		},
-	},
+	-- {
+	-- 	"let-def/texpresso.vim",
+	-- 	ft = { "tex", "latex" },
+	-- 	keys = {
+	-- 		{ "<leader>vx", "<cmd>TeXpresso %<CR>", desc = "Texpresso open", ft = "tex" },
+	-- 	},
+	-- },
 	{
 		"lervag/vimtex",
 		ft = { "tex", "latex", "bib" },

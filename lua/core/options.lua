@@ -4,14 +4,12 @@ vim.env.PYTHONSTARTUP = nil
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.cmdheight = 0
-vim.g.custom_lualine_show_lsp_names = true
 local opt = vim.opt
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.softtabstop = 2
 opt.expandtab = true
 opt.smartindent = true
-opt.autoindent = true
 opt.number = true
 opt.relativenumber = true
 opt.numberwidth = 1
@@ -33,10 +31,7 @@ opt.concealcursor = ""
 
 opt.ignorecase = true
 opt.smartcase = true
-opt.hlsearch = true
-opt.incsearch = true
 
-opt.mouse = "a"
 opt.mousemodel = "popup"
 
 -- Override built-in right-click "Show All Diagnostics" to handle deleted buffers (otter.nvim)
@@ -53,19 +48,11 @@ opt.swapfile = false
 opt.splitbelow = true
 opt.splitright = true
 
-opt.termguicolors = true
 opt.showmode = false
-opt.laststatus = 2
 vim.o.winborder = "rounded"
 
 opt.updatetime = 250
 opt.timeoutlen = 400
-
-local term_program = os.getenv("TERM_PROGRAM")
-if term_program == "iTerm.app" or term_program == "Apple_Terminal" then
-	vim.opt.ttyfast = true
-	vim.opt.ttimeout = true
-end
 
 vim.diagnostic.config({
 	virtual_text = false,
@@ -74,7 +61,7 @@ vim.diagnostic.config({
 		focusable = false,
 		close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
 		border = "rounded",
-		source = "always",
+		source = true,
 		prefix = " ",
 		scope = "cursor",
 	},
@@ -93,11 +80,9 @@ vim.diagnostic.config({
 		},
 	},
 	underline = true,
-	update_in_insert = true,
 	severity_sort = true,
 })
 
-vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 if vim.g.neovide then
 	if vim.fn.has("macunix") == 1 then
 		vim.g.neovide_input_use_logo = 1
@@ -113,14 +98,4 @@ if vim.g.neovide then
 	vim.o.guifont = "FiraCode Nerd Font:h18"
 end
 
-vim.g.markdown_fenced_languages = {
-	"python",
-	"lua",
-	"bash",
-	"sh",
-	"json",
-	"vim",
-}
-
-vim.opt.spell = false
 vim.opt.spelllang = { "en", "de" }

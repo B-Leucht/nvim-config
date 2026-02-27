@@ -7,17 +7,15 @@ return {
 		"OverseerOpen",
 		"OverseerClose",
 		"OverseerTaskAction",
-		"OverseerRestartLast",
 	},
 	keys = {
 		{ "<leader>Or", "<cmd>OverseerRun<cr>", desc = "Run Task" },
-		{ "<leader>Ol", "<cmd>OverseerRestartLast<cr>", desc = "Restart Last Task" },
 		{ "<leader>Oo", "<cmd>OverseerToggle<cr>", desc = "Toggle Overseer" },
 		{ "<leader>Oa", "<cmd>OverseerTaskAction<cr>", desc = "Task Action" },
 	},
 	opts = {
 		strategy = "terminal",
-		templates = { "builtin", "user" },
+		templates = { "builtin" },
 		task_list = {
 			direction = "bottom",
 			min_height = 15,

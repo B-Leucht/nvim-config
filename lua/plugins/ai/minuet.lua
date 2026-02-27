@@ -2,6 +2,9 @@ return {
 	"milanglacier/minuet-ai.nvim",
 	dependencies = { "nvim-lua/plenary.nvim" },
 	event = "InsertEnter",
+	keys = {
+		{ "<leader>am", "<cmd>Minuet blink toggle<CR>", desc = "Toggle Minuet AI source" },
+	},
 	opts = {
 		provider = "openai_fim_compatible",
 		n_completions = 1,

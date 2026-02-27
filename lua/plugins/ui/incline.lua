@@ -1,4 +1,12 @@
 -- Incline: floating filename labels for splits
+local cached_palette = nil
+local function get_palette()
+	if not cached_palette then
+		cached_palette = require("catppuccin.palettes").get_palette()
+	end
+	return cached_palette
+end
+
 return {
 	"b0o/incline.nvim",
 	event = "VeryLazy",
@@ -28,7 +36,7 @@ return {
 			local ft_icon, ft_hl = MiniIcons.get("file", filename)
 			local ft_color = vim.api.nvim_get_hl(0, { name = ft_hl, link = false }).fg
 			local modified = vim.bo[props.buf].modified
-			local palette = require("catppuccin.palettes").get_palette()
+			local palette = get_palette()
 			local bg = props.focused and palette.surface0 or palette.mantle
 			local fg = props.focused and palette.blue or palette.surface1
 
@@ -42,4 +50,12 @@ return {
 			}
 		end,
 	},
+	config = function(_, opts)
+		vim.api.nvim_create_autocmd("ColorScheme", {
+			callback = function()
+				cached_palette = nil
+			end,
+		})
+		require("incline").setup(opts)
+	end,
 }

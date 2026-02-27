@@ -29,10 +29,10 @@ return {
 					config_dir = "config_win"
 				end
 
-				-- Build runtimes from environment variables if available
+				-- Use JAVA_HOME for runtime detection
 				local runtimes = {}
-				if os.getenv("JAVA21_HOME") then
-					table.insert(runtimes, { name = "JavaSE-21", path = os.getenv("JAVA21_HOME") })
+				if vim.env.JAVA_HOME then
+					table.insert(runtimes, { name = "JavaSE-21", path = vim.env.JAVA_HOME })
 				end
 
 				local config = {
@@ -60,10 +60,10 @@ return {
 							eclipse = {
 								downloadSources = true,
 							},
-							configuration = {
-								updateBuildConfiguration = "interactive",
-								runtimes = runtimes, -- Uses JAVA21_HOME env var if set
-							},
+						configuration = {
+							updateBuildConfiguration = "interactive",
+							runtimes = #runtimes > 0 and runtimes or nil,
+						},
 							maven = {
 								downloadSources = true,
 							},
@@ -107,22 +107,22 @@ return {
 						},
 					},
 					init_options = {
-						bundles = {
-							vim.fn.glob(
-								vim.fn.stdpath("data")
-									.. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
-								true
-							),
-							vim.fn.glob(
-								vim.fn.stdpath("data") .. "/mason/packages/java-test/extension/server/*.jar",
-								true
-							),
-						},
-					},
+					bundles = vim.list_extend(
+						vim.fn.glob(
+							vim.fn.stdpath("data")
+								.. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+							true,
+							true
+						),
+						vim.fn.glob(
+							vim.fn.stdpath("data") .. "/mason/packages/java-test/extension/server/*.jar",
+							true,
+							true
+						)
+					),
+				},
 					on_attach = function(_, bufnr)
-						jdtls_setup.add_commands()
-
-						-- Java debugging
+					-- Java debugging
 						jdtls.setup_dap({ hotcodereplace = "auto" })
 
 						-- Enhanced keymaps
@@ -157,7 +157,6 @@ return {
 							jdtls.test_nearest_method,
 							{ desc = "Test Nearest Method", buffer = bufnr }
 						)
-
 					end,
 				}
 

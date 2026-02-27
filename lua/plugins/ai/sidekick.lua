@@ -19,16 +19,6 @@ return {
 		},
 	},
 	keys = {
-		-- {
-		-- 	"<tab>",
-		-- 	function()
-		-- 		if require("sidekick").nes_jump_or_apply() then
-		-- 			return
-		-- 		end
-		-- 	end,
-		-- 	mode = "i",
-		-- 	desc = "Goto/Apply Next Edit Suggestion",
-		-- },
 		{
 			"<c-.>",
 			function()

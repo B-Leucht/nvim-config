@@ -51,16 +51,6 @@ keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear highlights" })
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 
--- Move text up and down (Alt+j/k handled by mini.move)
-keymap("v", "J", ":m '>+1<CR>gv=gv", opts)
-keymap("v", "K", ":m '<-2<CR>gv=gv", opts)
-
-keymap({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
-keymap({ "n", "v" }, "<leader>P", '"+p', { desc = "Paste from clipboard" })
-
-	keymap("n", "<leader>am", "<cmd>Minuet blink toggle<CR>", { desc = "Toggle Minuet AI source" })
-
-
 keymap("n", "<up>", "<nop>", opts)
 keymap("n", "<down>", "<nop>", opts)
 keymap("n", "<left>", "<nop>", opts)
@@ -80,25 +70,6 @@ vim.api.nvim_create_autocmd("User", {
 			desc = "Hover documentation",
 		})
 
-		Snacks.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, {
-			lsp = { method = "textDocument/signatureHelp" },
-			desc = "Signature help",
-		})
-
-		Snacks.keymap.set("n", "<leader>lf", function()
-			vim.lsp.buf.format({ async = true })
-		end, {
-			lsp = { method = "textDocument/formatting" },
-			desc = "Format document",
-		})
-
-		Snacks.keymap.set("v", "<leader>lf", function()
-			vim.lsp.buf.format({ async = true })
-		end, {
-			lsp = { method = "textDocument/rangeFormatting" },
-			desc = "Format selection",
-		})
-
 		Snacks.keymap.set("n", "<leader>lh", function()
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 		end, {
@@ -116,6 +87,11 @@ vim.api.nvim_create_autocmd("User", {
 		Snacks.keymap.set("n", "<leader>lc", vim.lsp.codelens.run, {
 			lsp = { method = "textDocument/codeLens" },
 			desc = "Run codelens",
+		})
+
+		Snacks.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {
+			lsp = { method = "textDocument/rename" },
+			desc = "Rename",
 		})
 	end,
 })

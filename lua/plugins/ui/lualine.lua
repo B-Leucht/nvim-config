@@ -5,6 +5,14 @@ local SEPARATORS = {
 	empty = { left = "", right = "" },
 }
 
+local cached_palette = nil
+local function get_palette()
+	if not cached_palette then
+		cached_palette = require("catppuccin.palettes").get_palette()
+	end
+	return cached_palette
+end
+
 local extensions = {
 	lazy = {
 		sections = {
@@ -123,13 +131,14 @@ return {
 					separator = SEPARATORS.empty,
 				},
 			},
-			lualine_x = {
-				{
-					"diagnostics",
-					symbols = { error = "", warn = "", info = "", hint = "󰌶" },
-					update_in_insert = false,
-					separator = SEPARATORS.empty,
-				},
+		lualine_x = {
+			{ "overseer", separator = SEPARATORS.empty },
+			{
+				"diagnostics",
+				symbols = { error = "", warn = "", info = "", hint = "󰌶" },
+				update_in_insert = false,
+				separator = SEPARATORS.empty,
+			},
 				{
 					function()
 						local ok, noice = pcall(require, "noice")
@@ -140,7 +149,7 @@ return {
 						return ok and noice.api.status.search.has()
 					end,
 					color = function()
-						return { fg = require("catppuccin.palettes").get_palette().peach }
+						return { fg = get_palette().peach }
 					end,
 					separator = SEPARATORS.empty,
 				},
@@ -154,7 +163,7 @@ return {
 						return ok and noice.api.status.mode.has()
 					end,
 					color = function()
-						return { fg = require("catppuccin.palettes").get_palette().red }
+						return { fg = get_palette().red }
 					end,
 					separator = SEPARATORS.empty,
 				},
@@ -175,7 +184,7 @@ return {
 						return ok and lazy.has_updates()
 					end,
 					color = function()
-						return { fg = require("catppuccin.palettes").get_palette().peach }
+						return { fg = get_palette().peach }
 					end,
 					separator = SEPARATORS.empty,
 				},
@@ -186,14 +195,6 @@ return {
 					section_separators = SEPARATORS.round2,
 					cond = function()
 						return vim.bo.fileformat ~= "unix"
-					end,
-					separator = SEPARATORS.empty,
-				},
-				{
-					"encoding",
-					section_separators = SEPARATORS.round2,
-					cond = function()
-						return vim.bo.fileencoding ~= "utf-8"
 					end,
 					separator = SEPARATORS.empty,
 				},
@@ -241,6 +242,11 @@ return {
 		},
 	},
 	config = function(_, opts)
+		vim.api.nvim_create_autocmd("ColorScheme", {
+			callback = function()
+				cached_palette = nil
+			end,
+		})
 		require("lualine").setup(opts)
 	end,
 }

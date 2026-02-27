@@ -36,10 +36,6 @@ return {
 			-- Java
 			java = { "checkstyle" },
 
-			-- LaTeX
-			tex = { "chktex" },
-			latex = { "chktex" },
-
 			-- SQL
 			sql = { "sqlfluff" },
 		}
@@ -51,15 +47,6 @@ return {
 			"-f",
 			"sarif",
 		}
-
-		-- Configure chktex for LaTeX
-		lint.linters.chktex.args = {
-			"-n22",
-			"-n30",
-			"-e16",
-			"-q",
-		}
-		lint.linters.chktex.ignore_exitcode = true
 
 		-- Only run eslint_d when an ESLint config exists in the project
 		local eslint_config_files = {

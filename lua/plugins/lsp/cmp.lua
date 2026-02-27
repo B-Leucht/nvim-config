@@ -1,6 +1,6 @@
 return {
 	"saghen/blink.cmp",
-	version = "*",
+	version = "1.*",
 	event = "InsertEnter",
 	dependencies = {
 		"rafamadriz/friendly-snippets",
@@ -82,7 +82,17 @@ return {
 			},
 		},
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "dictionary", "lazydev", "git", "minuet", "conventional_commits" },
+			default = {
+				"lsp",
+				"path",
+				"snippets",
+				"buffer",
+				"dictionary",
+				"lazydev",
+				"git",
+				"minuet",
+				"conventional_commits",
+			},
 			providers = {
 				lsp = {
 					score_offset = 100,
@@ -93,7 +103,7 @@ return {
 				snippets = {
 					score_offset = 30,
 				},
-					lazydev = {
+				lazydev = {
 					name = "LazyDev",
 					module = "lazydev.integrations.blink",
 					score_offset = 100,
@@ -153,12 +163,6 @@ return {
 		},
 		fuzzy = {
 			sorts = {
-				function(a, b)
-					local sort = require("blink.cmp.fuzzy.sort")
-					if a.source_id == "spell" and b.source_id == "spell" then
-						return sort.label(a, b)
-					end
-				end,
 				"score",
 				"kind",
 				"label",

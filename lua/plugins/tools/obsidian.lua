@@ -1,11 +1,9 @@
 -- Obsidian.nvim - Community fork with snacks.picker support
 return {
 	"obsidian-nvim/obsidian.nvim",
-	version = "*",
 	ft = "markdown",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		-- "ibhagwan/fzf-lua",
 	},
 	keys = {
 		{

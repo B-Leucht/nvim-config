@@ -1,7 +1,6 @@
 return {
 	"mrcjkb/haskell-tools.nvim",
-	version = "^7",
-	lazy = false,
+	ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
 	init = function()
 		vim.g.haskell_tools = {
 			hls = {
@@ -10,13 +9,6 @@ return {
 					local opts = function(desc)
 						return { buffer = bufnr, desc = desc }
 					end
-					vim.lsp.codelens.refresh({ bufnr = bufnr })
-					vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
-						buffer = bufnr,
-						callback = function()
-							vim.lsp.codelens.refresh({ bufnr = bufnr })
-						end,
-					})
 					vim.keymap.set("n", "<leader>hs", ht.hoogle.hoogle_signature, opts("Hoogle signature"))
 					vim.keymap.set("n", "<leader>he", ht.lsp.buf_eval_all, opts("Evaluate all snippets"))
 					vim.keymap.set("n", "<leader>hr", ht.repl.toggle, opts("Toggle GHCi repl"))

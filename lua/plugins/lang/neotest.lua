@@ -7,6 +7,7 @@ return {
 		"nvim-neotest/neotest-jest",
 		"mrcjkb/rustaceanvim",
 		"mrcjkb/neotest-haskell",
+		"stevearc/overseer.nvim",
 	},
 	keys = {
 		{ "<leader>Tn", function() require("neotest").run.run() end, desc = "Run Nearest Test" },
@@ -21,6 +22,9 @@ return {
 	},
 	opts = function()
 		return {
+			consumers = {
+				overseer = require("neotest.consumers.overseer"),
+			},
 			adapters = {
 				require("neotest-python")({
 					dap = { justMyCode = false },
