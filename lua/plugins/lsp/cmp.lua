@@ -25,6 +25,7 @@ return {
 				"fallback",
 			},
 			["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+			["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
 			["<C-b>"] = { "scroll_documentation_up", "fallback" },
 			["<C-f>"] = { "scroll_documentation_down", "fallback" },
 		},
@@ -53,16 +54,14 @@ return {
 			documentation = {
 				auto_show = true,
 				auto_show_delay_ms = 200,
-				window = {
-					border = "rounded",
-					winblend = 0,
-					scrollbar = false,
-					max_width = 60,
-					max_height = 12,
-				},
+			window = {
+				winblend = 0,
+				scrollbar = false,
+				max_width = 60,
+				max_height = 12,
+			},
 			},
 			menu = {
-				border = "rounded",
 				winblend = 0,
 				max_height = 12,
 				winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel",

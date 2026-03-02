@@ -38,6 +38,9 @@ return {
 
 			-- SQL
 			sql = { "sqlfluff" },
+
+			-- Elixir
+			elixir = { "credo" },
 		}
 
 		-- Configure checkstyle for Java

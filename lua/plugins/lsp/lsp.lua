@@ -132,6 +132,23 @@ return {
 			},
 		})
 
+		vim.lsp.config("ocamllsp", {
+			cmd = { 'ocamllsp' },
+			filetypes = {
+				'ocaml',
+				'ocaml.interface',
+				'ocaml.menhir', 'ocaml.ocamllex',
+				'dune',
+				'reason'
+			},
+			root_markers = {
+				{ 'dune-project', 'dune-workspace' },
+				{ "*.opam", "esy.json", "package.json" },
+				'.git'
+			},
+			settings = {},
+		})
+
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(args)
@@ -143,7 +160,10 @@ return {
 				vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { buffer = args.buf, desc = "Line diagnostics (float)" })
 
 				if client.server_capabilities.inlayHintProvider and client.name ~= "haskell-tools.nvim" then
-					vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+					-- Safely enable inlay hints with error handling
+					pcall(function()
+						vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+					end)
 				end
 				if client.server_capabilities.codeLensProvider then
 					vim.lsp.codelens.refresh({ bufnr = args.buf })

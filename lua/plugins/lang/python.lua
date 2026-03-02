@@ -1,5 +1,5 @@
 return {
-	"linux-cultist/venv-selector.nvim",
+	"linux-cultist/venv-seltor.nvim",
 	dependencies = { "folke/snacks.nvim" },
 	ft = "python",
 	keys = {

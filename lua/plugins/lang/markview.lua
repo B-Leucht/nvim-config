@@ -33,7 +33,9 @@ return {
 			linewise_hybrid_mode = true,
 		},
 		markdown = {
-			wrap = false,
+			block_quotes = { wrap = false },
+			headings = { org_indent_wrap = false },
+			list_items = { wrap = false },
 			tables = { wrap = false },
 			code_blocks = {
 				enable = true,

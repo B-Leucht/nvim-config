@@ -26,6 +26,9 @@ return {
 			sql = { "sql_formatter" },
 			mysql = { "sql_formatter" },
 			plsql = { "sql_formatter" },
+			elixir = { "mix" },
+			heex = { "mix" },
+			eelixir = { "mix" },
 		},
 		format_after_save = function()
 			if vim.g.disable_autoformat then

@@ -51,8 +51,29 @@ return {
 	config = function()
 		local dap = require("dap")
 
-		-- Setup nvim-dap-python
+		-- Setup nvim-dap-python (neovim venv has debugpy, but run code with project venv)
 		require("dap-python").setup(vim.g.python3_host_prog or "python3")
+		require("dap-python").resolve_python = function()
+			if vim.env.VIRTUAL_ENV then
+				return vim.env.VIRTUAL_ENV .. "/bin/python"
+			end
+			local cwd_venv = vim.fn.getcwd() .. "/.venv/bin/python"
+			if vim.fn.executable(cwd_venv) == 1 then
+				return cwd_venv
+			end
+			return "python3"
+		end
+
+		-- Workaround: nvim-dap doesn't respect winfixbuf, temporarily unset before jumping
+		dap.defaults.fallback.switchbuf = "useopen,uselast"
+		local function clear_winfixbuf()
+			for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+				if vim.wo[win].winfixbuf and vim.bo[vim.api.nvim_win_get_buf(win)].buftype == "" then
+					vim.wo[win].winfixbuf = false
+				end
+			end
+		end
+		dap.listeners.before.event_stopped.winfixbuf_fix = clear_winfixbuf
 
 		-- Setup C/C++ debugging with codelldb
 		dap.adapters.codelldb = {

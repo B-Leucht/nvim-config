@@ -7,16 +7,21 @@ return {
 		"folke/snacks.nvim",
 	},
 	keys = {
-		{ "<leader>mi", "<cmd>MoltenInit<cr>", desc = "Initialize Molten" },
-		{ "<leader>me", "<cmd>MoltenEvaluateOperator<cr>", desc = "Evaluate operator" },
-		{ "<leader>ml", "<cmd>MoltenEvaluateLine<cr>", desc = "Evaluate line" },
-		{ "<leader>mr", "<cmd>MoltenReevaluateCell<cr>", desc = "Re-evaluate cell" },
-		{ "<leader>md", "<cmd>MoltenDelete<cr>", desc = "Delete cell" },
-		{ "<leader>mo", "<cmd>MoltenShowOutput<cr>", desc = "Show output", ft = { "python", "markdown", "quarto" } },
-		{ "<leader>mh", "<cmd>MoltenHideOutput<cr>", desc = "Hide output" },
-		{ "<leader>mx", "<cmd>MoltenInterrupt<cr>", desc = "Interrupt kernel" },
-		{ "<leader>mc", "<cmd>noautocmd MoltenEnterOutput<cr>", desc = "Enter output window" },
-		{ "<leader>r", ":<C-u>MoltenEvaluateVisual<cr>", desc = "Evaluate selection", mode = "v" },
+		{ "<localleader>mi", "<cmd>MoltenInit<cr>", desc = "Initialize Molten" },
+		{ "<localleader>me", "<cmd>MoltenEvaluateOperator<cr>", desc = "Evaluate operator" },
+		{ "<localleader>ml", "<cmd>MoltenEvaluateLine<cr>", desc = "Evaluate line" },
+		{ "<localleader>mr", "<cmd>MoltenReevaluateCell<cr>", desc = "Re-evaluate cell" },
+		{ "<localleader>md", "<cmd>MoltenDelete<cr>", desc = "Delete cell" },
+		{
+			"<localleader>mo",
+			"<cmd>MoltenShowOutput<cr>",
+			desc = "Show output",
+			ft = { "python", "markdown", "quarto" },
+		},
+		{ "<localleader>mh", "<cmd>MoltenHideOutput<cr>", desc = "Hide output" },
+		{ "<localleader>mx", "<cmd>MoltenInterrupt<cr>", desc = "Interrupt kernel" },
+		{ "<localleader>mc", "<cmd>noautocmd MoltenEnterOutput<cr>", desc = "Enter output window" },
+		{ "<localleader>r", ":<C-u>MoltenEvaluateVisual<cr>", desc = "Evaluate selection", mode = "v" },
 	},
 	init = function()
 		-- Border highlights (colored borders for success/fail)
@@ -85,8 +90,8 @@ return {
 			end,
 		})
 
--- Run code block under cursor in markdown
-		vim.keymap.set("n", "<leader>mb", function()
+		-- Run code block under cursor in markdown
+		vim.keymap.set("n", "<localleader>mb", function()
 			local node = vim.treesitter.get_node()
 			while node do
 				if node:type() == "fenced_code_block" then

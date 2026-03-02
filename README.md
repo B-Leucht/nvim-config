@@ -17,6 +17,7 @@ Use `<leader>?` to show buffer keymaps or press any key to see which-key suggest
 | `<leader>t` | Terminal                            |
 | `<leader>d` | Debug                               |
 | `<leader>o` | Obsidian                            |
+| `<leader>O` | Overseer                            |
 | `<leader>T` | NeoTest                             |
 | `<leader>m` | Molten (Jupyter)                    |
 | `<leader>a` | AI/Sidekick                         |

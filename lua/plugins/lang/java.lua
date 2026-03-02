@@ -60,10 +60,10 @@ return {
 							eclipse = {
 								downloadSources = true,
 							},
-						configuration = {
-							updateBuildConfiguration = "interactive",
-							runtimes = #runtimes > 0 and runtimes or nil,
-						},
+							configuration = {
+								updateBuildConfiguration = "interactive",
+								runtimes = #runtimes > 0 and runtimes or nil,
+							},
 							maven = {
 								downloadSources = true,
 							},
@@ -107,34 +107,34 @@ return {
 						},
 					},
 					init_options = {
-					bundles = vim.list_extend(
-						vim.fn.glob(
-							vim.fn.stdpath("data")
-								.. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
-							true,
-							true
+						bundles = vim.list_extend(
+							vim.fn.glob(
+								vim.fn.stdpath("data")
+									.. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+								true,
+								true
+							),
+							vim.fn.glob(
+								vim.fn.stdpath("data") .. "/mason/packages/java-test/extension/server/*.jar",
+								true,
+								true
+							)
 						),
-						vim.fn.glob(
-							vim.fn.stdpath("data") .. "/mason/packages/java-test/extension/server/*.jar",
-							true,
-							true
-						)
-					),
-				},
+					},
 					on_attach = function(_, bufnr)
-					-- Java debugging
+						-- Java debugging
 						jdtls.setup_dap({ hotcodereplace = "auto" })
 
 						-- Enhanced keymaps
 						vim.keymap.set(
 							"n",
-							"<leader>jo",
+							"<localleader>jo",
 							jdtls.organize_imports,
 							{ desc = "Organize Imports", buffer = bufnr }
 						)
 						vim.keymap.set(
 							"n",
-							"<leader>jv",
+							"<localleader>jv",
 							jdtls.extract_variable,
 							{ desc = "Extract Variable", buffer = bufnr }
 						)
@@ -146,14 +146,14 @@ return {
 						)
 						vim.keymap.set(
 							"v",
-							"<leader>jm",
+							"<localleader>jm",
 							[[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
 							{ desc = "Extract Method", buffer = bufnr }
 						)
 						vim.keymap.set("n", "<leader>jt", jdtls.test_class, { desc = "Test Class", buffer = bufnr })
 						vim.keymap.set(
 							"n",
-							"<leader>jn",
+							"<localleader>jn",
 							jdtls.test_nearest_method,
 							{ desc = "Test Nearest Method", buffer = bufnr }
 						)

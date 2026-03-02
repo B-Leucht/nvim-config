@@ -53,6 +53,18 @@ local extensions = {
 		},
 		filetypes = { "qf" },
 	},
+	dap = {
+		sections = {
+			lualine_a = { {
+				function()
+					return " DAP"
+				end,
+				separator = SEPARATORS.round1,
+			} },
+			lualine_z = { { "location", separator = SEPARATORS.round1 } },
+		},
+		filetypes = { "dap-view", "dap-view-term", "dap-repl" },
+	},
 }
 
 local PRETTY_PATH_PROVIDERS = {
@@ -131,14 +143,14 @@ return {
 					separator = SEPARATORS.empty,
 				},
 			},
-		lualine_x = {
-			{ "overseer", separator = SEPARATORS.empty },
-			{
-				"diagnostics",
-				symbols = { error = "", warn = "", info = "", hint = "󰌶" },
-				update_in_insert = false,
-				separator = SEPARATORS.empty,
-			},
+			lualine_x = {
+				{ "overseer", separator = SEPARATORS.empty },
+				{
+					"diagnostics",
+					symbols = { error = "", warn = "", info = "", hint = "󰌶" },
+					update_in_insert = false,
+					separator = SEPARATORS.empty,
+				},
 				{
 					function()
 						local ok, noice = pcall(require, "noice")
@@ -239,6 +251,7 @@ return {
 			extensions.lazy,
 			extensions.mason,
 			extensions.quickfix,
+			extensions.dap,
 		},
 	},
 	config = function(_, opts)

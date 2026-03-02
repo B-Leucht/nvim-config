@@ -10,5 +10,5 @@ return {
 	require("plugins.lang.markview"),
 	require("plugins.lang.web"),
 	require("plugins.lang.neotest"),
-	require("plugins.lang.python"),
+	require("plugins.lang.elixir"),
 }

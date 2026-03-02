@@ -28,6 +28,7 @@ return {
 			},
 			ensure_installed = {
 				"basedpyright",
+				-- "ty",
 				"bashls",
 				"clangd",
 				"cssls",

@@ -31,9 +31,9 @@ return {
 		{
 			"<leader>tf",
 			function()
-				Snacks.terminal.open(nil, {
-					win = { position = "float", width = 0.8, height = 0.8 },
-				})
+			Snacks.terminal.open(nil, {
+				win = { position = "float", width = 0.8, height = 0.8, border = "rounded" },
+			})
 			end,
 			desc = "Open Float Terminal",
 		},
@@ -58,9 +58,9 @@ return {
 		{
 			"<leader>gg",
 			function()
-				Snacks.lazygit.open({
-					win = { width = 0.8, height = 0.8 },
-				})
+			Snacks.lazygit.open({
+				win = { width = 0.8, height = 0.8, border = "rounded" },
+			})
 			end,
 			desc = "Toggle Lazygit",
 		},

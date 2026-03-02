@@ -25,6 +25,9 @@ local parsers = {
 	"svelte",
 	"typst",
 	"vue",
+	"elixir",
+	"heex",
+	"eex",
 }
 
 return {
