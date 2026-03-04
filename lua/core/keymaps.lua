@@ -11,10 +11,10 @@ keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
 -- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "<C-Up>", "<cmd>resize -2<CR>", opts)
+keymap("n", "<C-Down>", "<cmd>resize +2<CR>", opts)
+keymap("n", "<C-Left>", "<cmd>vertical resize -2<CR>", opts)
+keymap("n", "<C-Right>", "<cmd>vertical resize +2<CR>", opts)
 
 keymap("n", "<Tab>", "<cmd>bnext<CR>", { desc = "Next buffer" })
 keymap("n", "<S-Tab>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })

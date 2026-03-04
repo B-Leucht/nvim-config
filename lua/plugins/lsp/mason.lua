@@ -1,8 +1,8 @@
 -- Mason package manager
 -- Non-LSP tools (install manually via :Mason):
--- Formatters: stylua, google-java-format, jq, clang-format, fourmolu, prettier, latexindent, bibtex-tidy, mdsf, sql-formatter
--- Linters: ruff, shellcheck, luacheck, markdownlint, yamllint, checkstyle, hlint, cpplint, vale, sqlfluff, alex
--- Debuggers: codelldb, java-debug-adapter, java-test
+-- Formatters: stylua, google-java-format, jq, clang-format, fourmolu, prettier, latexindent, bibtex-tidy, mdsf, sql-formatter, goimports, gofumpt
+-- Linters: ruff, shellcheck, luacheck, markdownlint, yamllint, checkstyle, hlint, cpplint, vale, sqlfluff, alex, golangci-lint
+-- Debuggers: codelldb, java-debug-adapter, java-test, delve
 
 return {
   {
@@ -35,7 +35,9 @@ return {
         "docker_compose_language_service",
         "dockerls",
         "gradle_ls",
+        "gopls",
         "html",
+        "jsonls",
         -- "lua_ls",
         "markdown_oxide",
         "sqlls",
@@ -44,7 +46,9 @@ return {
         "tailwindcss",
         "ltex_plus",
         "emmet_language_server",
+        "taplo",
         "ts_ls",
+        "yamlls",
       },
     },
   },

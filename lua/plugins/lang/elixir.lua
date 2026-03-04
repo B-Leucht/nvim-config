@@ -2,7 +2,6 @@
 return {
   "elixir-tools/elixir-tools.nvim",
   version = "*",
-  event = { "BufReadPre", "BufNewFile" },
   ft = { "elixir", "eelixir", "heex", "surface" },
   dependencies = { "nvim-lua/plenary.nvim" },
   config = function()

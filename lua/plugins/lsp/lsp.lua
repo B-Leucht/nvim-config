@@ -5,6 +5,7 @@ return {
   dependencies = {
     "saghen/blink.cmp",
     "folke/lazydev.nvim",
+    "b0o/schemastore.nvim",
   },
   config = function()
     vim.lsp.config("*", {
@@ -32,6 +33,49 @@ return {
         usePlaceholders = true,
         completeUnimported = true,
         clangdFileStatus = true,
+      },
+    })
+
+    vim.lsp.config("jsonls", {
+      settings = {
+        json = {
+          schemas = require("schemastore").json.schemas(),
+          validate = { enable = true },
+        },
+      },
+    })
+
+    vim.lsp.config("yamlls", {
+      settings = {
+        yaml = {
+          schemaStore = { enable = false, url = "" },
+          schemas = require("schemastore").yaml.schemas(),
+        },
+      },
+    })
+
+    vim.lsp.config("gopls", {
+      settings = {
+        gopls = {
+          gofumpt = true,
+          staticcheck = true,
+          analyses = {
+            unusedparams = true,
+            shadow = true,
+            nilness = true,
+            unusedwrite = true,
+            useany = true,
+          },
+          hints = {
+            assignVariableTypes = true,
+            compositeLiteralFields = true,
+            compositeLiteralTypes = true,
+            constantValues = true,
+            functionTypeParameters = true,
+            parameterNames = true,
+            rangeVariableTypes = true,
+          },
+        },
       },
     })
 
@@ -66,12 +110,6 @@ return {
           { buffer = args.buf, desc = "Line diagnostics (float)" }
         )
 
-        if client.server_capabilities.inlayHintProvider and client.name ~= "haskell-tools.nvim" then
-          -- Safely enable inlay hints with error handling
-          pcall(function()
-            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
-          end)
-        end
         if client.server_capabilities.codeLensProvider then
           vim.lsp.codelens.refresh({ bufnr = args.buf })
           vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {

@@ -21,11 +21,6 @@ return {
       sh = { "shellcheck" },
       bash = { "shellcheck" },
 
-      -- Markup
-      markdown = { "markdownlint" },
-      yaml = { "yamllint" },
-      json = { "jsonlint" },
-
       -- Docker
       dockerfile = { "hadolint" },
 
@@ -41,6 +36,9 @@ return {
 
       -- Elixir
       elixir = { "credo" },
+
+      -- Go
+      go = { "golangcilint" },
     }
 
     -- Configure checkstyle for Java
@@ -86,7 +84,7 @@ return {
       lint.try_lint(filtered)
     end
 
-    vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+    vim.api.nvim_create_autocmd({ "BufReadPost", "InsertLeave", "TextChanged" }, {
       callback = try_lint,
     })
 

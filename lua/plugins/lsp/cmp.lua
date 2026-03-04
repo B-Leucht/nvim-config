@@ -86,11 +86,16 @@ return {
         "path",
         "snippets",
         "buffer",
-        "dictionary",
         "lazydev",
         "git",
         "minuet",
-        "conventional_commits",
+      },
+      per_filetype = {
+        markdown = { "lsp", "path", "snippets", "buffer", "dictionary", "lazydev", "git", "minuet" },
+        text = { "lsp", "path", "snippets", "buffer", "dictionary", "minuet" },
+        tex = { "lsp", "path", "snippets", "buffer", "dictionary", "minuet" },
+        typst = { "lsp", "path", "snippets", "buffer", "dictionary", "minuet" },
+        gitcommit = { "conventional_commits", "lsp", "path", "snippets", "buffer", "git" },
       },
       providers = {
         lsp = {

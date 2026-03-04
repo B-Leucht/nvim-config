@@ -7,6 +7,7 @@ return {
     "nvim-neotest/neotest-jest",
     "mrcjkb/rustaceanvim",
     "mrcjkb/neotest-haskell",
+    "fredrikaverpil/neotest-golang",
     "stevearc/overseer.nvim",
   },
   keys = {
@@ -89,6 +90,7 @@ return {
         }),
         require("rustaceanvim.neotest"),
         require("neotest-haskell"),
+        require("neotest-golang"),
       },
       status = { virtual_text = true },
       output = { open_on_run = false },

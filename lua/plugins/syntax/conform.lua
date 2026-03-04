@@ -29,6 +29,8 @@ return {
       elixir = { "mix" },
       heex = { "mix" },
       eelixir = { "mix" },
+      toml = { "taplo" },
+      go = { "goimports", "gofumpt" },
     },
     format_after_save = function()
       if vim.g.disable_autoformat then

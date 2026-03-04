@@ -1,7 +1,6 @@
 return {
   "Olical/conjure",
   enabled = true,
-  lazy = false,
   ft = {
     -- Only keep languages that lack good LSP support or need REPL interaction
     "clojure",

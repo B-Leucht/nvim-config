@@ -28,6 +28,17 @@ local parsers = {
   "elixir",
   "heex",
   "eex",
+  "diff",
+  "dotenv",
+  "git_config",
+  "gitcommit",
+  "gitignore",
+  "go",
+  "gomod",
+  "gosum",
+  "gowork",
+  "make",
+  "xml",
 }
 
 return {
@@ -43,12 +54,6 @@ return {
       vim.api.nvim_create_user_command("TSInstallAll", function()
         ts.install(parsers)
       end, { desc = "Install all configured treesitter parsers" })
-      -- Auto-start tree-sitter highlighting for all installed parsers
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(args)
-          pcall(vim.treesitter.start, args.buf)
-        end,
-      })
     end,
   },
   -- Sticky context at top of buffer

@@ -42,11 +42,13 @@ vim.cmd([[
 opt.clipboard = "unnamedplus"
 opt.undofile = true
 opt.backup = true
-opt.backupdir = vim.fn.stdpath("config") .. "/backup/"
+opt.backupdir = vim.fn.stdpath("state") .. "/backup/"
 opt.swapfile = false
 
 opt.splitbelow = true
 opt.splitright = true
+opt.breakindent = true
+opt.exrc = true
 
 opt.showmode = false
 vim.o.winborder = "rounded"

@@ -2,6 +2,7 @@ return {
   "mfussenegger/nvim-dap",
   dependencies = {
     "mfussenegger/nvim-dap-python",
+    "leoluz/nvim-dap-go",
     "igorlfs/nvim-dap-view",
   },
   keys = {
@@ -127,5 +128,8 @@ return {
     }
 
     dap.configurations.cpp = dap.configurations.c
+
+    -- Setup Go debugging with delve
+    require("dap-go").setup()
   end,
 }
