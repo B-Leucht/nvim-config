@@ -1,164 +1,164 @@
 -- Obsidian.nvim - Community fork with snacks.picker support
 return {
-	"obsidian-nvim/obsidian.nvim",
-	ft = "markdown",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-	},
-	keys = {
-		{
-			"<leader>od",
-			function()
-				vim.cmd("Obsidian today")
-			end,
-			desc = "Daily Note",
-		},
-		{
-			"<leader>oy",
-			function()
-				vim.cmd("Obsidian yesterday")
-			end,
-			desc = "Yesterday",
-		},
-		{
-			"<leader>oT",
-			function()
-				vim.cmd("Obsidian tomorrow")
-			end,
-			desc = "Tomorrow",
-		},
-		{
-			"<leader>on",
-			function()
-				vim.cmd("Obsidian new")
-			end,
-			desc = "New Note",
-		},
-		{
-			"<leader>oN",
-			function()
-				vim.cmd("Obsidian new_from_template")
-			end,
-			desc = "New from Template",
-		},
-		{
-			"<leader>os",
-			function()
-				vim.cmd("Obsidian search")
-			end,
-			desc = "Search Notes",
-		},
-		{
-			"<leader>oq",
-			function()
-				vim.cmd("Obsidian quick_switch")
-			end,
-			desc = "Quick Switch",
-		},
-		{
-			"<leader>ob",
-			function()
-				vim.cmd("Obsidian backlinks")
-			end,
-			desc = "Backlinks",
-		},
-		{
-			"<leader>ot",
-			function()
-				vim.cmd("Obsidian tags")
-			end,
-			desc = "Tags",
-		},
-		{
-			"<leader>ol",
-			function()
-				vim.cmd("Obsidian links")
-			end,
-			desc = "Links",
-		},
-		{
-			"<leader>oc",
-			function()
-				vim.cmd("Obsidian toc")
-			end,
-			desc = "Table of Contents",
-		},
-		{
-			"<leader>or",
-			function()
-				vim.cmd("Obsidian rename")
-			end,
-			desc = "Rename Note",
-		},
-		{
-			"<leader>oi",
-			function()
-				vim.cmd("Obsidian paste_img")
-			end,
-			desc = "Paste Image",
-		},
-		{
-			"<leader>oo",
-			function()
-				vim.cmd("Obsidian open")
-			end,
-			desc = "Open in Obsidian App",
-		},
-		{
-			"<leader>om",
-			function()
-				local vault = os.getenv("OBSIDIAN_VAULT") .. "/"
-				local current_file = vim.fn.expand("%:p")
-				local current_name = vim.fn.expand("%:t")
+  "obsidian-nvim/obsidian.nvim",
+  ft = "markdown",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+  },
+  keys = {
+    {
+      "<leader>od",
+      function()
+        vim.cmd("Obsidian today")
+      end,
+      desc = "Daily Note",
+    },
+    {
+      "<leader>oy",
+      function()
+        vim.cmd("Obsidian yesterday")
+      end,
+      desc = "Yesterday",
+    },
+    {
+      "<leader>oT",
+      function()
+        vim.cmd("Obsidian tomorrow")
+      end,
+      desc = "Tomorrow",
+    },
+    {
+      "<leader>on",
+      function()
+        vim.cmd("Obsidian new")
+      end,
+      desc = "New Note",
+    },
+    {
+      "<leader>oN",
+      function()
+        vim.cmd("Obsidian new_from_template")
+      end,
+      desc = "New from Template",
+    },
+    {
+      "<leader>os",
+      function()
+        vim.cmd("Obsidian search")
+      end,
+      desc = "Search Notes",
+    },
+    {
+      "<leader>oq",
+      function()
+        vim.cmd("Obsidian quick_switch")
+      end,
+      desc = "Quick Switch",
+    },
+    {
+      "<leader>ob",
+      function()
+        vim.cmd("Obsidian backlinks")
+      end,
+      desc = "Backlinks",
+    },
+    {
+      "<leader>ot",
+      function()
+        vim.cmd("Obsidian tags")
+      end,
+      desc = "Tags",
+    },
+    {
+      "<leader>ol",
+      function()
+        vim.cmd("Obsidian links")
+      end,
+      desc = "Links",
+    },
+    {
+      "<leader>oc",
+      function()
+        vim.cmd("Obsidian toc")
+      end,
+      desc = "Table of Contents",
+    },
+    {
+      "<leader>or",
+      function()
+        vim.cmd("Obsidian rename")
+      end,
+      desc = "Rename Note",
+    },
+    {
+      "<leader>oi",
+      function()
+        vim.cmd("Obsidian paste_img")
+      end,
+      desc = "Paste Image",
+    },
+    {
+      "<leader>oo",
+      function()
+        vim.cmd("Obsidian open")
+      end,
+      desc = "Open in Obsidian App",
+    },
+    {
+      "<leader>om",
+      function()
+        local vault = os.getenv("OBSIDIAN_VAULT") .. "/"
+        local current_file = vim.fn.expand("%:p")
+        local current_name = vim.fn.expand("%:t")
 
-				local dirs = { "." }
-				local handle = io.popen('find "' .. vault .. '" -type d -not -path "*/\\.*" 2>/dev/null')
-				if handle then
-					for line in handle:lines() do
-						local rel = line:gsub(vault, "")
-						if rel ~= "" then
-							table.insert(dirs, rel)
-						end
-					end
-					handle:close()
-				end
+        local dirs = { "." }
+        local handle = io.popen('find "' .. vault .. '" -type d -not -path "*/\\.*" 2>/dev/null')
+        if handle then
+          for line in handle:lines() do
+            local rel = line:gsub(vault, "")
+            if rel ~= "" then
+              table.insert(dirs, rel)
+            end
+          end
+          handle:close()
+        end
 
-				Snacks.picker.select(dirs, { prompt = "Move note to" }, function(selected)
-					if selected then
-						local target_dir = selected == "." and vault or vault .. selected
-						local target_path = target_dir .. "/" .. current_name
-						if current_file ~= target_path then
-							vim.fn.rename(current_file, target_path)
-							vim.cmd("edit " .. vim.fn.fnameescape(target_path))
-							vim.notify("Moved to " .. selected, vim.log.levels.INFO)
-						end
-					end
-				end)
-			end,
-			desc = "Move Note",
-		},
-	},
-	opts = {
-		legacy_commands = false,
-		workspaces = {
-			{
-				name = "personal",
-				path = os.getenv("OBSIDIAN_VAULT"),
-			},
-		},
-		daily_notes = {
-			folder = "01_Daily",
-			date_format = "%Y-%m-%d",
-			template = "Daily.md",
-		},
-		templates = {
-			folder = "05_Meta/Templates",
-		},
-		attachments = {
-			folder = "05_Meta/Attachments",
-		},
-		picker = {
-			name = "snacks.picker",
-		},
-	},
+        Snacks.picker.select(dirs, { prompt = "Move note to" }, function(selected)
+          if selected then
+            local target_dir = selected == "." and vault or vault .. selected
+            local target_path = target_dir .. "/" .. current_name
+            if current_file ~= target_path then
+              vim.fn.rename(current_file, target_path)
+              vim.cmd("edit " .. vim.fn.fnameescape(target_path))
+              vim.notify("Moved to " .. selected, vim.log.levels.INFO)
+            end
+          end
+        end)
+      end,
+      desc = "Move Note",
+    },
+  },
+  opts = {
+    legacy_commands = false,
+    workspaces = {
+      {
+        name = "personal",
+        path = os.getenv("OBSIDIAN_VAULT"),
+      },
+    },
+    daily_notes = {
+      folder = "01_Daily",
+      date_format = "%Y-%m-%d",
+      template = "Daily.md",
+    },
+    templates = {
+      folder = "05_Meta/Templates",
+    },
+    attachments = {
+      folder = "05_Meta/Attachments",
+    },
+    picker = {
+      name = "snacks.picker",
+    },
+  },
 }

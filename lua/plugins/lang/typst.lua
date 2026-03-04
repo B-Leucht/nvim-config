@@ -1,5 +1,5 @@
 return {
-	"chomosuke/typst-preview.nvim",
-	ft = "typst",
-	opts = {},
+  "chomosuke/typst-preview.nvim",
+  ft = "typst",
+  opts = {},
 }

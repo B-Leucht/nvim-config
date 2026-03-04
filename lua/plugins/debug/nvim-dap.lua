@@ -1,131 +1,131 @@
 return {
-	"mfussenegger/nvim-dap",
-	dependencies = {
-		"mfussenegger/nvim-dap-python",
-		"igorlfs/nvim-dap-view",
-	},
-	keys = {
-		{
-			"<leader>db",
-			function()
-				require("dap").toggle_breakpoint()
-			end,
-			desc = "Toggle Breakpoint",
-		},
-		{
-			"<leader>dc",
-			function()
-				require("dap").continue()
-			end,
-			desc = "Continue",
-		},
-		{
-			"<leader>di",
-			function()
-				require("dap").step_into()
-			end,
-			desc = "Step Into",
-		},
-		{
-			"<leader>do",
-			function()
-				require("dap").step_out()
-			end,
-			desc = "Step Out",
-		},
-		{
-			"<leader>dO",
-			function()
-				require("dap").step_over()
-			end,
-			desc = "Step Over",
-		},
-		{
-			"<leader>dt",
-			function()
-				require("dap").terminate()
-			end,
-			desc = "Terminate",
-		},
-	},
-	config = function()
-		local dap = require("dap")
+  "mfussenegger/nvim-dap",
+  dependencies = {
+    "mfussenegger/nvim-dap-python",
+    "igorlfs/nvim-dap-view",
+  },
+  keys = {
+    {
+      "<leader>db",
+      function()
+        require("dap").toggle_breakpoint()
+      end,
+      desc = "Toggle Breakpoint",
+    },
+    {
+      "<leader>dc",
+      function()
+        require("dap").continue()
+      end,
+      desc = "Continue",
+    },
+    {
+      "<leader>di",
+      function()
+        require("dap").step_into()
+      end,
+      desc = "Step Into",
+    },
+    {
+      "<leader>do",
+      function()
+        require("dap").step_out()
+      end,
+      desc = "Step Out",
+    },
+    {
+      "<leader>dO",
+      function()
+        require("dap").step_over()
+      end,
+      desc = "Step Over",
+    },
+    {
+      "<leader>dt",
+      function()
+        require("dap").terminate()
+      end,
+      desc = "Terminate",
+    },
+  },
+  config = function()
+    local dap = require("dap")
 
-		-- Setup nvim-dap-python (neovim venv has debugpy, but run code with project venv)
-		require("dap-python").setup(vim.g.python3_host_prog or "python3")
-		require("dap-python").resolve_python = function()
-			if vim.env.VIRTUAL_ENV then
-				return vim.env.VIRTUAL_ENV .. "/bin/python"
-			end
-			local cwd_venv = vim.fn.getcwd() .. "/.venv/bin/python"
-			if vim.fn.executable(cwd_venv) == 1 then
-				return cwd_venv
-			end
-			return "python3"
-		end
+    -- Setup nvim-dap-python (neovim venv has debugpy, but run code with project venv)
+    require("dap-python").setup(vim.g.python3_host_prog or "python3")
+    require("dap-python").resolve_python = function()
+      if vim.env.VIRTUAL_ENV then
+        return vim.env.VIRTUAL_ENV .. "/bin/python"
+      end
+      local cwd_venv = vim.fn.getcwd() .. "/.venv/bin/python"
+      if vim.fn.executable(cwd_venv) == 1 then
+        return cwd_venv
+      end
+      return "python3"
+    end
 
-		-- Workaround: nvim-dap doesn't respect winfixbuf, temporarily unset before jumping
-		dap.defaults.fallback.switchbuf = "useopen,uselast"
-		local function clear_winfixbuf()
-			for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-				if vim.wo[win].winfixbuf and vim.bo[vim.api.nvim_win_get_buf(win)].buftype == "" then
-					vim.wo[win].winfixbuf = false
-				end
-			end
-		end
-		dap.listeners.before.event_stopped.winfixbuf_fix = clear_winfixbuf
+    -- Workaround: nvim-dap doesn't respect winfixbuf, temporarily unset before jumping
+    dap.defaults.fallback.switchbuf = "useopen,uselast"
+    local function clear_winfixbuf()
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        if vim.wo[win].winfixbuf and vim.bo[vim.api.nvim_win_get_buf(win)].buftype == "" then
+          vim.wo[win].winfixbuf = false
+        end
+      end
+    end
+    dap.listeners.before.event_stopped.winfixbuf_fix = clear_winfixbuf
 
-		-- Setup C/C++ debugging with codelldb
-		dap.adapters.codelldb = {
-			type = "server",
-			port = "${port}",
-			executable = {
-				command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
-				args = { "--port", "${port}" },
-			},
-		}
+    -- Setup C/C++ debugging with codelldb
+    dap.adapters.codelldb = {
+      type = "server",
+      port = "${port}",
+      executable = {
+        command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+        args = { "--port", "${port}" },
+      },
+    }
 
-		dap.configurations.c = {
-			{
-				name = "Launch file",
-				type = "codelldb",
-				request = "launch",
-				program = function()
-					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-				end,
-				cwd = "${workspaceFolder}",
-				stopOnEntry = false,
-			},
-			{
-				name = "Launch with AddressSanitizer",
-				type = "codelldb",
-				request = "launch",
-				program = function()
-					local current_file = vim.fn.expand("%:r")
-					local asan_binary = current_file .. "_address"
-					if vim.fn.executable(asan_binary) == 1 then
-						return vim.fn.getcwd() .. "/" .. asan_binary
-					else
-						return vim.fn.input("Path to ASan executable: ", vim.fn.getcwd() .. "/", "file")
-					end
-				end,
-				cwd = "${workspaceFolder}",
-				stopOnEntry = false,
-				env = {
-					ASAN_OPTIONS = "halt_on_error=1:abort_on_error=1:detect_leaks=1:check_initialization_order=1:strict_init_order=1",
-				},
-				args = {},
-			},
-			{
-				name = "Attach to process",
-				type = "codelldb",
-				request = "attach",
-				pid = function()
-					return tonumber(vim.fn.input("Process ID: "))
-				end,
-			},
-		}
+    dap.configurations.c = {
+      {
+        name = "Launch file",
+        type = "codelldb",
+        request = "launch",
+        program = function()
+          return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+        end,
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+      },
+      {
+        name = "Launch with AddressSanitizer",
+        type = "codelldb",
+        request = "launch",
+        program = function()
+          local current_file = vim.fn.expand("%:r")
+          local asan_binary = current_file .. "_address"
+          if vim.fn.executable(asan_binary) == 1 then
+            return vim.fn.getcwd() .. "/" .. asan_binary
+          else
+            return vim.fn.input("Path to ASan executable: ", vim.fn.getcwd() .. "/", "file")
+          end
+        end,
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+        env = {
+          ASAN_OPTIONS = "halt_on_error=1:abort_on_error=1:detect_leaks=1:check_initialization_order=1:strict_init_order=1",
+        },
+        args = {},
+      },
+      {
+        name = "Attach to process",
+        type = "codelldb",
+        request = "attach",
+        pid = function()
+          return tonumber(vim.fn.input("Process ID: "))
+        end,
+      },
+    }
 
-		dap.configurations.cpp = dap.configurations.c
-	end,
+    dap.configurations.cpp = dap.configurations.c
+  end,
 }

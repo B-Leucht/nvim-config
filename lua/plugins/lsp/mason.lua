@@ -5,47 +5,47 @@
 -- Debuggers: codelldb, java-debug-adapter, java-test
 
 return {
-	{
-		"mason-org/mason.nvim",
-		lazy = false,
-		build = ":MasonUpdate",
-		opts = {
-			ui = {
-				border = "rounded",
-			},
-		},
-	},
-	{
-		"mason-org/mason-lspconfig.nvim",
-		lazy = false,
-		dependencies = {
-			"mason-org/mason.nvim",
-			"neovim/nvim-lspconfig",
-		},
-		opts = {
-			automatic_enable = {
-				exclude = { "hls", "jdtls", "rust_analyzer" },
-			},
-			ensure_installed = {
-				"basedpyright",
-				-- "ty",
-				"bashls",
-				"clangd",
-				"cssls",
-				"docker_compose_language_service",
-				"dockerls",
-				"gradle_ls",
-				"html",
-				"lua_ls",
-				"markdown_oxide",
-				"sqlls",
-				"texlab",
-				"tinymist",
-				"tailwindcss",
-				"ltex_plus",
-				"emmet_language_server",
-				"ts_ls",
-			},
-		},
-	},
+  {
+    "mason-org/mason.nvim",
+    lazy = false,
+    build = ":MasonUpdate",
+    opts = {
+      ui = {
+        border = "rounded",
+      },
+    },
+  },
+  {
+    "mason-org/mason-lspconfig.nvim",
+    lazy = false,
+    dependencies = {
+      "mason-org/mason.nvim",
+      "neovim/nvim-lspconfig",
+    },
+    opts = {
+      automatic_enable = {
+        exclude = { "hls", "jdtls", "rust_analyzer" },
+      },
+      ensure_installed = {
+        "basedpyright",
+        -- "ty",
+        "bashls",
+        "clangd",
+        "cssls",
+        "docker_compose_language_service",
+        "dockerls",
+        "gradle_ls",
+        "html",
+        -- "lua_ls",
+        "markdown_oxide",
+        "sqlls",
+        "texlab",
+        "tinymist",
+        "tailwindcss",
+        "ltex_plus",
+        "emmet_language_server",
+        "ts_ls",
+      },
+    },
+  },
 }

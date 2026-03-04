@@ -1,4 +1,4 @@
 return {
-	require("plugins.debug.nvim-dap"),
-	require("plugins.debug.dap-view"),
+  require("plugins.debug.nvim-dap"),
+  require("plugins.debug.dap-view"),
 }
