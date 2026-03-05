@@ -29,7 +29,6 @@ local parsers = {
   "heex",
   "eex",
   "diff",
-  "dotenv",
   "git_config",
   "gitcommit",
   "gitignore",
@@ -39,6 +38,17 @@ local parsers = {
   "gowork",
   "make",
   "xml",
+  "php",
+  "zig",
+  "sql",
+  "dockerfile",
+  "jsdoc",
+  "regex",
+  "query",
+  "ssh_config",
+  "tmux",
+  "cmake",
+  "proto",
 }
 
 return {

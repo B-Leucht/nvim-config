@@ -31,6 +31,7 @@ return {
       eelixir = { "mix" },
       toml = { "taplo" },
       go = { "goimports", "gofumpt" },
+      zig = { "zigfmt" },
     },
     format_after_save = function()
       if vim.g.disable_autoformat then

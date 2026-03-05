@@ -87,7 +87,7 @@ return {
           language = "auto",
           completionEnabled = false,
           additionalRules = {
-            enablePickyRules = false,
+            enablePickyRules = true,
             motherTongue = "de",
             languageModel = vim.fn.expand("~/ngrams"),
           },
@@ -109,6 +109,16 @@ return {
           vim.diagnostic.open_float,
           { buffer = args.buf, desc = "Line diagnostics (float)" }
         )
+
+        if client:supports_method("textDocument/inlayHint") then
+          vim.keymap.set("n", "<leader>lh", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          end, { buffer = args.buf, desc = "Toggle inlay hints" })
+
+          vim.keymap.set("n", "<leader>li", function()
+            require("inlayhint-filler").fill()
+          end, { buffer = args.buf, desc = "Insert inlay hint" })
+        end
 
         if client.server_capabilities.codeLensProvider then
           vim.lsp.codelens.refresh({ bufnr = args.buf })

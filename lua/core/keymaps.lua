@@ -47,6 +47,9 @@ end, { desc = "Force delete buffer" })
 
 keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear highlights" })
 
+-- Terminal
+keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
@@ -55,6 +58,19 @@ keymap("n", "<up>", "<nop>", opts)
 keymap("n", "<down>", "<nop>", opts)
 keymap("n", "<left>", "<nop>", opts)
 keymap("n", "<right>", "<nop>", opts)
+
+-- Undo break points at punctuation
+for _, key in ipairs({ ",", ".", "!", "?", ";", ":" }) do
+  keymap("i", key, key .. "<C-g>u")
+end
+
+-- Smart dd: empty lines go to black hole register
+keymap("n", "dd", function()
+  if vim.api.nvim_get_current_line():match("^%s*$") then
+    return '"_dd'
+  end
+  return "dd"
+end, { expr = true, desc = "Smart dd" })
 
 -- LSP keymaps (deferred until Snacks loads)
 vim.api.nvim_create_autocmd("User", {
@@ -70,28 +86,17 @@ vim.api.nvim_create_autocmd("User", {
       desc = "Hover documentation",
     })
 
-    Snacks.keymap.set("n", "<leader>lh", function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-    end, {
-      lsp = { method = "textDocument/inlayHint" },
-      desc = "Toggle inlay hints",
-    })
-
-    Snacks.keymap.set("n", "<leader>li", function()
-      require("inlayhint-filler").fill()
-    end, {
-      lsp = { method = "textDocument/inlayHint" },
-      desc = "Insert inlay hint",
-    })
-
     Snacks.keymap.set("n", "<leader>lc", vim.lsp.codelens.run, {
       lsp = { method = "textDocument/codeLens" },
       desc = "Run codelens",
     })
 
-    Snacks.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {
+    Snacks.keymap.set("n", "<leader>lr", function()
+      return ":IncRename " .. vim.fn.expand("<cword>")
+    end, {
       lsp = { method = "textDocument/rename" },
       desc = "Rename",
+      expr = true,
     })
   end,
 })

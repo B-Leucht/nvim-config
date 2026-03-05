@@ -100,4 +100,70 @@ if vim.g.neovide then
   vim.o.guifont = "FiraCode Nerd Font:h18"
 end
 
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.hl.on_yank({ timeout = 150 })
+  end,
+})
+
 vim.opt.spelllang = { "en", "de" }
+
+-- Cursorline only in active window
+local cursorline_group = vim.api.nvim_create_augroup("ActiveCursorLine", { clear = true })
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+  group = cursorline_group,
+  callback = function()
+    vim.opt_local.cursorline = true
+  end,
+})
+vim.api.nvim_create_autocmd({ "WinLeave" }, {
+  group = cursorline_group,
+  callback = function()
+    vim.opt_local.cursorline = false
+  end,
+})
+
+-- Auto-save on focus lost / buffer leave
+vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave" }, {
+  group = vim.api.nvim_create_augroup("AutoSave", { clear = true }),
+  callback = function(ev)
+    local buf = ev.buf
+    if vim.bo[buf].modified and vim.bo[buf].buftype == "" and vim.bo[buf].modifiable then
+      local name = vim.api.nvim_buf_get_name(buf)
+      if name ~= "" then
+        vim.api.nvim_buf_call(buf, function()
+          vim.cmd("silent! write")
+        end)
+      end
+    end
+  end,
+})
+
+-- Auto-close stale buffers (unvisited for 30+ minutes)
+local buf_last_used = {}
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  group = vim.api.nvim_create_augroup("StaleBuffers", { clear = true }),
+  callback = function(ev)
+    buf_last_used[ev.buf] = vim.uv.now()
+  end,
+})
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  group = "StaleBuffers",
+  callback = function()
+    local now = vim.uv.now()
+    local threshold = 30 * 60 * 1000 -- 30 minutes
+    for buf, last in pairs(buf_last_used) do
+      if vim.api.nvim_buf_is_valid(buf)
+        and vim.bo[buf].buflisted
+        and vim.bo[buf].buftype == ""
+        and not vim.bo[buf].modified
+        and buf ~= vim.api.nvim_get_current_buf()
+        and (now - last) > threshold
+      then
+        vim.api.nvim_buf_delete(buf, {})
+        buf_last_used[buf] = nil
+      end
+    end
+  end,
+})
+

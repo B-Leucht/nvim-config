@@ -19,9 +19,6 @@ return {
       ["<CR>"] = { "accept", "fallback" },
       ["<Tab>"] = {
         "snippet_forward",
-        function()
-          return require("sidekick").nes_jump_or_apply()
-        end,
         "fallback",
       },
       ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
@@ -48,7 +45,7 @@ return {
 
     completion = {
       accept = {
-        auto_brackets = { enabled = false },
+        auto_brackets = { enabled = true },
       },
       trigger = { prefetch_on_insert = false },
       documentation = {
@@ -89,13 +86,14 @@ return {
         "lazydev",
         "git",
         "minuet",
+        "dictionary",
       },
       per_filetype = {
         markdown = { "lsp", "path", "snippets", "buffer", "dictionary", "lazydev", "git", "minuet" },
         text = { "lsp", "path", "snippets", "buffer", "dictionary", "minuet" },
         tex = { "lsp", "path", "snippets", "buffer", "dictionary", "minuet" },
         typst = { "lsp", "path", "snippets", "buffer", "dictionary", "minuet" },
-        gitcommit = { "conventional_commits", "lsp", "path", "snippets", "buffer", "git" },
+        gitcommit = { "conventional_commits", "lsp", "path", "snippets", "buffer", "dictionary", "git" },
       },
       providers = {
         lsp = {
@@ -117,6 +115,21 @@ return {
           module = "blink-cmp-dictionary",
           score_offset = 25,
           max_items = 3,
+          should_show_items = function()
+            local prose = { markdown = true, text = true, tex = true, typst = true, gitcommit = true }
+            if prose[vim.bo.filetype] then
+              return true
+            end
+            local node = vim.treesitter.get_node()
+            while node do
+              local t = node:type()
+              if t:find("string") or t:find("comment") then
+                return true
+              end
+              node = node:parent()
+            end
+            return false
+          end,
           opts = {
             dictionary_files = {
               vim.fn.stdpath("config") .. "/dict/english.txt",
