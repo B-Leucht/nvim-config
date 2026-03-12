@@ -76,9 +76,9 @@ end, { expr = true, desc = "Smart dd" })
 vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",
   callback = function()
-    Snacks.keymap.set({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, {
+    Snacks.keymap.set({ "n", "v" }, "<leader>la", require("actions-preview").code_actions, {
       lsp = { method = "textDocument/codeAction" },
-      desc = "Code actions",
+      desc = "Code actions (preview)",
     })
 
     Snacks.keymap.set("n", "K", vim.lsp.buf.hover, {

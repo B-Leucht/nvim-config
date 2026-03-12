@@ -66,7 +66,6 @@ return {
       end, { desc = "Install all configured treesitter parsers" })
     end,
   },
-  -- Sticky context at top of buffer
   {
     "nvim-treesitter/nvim-treesitter-context",
     event = "VeryLazy",
@@ -84,7 +83,6 @@ return {
       },
     },
   },
-  -- Better comment strings per language context
   {
     "folke/ts-comments.nvim",
     event = "VeryLazy",

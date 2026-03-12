@@ -1,5 +1,4 @@
 return {
-  -- Inline color highlighting (hex, rgb, hsl, named colors, tailwind)
   {
     "brenoprata10/nvim-highlight-colors",
     ft = {
@@ -22,7 +21,6 @@ return {
     },
   },
 
-  -- Tailwind CSS colorizer and sorter
   {
     "luckasRanarison/tailwind-tools.nvim",
     name = "tailwind-tools",
@@ -34,7 +32,6 @@ return {
     },
   },
 
-  -- package.json dependency management
   {
     "vuki656/package-info.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },

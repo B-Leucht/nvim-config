@@ -18,6 +18,7 @@ return {
       ["<C-e>"] = { "hide" },
       ["<CR>"] = { "accept", "fallback" },
       ["<Tab>"] = {
+        "select_next",
         "snippet_forward",
         "fallback",
       },
@@ -84,7 +85,6 @@ return {
         "snippets",
         "buffer",
         "lazydev",
-        "git",
         "minuet",
         "dictionary",
       },

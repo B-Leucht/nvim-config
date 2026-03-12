@@ -2,7 +2,6 @@ return {
   "Olical/conjure",
   enabled = true,
   ft = {
-    -- Only keep languages that lack good LSP support or need REPL interaction
     "clojure",
     "fennel",
     "janet",
@@ -12,7 +11,6 @@ return {
     "sql",
   },
   init = function()
-    -- Disable all LSP-provided features since we use LSP everywhere
     vim.g["conjure#mapping#doc_word"] = false
     vim.g["conjure#mapping#def_word"] = false
     vim.g["conjure#mapping#completions"] = false

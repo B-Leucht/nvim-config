@@ -5,9 +5,12 @@ local M = {}
 function M.fetch_tasks(vault)
   vault = vault or os.getenv("OBSIDIAN_VAULT")
   local tasks = {}
-  local handle = io.popen("rg -n -e '- \\[ \\].*TODO' -g '!05_Meta/**' " .. vim.fn.shellescape(vault) .. " 2>/dev/null")
-  if handle then
-    for line in handle:lines() do
+  local result = vim.system(
+    { "rg", "-n", "-e", "- \\[ \\].*TODO", "-g", "!05_Meta/**", vault },
+    { text = true }
+  ):wait()
+  if result.code == 0 and result.stdout then
+    for line in result.stdout:gmatch("[^\n]+") do
       local file, lnum, text = line:match("^(.+):(%d+):(.*)$")
       if file and text then
         local date = text:match("%[due::%s*(%d%d%d%d%-%d%d%-%d%d)%]") or "9999-99-99"
@@ -21,7 +24,6 @@ function M.fetch_tasks(vault)
         })
       end
     end
-    handle:close()
   end
   table.sort(tasks, function(a, b)
     return a.date < b.date

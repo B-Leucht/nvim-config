@@ -1,4 +1,3 @@
--- Elixir development
 return {
   "elixir-tools/elixir-tools.nvim",
   version = "*",

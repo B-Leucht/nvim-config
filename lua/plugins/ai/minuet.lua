@@ -12,8 +12,8 @@ return {
     virtualtext = {
       auto_trigger_ft = {},
       keymap = {
-        accept = "<Tab>",
-        accept_line = "<S-Tab>",
+        accept = "<A-y>",
+        accept_line = "<A-S-y>",
         next = "<C-n>",
         prev = "<C-p>",
         dismiss = "<C-e>",

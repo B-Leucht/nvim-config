@@ -44,5 +44,10 @@ return {
       desc = "Toggle Flash Search",
     },
   },
-  opts = {},
+  opts = {
+    modes = {
+      char = { multi_line = true },
+    },
+    multi_window = true,
+  },
 }

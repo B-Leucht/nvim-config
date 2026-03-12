@@ -1,4 +1,3 @@
--- Otter.nvim - LSP features for embedded code blocks
 return {
   {
     "jmbuhr/otter.nvim",
@@ -21,11 +20,11 @@ return {
 
       -- Filter out noisy diagnostics for otter/markdown buffers
       local ignored_diagnostics = {
-        "reportUnreachable",
-        "reportPossiblyUnbound",
-        "reportUnusedExpression",
-        "Unreachable code",
-        "Expression value is unused",
+        -- "reportUnreachable",
+        -- "reportPossiblyUnbound",
+        -- "reportUnusedExpression",
+        -- "Unreachable code",
+        -- "Expression value is unused",
       }
 
       local function filter_diagnostics(diagnostics, bufnr)

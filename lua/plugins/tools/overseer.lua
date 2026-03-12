@@ -1,4 +1,3 @@
--- Task runner
 return {
   "stevearc/overseer.nvim",
   cmd = {

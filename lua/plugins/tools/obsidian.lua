@@ -1,4 +1,3 @@
--- Obsidian.nvim - Community fork with snacks.picker support
 return {
   "obsidian-nvim/obsidian.nvim",
   ft = "markdown",
@@ -112,15 +111,14 @@ return {
         local current_name = vim.fn.expand("%:t")
 
         local dirs = { "." }
-        local handle = io.popen('find "' .. vault .. '" -type d -not -path "*/\\.*" 2>/dev/null')
-        if handle then
-          for line in handle:lines() do
+        local result = vim.system({ "find", vault, "-type", "d", "-not", "-path", "*/.*" }, { text = true }):wait()
+        if result.code == 0 and result.stdout then
+          for line in result.stdout:gmatch("[^\n]+") do
             local rel = line:gsub(vault, "")
             if rel ~= "" then
               table.insert(dirs, rel)
             end
           end
-          handle:close()
         end
 
         Snacks.picker.select(dirs, { prompt = "Move note to" }, function(selected)

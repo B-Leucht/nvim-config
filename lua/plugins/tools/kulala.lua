@@ -1,4 +1,3 @@
--- HTTP REST client
 return {
   "mistweaverco/kulala.nvim",
   keys = {

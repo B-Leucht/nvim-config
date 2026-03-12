@@ -1,4 +1,3 @@
--- Incline: floating filename labels for splits
 local cached_palette = nil
 local function get_palette()
   if not cached_palette then

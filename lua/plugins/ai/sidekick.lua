@@ -6,7 +6,7 @@ return {
     },
     cli = {
       win = {
-        layout = "right", -- "float", "left", "bottom", "top", "right"
+        layout = "right",
         float = {
           width = 0.4,
           height = 0.6,
@@ -37,10 +37,8 @@ return {
     {
       "<leader>as",
       function()
-        require("sidekick.cli").select()
+        require("sidekick.cli").select({ filter = { installed = true } })
       end,
-      -- Or to select only installed tools:
-      -- require("sidekick.cli").select({ filter = { installed = true } })
       desc = "Select CLI",
     },
     {

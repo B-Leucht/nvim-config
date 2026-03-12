@@ -1,13 +1,12 @@
 return {
   "sindrets/diffview.nvim",
-  cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+  cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
   keys = {
-    { "<leader>gd", "<cmd>DiffviewOpen<CR>", desc = "Git diff (all files)" },
-    { "<leader>gf", "<cmd>DiffviewFileHistory %<CR>", desc = "File history (current)" },
-    { "<leader>gF", "<cmd>DiffviewFileHistory<CR>", desc = "File history (repo)" },
+    { "<leader>gv", "<cmd>DiffviewOpen<cr>", desc = "Diffview open" },
+    { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
+    { "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "Repo history" },
   },
   opts = {
-    enhanced_diff_hl = true,
     view = {
       merge_tool = {
         layout = "diff3_mixed",

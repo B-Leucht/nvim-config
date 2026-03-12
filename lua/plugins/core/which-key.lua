@@ -32,6 +32,7 @@ return {
       },
       { "<leader>c", group = "code", icon = "" },
       { "<leader>m", group = "molten", icon = "" },
+      { "<leader>M", group = "makros", icon = "" },
       { "<leader>O", group = "overseer", icon = "" },
       { "<leader>e", group = "conjure", icon = "" },
       { "<leader>el", group = "log", icon = "" },

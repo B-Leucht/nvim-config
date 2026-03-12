@@ -104,7 +104,12 @@ local DISABLED_FILETYPES = {
 
 return {
   "nvim-lualine/lualine.nvim",
-  dependencies = { "folke/noice.nvim", "cameronr/lualine-pretty-path" },
+  dependencies = {
+    "folke/noice.nvim",
+    "cameronr/lualine-pretty-path",
+    "chrisgrieser/nvim-recorder",
+    "milanglacier/minuet-ai.nvim",
+  },
   event = "VeryLazy",
   opts = {
     options = {
@@ -171,26 +176,13 @@ return {
           separator = SEPARATORS.empty,
         },
         {
-          function()
-            local ok, noice = pcall(require, "noice")
-            return ok and noice.api.status.mode.get() or ""
-          end,
-          cond = function()
-            local ok, noice = pcall(require, "noice")
-            return ok and noice.api.status.mode.has()
-          end,
-          color = function()
-            return { fg = get_palette().red }
-          end,
-          separator = SEPARATORS.empty,
-        },
-        {
           "selectioncount",
           fmt = function(str)
             return str ~= "" and "󰒅 " .. str or ""
           end,
           separator = SEPARATORS.empty,
         },
+        { "minuet", separator = SEPARATORS.empty },
         {
           function()
             local ok, lazy = pcall(require, "lazy.status")
@@ -207,6 +199,7 @@ return {
         },
       },
       lualine_y = {
+
         {
           "fileformat",
           section_separators = SEPARATORS.round2,
@@ -215,9 +208,27 @@ return {
           end,
           separator = SEPARATORS.empty,
         },
+        -- {
+        --   "b:obsidian_status",
+        --   cond = function()
+        --     return vim.b.obsidian_status ~= nil
+        --   end,
+        --   separator = SEPARATORS.round1,
+        -- },
+        {
+          function()
+            return require("recorder").displaySlots()
+          end,
+        },
         { "progress", section_separators = SEPARATORS.round2 },
       },
       lualine_z = {
+        {
+          function()
+            return require("recorder").recordingStatus()
+          end,
+          section_separators = SEPARATORS.round2,
+        },
         {
           "location",
           icon = "",

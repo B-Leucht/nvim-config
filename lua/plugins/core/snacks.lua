@@ -428,6 +428,18 @@ return {
       desc = "Colorschemes",
     },
     {
+      "<leader>uF",
+      function()
+        local filetypes = vim.fn.getcompletion("", "filetype")
+        Snacks.picker.select(filetypes, { prompt = "Set filetype" }, function(ft)
+          if ft then
+            vim.bo.filetype = ft
+          end
+        end)
+      end,
+      desc = "Set Filetype",
+    },
+    {
       "gd",
       function()
         Snacks.picker.lsp_definitions()

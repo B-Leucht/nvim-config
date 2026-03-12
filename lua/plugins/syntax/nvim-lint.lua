@@ -1,4 +1,3 @@
--- Linting (only for things LSP doesn't cover)
 return {
   "mfussenegger/nvim-lint",
   event = { "BufReadPre", "BufNewFile" },
@@ -6,7 +5,6 @@ return {
     local lint = require("lint")
 
     lint.linters_by_ft = {
-      -- Web (eslint for style rules ts_ls doesn't catch)
       javascript = { "eslint_d" },
       typescript = { "eslint_d" },
       javascriptreact = { "eslint_d" },
@@ -14,30 +12,22 @@ return {
       svelte = { "eslint_d" },
       vue = { "eslint_d" },
 
-      -- Python (ruff catches what basedpyright doesn't)
       python = { "ruff" },
 
-      -- Shell (bashls is limited)
       sh = { "shellcheck" },
       bash = { "shellcheck" },
 
-      -- Docker
       dockerfile = { "hadolint" },
 
-      -- CSS
       css = { "stylelint" },
       scss = { "stylelint" },
 
-      -- Java
       java = { "checkstyle" },
 
-      -- SQL
       sql = { "sqlfluff" },
 
-      -- Elixir
       elixir = { "credo" },
 
-      -- Go
       go = { "golangcilint" },
     }
 

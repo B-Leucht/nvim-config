@@ -1,4 +1,3 @@
--- Code formatting (async)
 return {
   "stevearc/conform.nvim",
   event = { "BufWritePre" },
@@ -39,7 +38,6 @@ return {
       end
       return { lsp_format = "fallback" }
     end,
-    -- Notify on format errors
     notify_on_error = true,
   },
   keys = {

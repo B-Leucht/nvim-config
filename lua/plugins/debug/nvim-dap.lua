@@ -48,6 +48,20 @@ return {
       end,
       desc = "Terminate",
     },
+    {
+      "<leader>dk",
+      function()
+        require("dap.ui.widgets").hover()
+      end,
+      desc = "DAP Hover (inspect)",
+    },
+    {
+      "<leader>dr",
+      function()
+        require("dap").repl.toggle()
+      end,
+      desc = "Toggle REPL",
+    },
   },
   config = function()
     local dap = require("dap")
