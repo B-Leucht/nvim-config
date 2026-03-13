@@ -32,8 +32,11 @@ return {
       go = { "goimports", "gofumpt" },
       zig = { "zigfmt" },
     },
-    format_after_save = function()
+    format_after_save = function(bufnr)
       if vim.g.disable_autoformat then
+        return
+      end
+      if vim.b[bufnr].otter_activated or vim.bo[bufnr].buftype == "nofile" then
         return
       end
       return { lsp_format = "fallback" }

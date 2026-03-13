@@ -94,6 +94,7 @@ return {
         },
       },
     })
+    vim.lsp.enable("rust")
 
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)

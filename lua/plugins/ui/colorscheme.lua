@@ -39,7 +39,7 @@ local function catppuccin_setup()
       }
     end,
   })
-  vim.cmd.colorscheme("catppuccin")
+  vim.cmd.colorscheme("catppuccin-nvim")
 end
 
 return {

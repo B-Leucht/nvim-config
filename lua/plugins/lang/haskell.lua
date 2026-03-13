@@ -25,10 +25,10 @@ return {
                 config = { mode = "always" },
               },
               importLens = {
-                globalOn = false,
+                globalOn = true,
               },
               ["explicit-fields"] = {
-                globalOn = false,
+                globalOn = true,
               },
             },
           },
