@@ -162,15 +162,10 @@ return {
 				},
 				{
 					function()
-						local ok, noice = pcall(require, "noice")
-						return ok and noice.api.status.search.get() or ""
+						return require("noice").api.status.search.get_hl()
 					end,
 					cond = function()
-						local ok, noice = pcall(require, "noice")
-						return ok and noice.api.status.search.has()
-					end,
-					color = function()
-						return { fg = get_palette().peach }
+						return package.loaded["noice"] and require("noice").api.status.search.has()
 					end,
 					separator = SEPARATORS.empty,
 				},
@@ -183,27 +178,29 @@ return {
 				},
 				{
 					function()
-						local ok, noice = pcall(require, "noice")
-						return ok and noice.api.status.mode.get() or ""
+						return require("noice").api.status.mode.get_hl()
 					end,
 					cond = function()
-						local ok, noice = pcall(require, "noice")
-						return ok and noice.api.status.mode.has()
+						return package.loaded["noice"] and require("noice").api.status.mode.has()
 					end,
-					color = function()
-						return { fg = get_palette().peach }
+					separator = SEPARATORS.empty,
+				},
+				{
+					function()
+						return require("noice").api.status.command.get_hl()
+					end,
+					cond = function()
+						return package.loaded["noice"] and require("noice").api.status.command.has()
 					end,
 					separator = SEPARATORS.empty,
 				},
 				{ "minuet", separator = SEPARATORS.empty },
 				{
 					function()
-						local ok, lazy = pcall(require, "lazy.status")
-						return ok and lazy.updates() or ""
+						return require("lazy.status").updates()
 					end,
 					cond = function()
-						local ok, lazy = pcall(require, "lazy.status")
-						return ok and lazy.has_updates()
+						return package.loaded["lazy.status"] and require("lazy.status").has_updates()
 					end,
 					color = function()
 						return { fg = get_palette().peach }

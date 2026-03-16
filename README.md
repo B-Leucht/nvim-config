@@ -12,7 +12,7 @@ Use `<leader>?` to show buffer keymaps or press any key to see which-key suggest
 | `<leader>f` | Find (files, buffers, projects)     |
 | `<leader>s` | Search (grep, diagnostics, symbols) |
 | `<leader>g` | Git (lazygit, branches, log, blame) |
-| `<leader>l` | LSP (actions, rename, format)       |
+| `<leader>l` | LSP (actions, rename, format)       | 
 | `<leader>c` | Code (format, lint)                 |
 | `<leader>t` | Terminal                            |
 | `<leader>d` | Debug                               |
@@ -36,3 +36,4 @@ Use `<leader>?` to show buffer keymaps or press any key to see which-key suggest
 git clone https://github.com/B-Leucht/nvim-config ~/.config/nvim
 nvim  # lazy.nvim installs plugins automatically
 ```
+
