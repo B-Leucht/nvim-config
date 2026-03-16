@@ -91,12 +91,9 @@ vim.api.nvim_create_autocmd("User", {
       desc = "Run codelens",
     })
 
-    Snacks.keymap.set("n", "<leader>lr", function()
-      return ":IncRename " .. vim.fn.expand("<cword>")
-    end, {
+    Snacks.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {
       lsp = { method = "textDocument/rename" },
       desc = "Rename",
-      expr = true,
     })
   end,
 })

@@ -38,8 +38,6 @@ return {
 
 		require("mini.splitjoin").setup()
 
-		require("mini.bracketed").setup()
-
 		require("mini.align").setup()
 
 		require("mini.sessions").setup({
@@ -120,15 +118,5 @@ return {
 		end, { desc = "Explorer (cwd)" })
 
 		MiniIcons.mock_nvim_web_devicons()
-
-		local hi = require("mini.hipatterns")
-		hi.setup({
-			highlighters = {
-				fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-				hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-				todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-				note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
-			},
-		})
 	end,
 }
