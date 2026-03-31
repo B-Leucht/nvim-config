@@ -1,9 +1,8 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-  {
-    "stevearc/quicker.nvim",
-    ft = "qf",
-    ---@module "quicker"
-    ---@type quicker.SetupOptions
-    opts = {},
-  },
+	specs = { gh("stevearc/quicker.nvim") },
+	setup = function()
+		require("quicker").setup({})
+	end,
 }

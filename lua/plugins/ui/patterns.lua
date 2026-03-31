@@ -1,8 +1,9 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-  "OXY2DEV/patterns.nvim",
-  cmd = { "Patterns" },
-  keys = {
-    { "<leader>xp", "<cmd>Patterns hover<cr>", desc = "Explain Pattern" },
-    { "<leader>xP", "<cmd>Patterns explain<cr>", desc = "Pattern Editor" },
-  },
+	specs = { gh("OXY2DEV/patterns.nvim") },
+	setup = function()
+		vim.keymap.set("n", "<leader>xp", "<cmd>Patterns hover<cr>", { desc = "Explain Pattern" })
+		vim.keymap.set("n", "<leader>xP", "<cmd>Patterns explain<cr>", { desc = "Pattern Editor" })
+	end,
 }

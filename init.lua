@@ -1,7 +1,4 @@
-require("core.bootstrap").setup()
-
--- Load core configuration
-require("core.keymaps")
+vim.loader.enable()
 require("core.options")
--- Load plugin setup
+require("core.keymaps")
 require("plugins.init")

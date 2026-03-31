@@ -1,5 +1,8 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-  "chomosuke/typst-preview.nvim",
-  ft = "typst",
-  opts = {},
+	specs = { gh("chomosuke/typst-preview.nvim") },
+	setup = function()
+		require("typst-preview").setup({})
+	end,
 }

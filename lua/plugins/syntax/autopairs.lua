@@ -1,11 +1,11 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-  "windwp/nvim-autopairs",
-  event = "InsertEnter",
-  config = function()
-    local autopairs = require("nvim-autopairs")
-    autopairs.setup({
-      check_ts = true,
-      fast_wrap = {},
-    })
-  end,
+	specs = { gh("windwp/nvim-autopairs") },
+	setup = function()
+		require("nvim-autopairs").setup({
+			check_ts = true,
+			fast_wrap = {},
+		})
+	end,
 }

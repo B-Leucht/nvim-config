@@ -1,10 +1,10 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-  "aznhe21/actions-preview.nvim",
-  event = "LspAttach",
-  opts = {
-    backend = { "snacks" },
-    snacks = {
-      layout = { preset = "default" },
-    },
-  },
+	specs = { gh("aznhe21/actions-preview.nvim") },
+	setup = function()
+		require("actions-preview").setup({
+			backend = { "snacks" },
+		})
+	end,
 }

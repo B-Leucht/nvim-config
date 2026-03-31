@@ -1,5 +1,8 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-  "p00f/clangd_extensions.nvim",
-  ft = { "c", "cpp" },
-  opts = {},
+	specs = { gh("p00f/clangd_extensions.nvim") },
+	setup = function()
+		require("clangd_extensions").setup({})
+	end,
 }

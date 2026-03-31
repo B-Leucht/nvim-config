@@ -1,7 +1,8 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-	"echasnovski/mini.nvim",
-	lazy = false,
-	config = function()
+	specs = { gh("echasnovski/mini.nvim") },
+	setup = function()
 		require("mini.surround").setup({
 			mappings = {
 				add = "gza",
@@ -39,6 +40,20 @@ return {
 		require("mini.splitjoin").setup()
 
 		require("mini.align").setup()
+
+		local map = require("mini.map")
+		map.setup({
+			integrations = {
+				map.gen_integration.diagnostic(),
+				map.gen_integration.builtin_search(),
+				map.gen_integration.diff(),
+			},
+			window = {
+				width = 1,
+				show_integration_count = false,
+				winblend = 0,
+			},
+		})
 
 		require("mini.sessions").setup({
 			autoread = false,
@@ -106,11 +121,12 @@ return {
 
 		vim.keymap.set("n", "-", function()
 			local bufname = vim.api.nvim_buf_get_name(0)
-			-- Don't try to open minifiles:// paths
 			if bufname:match("^minifiles://") then
 				MiniFiles.go_out()
-			else
+			elseif bufname ~= "" and vim.uv.fs_stat(bufname) then
 				MiniFiles.open(bufname)
+			else
+				MiniFiles.open()
 			end
 		end, { desc = "Explorer (current file)" })
 		vim.keymap.set("n", "_", function()

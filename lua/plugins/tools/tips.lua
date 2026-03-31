@@ -1,20 +1,12 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-	"saxon1964/neovim-tips",
-	version = "*", -- Only update on tagged releases
-	lazy = false, -- Load on startup for daily tip
-	dependencies = {
-		"MunifTanjim/nui.nvim",
-		"OXY2DEV/markview.nvim", -- Rich rendering with advanced features
-	},
-	opts = {
-		-- OPTIONAL: Daily tip mode (default: 1)
-		daily_tip = 1, -- 0 = off, 1 = once per day, 2 = every startup
-		-- OPTIONAL: Bookmark symbol (default: "🌟 ")
-		bookmark_symbol = "1 ",
-	},
-	init = function()
-		-- OPTIONAL: Change to your liking or drop completely
-		-- The plugin does not provide default key mappings, only commands
+	specs = { gh("saxon1964/neovim-tips") },
+	setup = function()
+		require("neovim_tips").setup({
+			daily_tip = 1,
+			bookmark_symbol = "1 ",
+		})
 		local map = vim.keymap.set
 		map("n", "<leader>nto", ":NeovimTips<CR>", { desc = "Neovim tips", silent = true })
 		map("n", "<leader>ntb", ":NeovimTipsBookmarks<CR>", { desc = "Bookmarked tips", silent = true })

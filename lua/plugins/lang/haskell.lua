@@ -1,6 +1,7 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-	"mrcjkb/haskell-tools.nvim",
-	ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
+	specs = { gh("mrcjkb/haskell-tools.nvim") },
 	init = function()
 		vim.g.haskell_tools = {
 			hls = {

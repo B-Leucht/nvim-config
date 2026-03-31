@@ -1,7 +1,10 @@
 return {
-  require("plugins.ui.colorscheme"),
-  require("plugins.ui.noice"),
-  require("plugins.ui.lualine"),
-  require("plugins.ui.incline"),
-  require("plugins.ui.patterns"),
+	require("plugins.ui.colorscheme"),
+	require("plugins.ui.noice"),
+	require("plugins.ui.lualine"),
+	require("plugins.ui.incline"),
+	require("plugins.ui.patterns"),
+	require("plugins.ui.foldtext"),
+	require("plugins.ui.helpview"),
+	-- require("plugins.ui.smear-cursor"),
 }

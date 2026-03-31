@@ -1,8 +1,10 @@
+local gh = function(x) return "https://github.com/" .. x end
+
 return {
-	"willothy/flatten.nvim",
-	lazy = false,
-	priority = 1001,
-	opts = {
-		window = { open = "alternate" },
-	},
+	specs = { gh("willothy/flatten.nvim") },
+	setup = function()
+		require("flatten").setup({
+			window = { open = "alternate" },
+		})
+	end,
 }
