@@ -16,7 +16,6 @@ return {
 				{ path = "lualine.nvim", words = { "lualine" } },
 				{ path = "flash.nvim", words = { "flash" } },
 				{ path = "conform.nvim", words = { "conform" } },
-				{ path = "nvim-lint", words = { "lint" } },
 				{ path = "nvim-treesitter", words = { "treesitter" } },
 				{ path = "blink.cmp", words = { "blink" } },
 				{ path = "obsidian.nvim", words = { "obsidian" } },

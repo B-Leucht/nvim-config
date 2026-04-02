@@ -45,7 +45,6 @@ return {
 			{ "<leader>u", group = "ui" },
 			{ "<leader>v", group = "vimtex", icon = "" },
 			{ "<leader>w", group = "windows" },
-			{ "<leader>x", group = "regex", icon = "󰑑" },
 		})
 	end,
 }

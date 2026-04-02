@@ -224,7 +224,7 @@ return {
 			if not ok or count.total == 0 then
 				return ""
 			end
-			return "%#Comment# [" .. count.current .. "/" .. count.total .. "]"
+			return "%#Comment# [" .. count.current .. "/" .. count.total .. "]"
 		end
 
 		function stl.tabline()
@@ -433,9 +433,9 @@ return {
 			" %{%v:lua._stl.git()%}",
 			" %{%v:lua._stl.diff()%}",
 			"%=",
+			"%S ",
 			"%{%v:lua._stl.search()%} ",
 			"%{%v:lua._stl.diag()%} ",
-			-- "%{%v:lua._stl.ft()%}",
 			"%{%v:lua._stl.pos()%}",
 		})
 	end,
