@@ -1,4 +1,4 @@
-local gh = function(x) return "https://github.com/" .. x end
+local gh = require("utils.gh")
 
 local function open_obsidian_tasks_picker()
 	local Snacks = require("snacks")
@@ -133,7 +133,7 @@ return {
 			},
 
 			notifier = {
-				enabled = true,
+				enabled = false,
 				timeout = 5000,
 				style = "compact",
 				top_down = false,
@@ -141,21 +141,10 @@ return {
 			},
 
 			picker = {
-				actions = {
-					sidekick_send = function(...)
-						return require("sidekick.cli.picker.snacks").send(...)
-					end,
-				},
 				win = {
 					input = {
 						border = "rounded",
 						wo = { winblend = 0 },
-						keys = {
-							["<a-a>"] = {
-								"sidekick_send",
-								mode = { "n", "i" },
-							},
-						},
 					},
 					list = {
 						border = "rounded",

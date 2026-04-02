@@ -22,11 +22,11 @@
       "version": "1.0.0 - 2.0.0"
     },
     "catppuccin": {
-      "rev": "a7788416689dbefea659d9e9415c87926b0ba5d8",
+      "rev": "60cf331ed7ecb19617c32bf61eb0da78c4c7bb05",
       "src": "https://github.com/catppuccin/nvim"
     },
     "clangd_extensions.nvim": {
-      "rev": "c9f2190064c4b42d5ce58419684251771019961f",
+      "rev": "92b720768fad9d8a333a3cbb167f0bab550f9f50",
       "src": "https://github.com/p00f/clangd_extensions.nvim"
     },
     "conform.nvim": {
@@ -102,7 +102,7 @@
       "src": "https://github.com/OXY2DEV/markview.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "037398b9ce4a53ba48d5f94765c641a1fd16d906",
+      "rev": "25f609e7fca78af7cede4f9fa3af8a94b1c4950b",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason-tool-installer.nvim": {
@@ -114,7 +114,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "af5f75c9ce572a4d1f0c77d6fb4ea764d16c1b3c",
+      "rev": "3923662bf3d6ca49a9503f8d7196ea0450983e6a",
       "src": "https://github.com/echasnovski/mini.nvim"
     },
     "molten-nvim": {
@@ -126,7 +126,7 @@
       "src": "https://github.com/danymat/neogen"
     },
     "neotest": {
-      "rev": "72bc8f1ec62a590fb47368c81f89610e0f353e28",
+      "rev": "fd0b7986dd0ae04e38ec7dc0c78a432e3820839c",
       "src": "https://github.com/nvim-neotest/neotest"
     },
     "neotest-golang": {
@@ -194,7 +194,7 @@
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lspconfig": {
-      "rev": "16812abf0e8d8175155f26143a8504e8253e92b0",
+      "rev": "8e2084bf5e40c79c1f42210a6ef96a0a4793a763",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-nio": {
@@ -206,15 +206,15 @@
       "src": "https://github.com/chrisgrieser/nvim-recorder"
     },
     "nvim-treesitter": {
-      "rev": "7caec274fd19c12b55902a5b795100d21531391f",
+      "rev": "c82bf96f0a773d85304feeb695e1e23b2207ac35",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-context": {
-      "rev": "adf4b6b0420b7be6c717ef0ac7993183d6c201b1",
+      "rev": "b0c45cefe2c8f7b55fc46f34e563bc428ef99636",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
     "obsidian.nvim": {
-      "rev": "47063e6b94f2d491a601058de4eb79bc636cd543",
+      "rev": "fb74e1f3179d5768f79213068d4439ecedac026c",
       "src": "https://github.com/obsidian-nvim/obsidian.nvim"
     },
     "otter.nvim": {
@@ -222,7 +222,7 @@
       "src": "https://github.com/jmbuhr/otter.nvim"
     },
     "overseer.nvim": {
-      "rev": "a2194447f4c5a1baf95139c5c7b539fa7b0d012f",
+      "rev": "f818eefff81f4b12fb7cf236f1b6c16768a2fcbc",
       "src": "https://github.com/stevearc/overseer.nvim"
     },
     "package-info.nvim": {
@@ -242,7 +242,7 @@
       "src": "https://github.com/stevearc/quicker.nvim"
     },
     "rustaceanvim": {
-      "rev": "8a3617b88696a129e7ecec7ddf9437716615dc8b",
+      "rev": "f69c85a955b9a83d495e3dc8d43adb6364a0b765",
       "src": "https://github.com/mrcjkb/rustaceanvim"
     },
     "schemastore.nvim": {

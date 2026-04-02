@@ -1,4 +1,4 @@
-local gh = function(x) return "https://github.com/" .. x end
+local gh = require("utils.gh")
 
 return {
 	specs = { gh("mistweaverco/kulala.nvim") },

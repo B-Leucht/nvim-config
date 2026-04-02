@@ -1,6 +1,6 @@
 -- Mason package manager
 
-local gh = function(x) return "https://github.com/" .. x end
+local gh = require("utils.gh")
 
 -- LSP servers
 local lsp_servers = {
@@ -15,7 +15,7 @@ local lsp_servers = {
 	"gopls",
 	"html-lsp",
 	"json-lsp",
-	-- "lua-language-server",
+	"lua-language-server",
 	"markdown-oxide",
 	"sqlls",
 	"texlab",
@@ -82,7 +82,7 @@ local lsp_enable = {
 	"gopls",
 	"html",
 	"jsonls",
-	-- "lua_ls",
+	"lua_ls",
 	"markdown_oxide",
 	"sqlls",
 	"texlab",
@@ -126,5 +126,20 @@ return {
 		})
 
 		vim.lsp.enable(lsp_enable)
+
+		-- Re-trigger FileType after startup so LSPs attach to the initial buffer
+		vim.api.nvim_create_autocmd("UIEnter", {
+			once = true,
+			callback = function()
+				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+					if vim.api.nvim_buf_is_loaded(buf) then
+						local ft = vim.bo[buf].filetype
+						if ft and ft ~= "" then
+							vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
+						end
+					end
+				end
+			end,
+		})
 	end,
 }

@@ -1,4 +1,4 @@
-local gh = function(x) return "https://github.com/" .. x end
+local gh = require("utils.gh")
 
 return {
 	specs = {
@@ -25,22 +25,6 @@ return {
 				["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
 				["<C-b>"] = { "scroll_documentation_up", "fallback" },
 				["<C-f>"] = { "scroll_documentation_down", "fallback" },
-			},
-
-			appearance = {
-				use_nvim_cmp_as_default = false,
-				nerd_font_variant = "mono",
-				kind_icons = {
-					claude = "󰋦",
-					openai = "󱢆",
-					codestral = "󱎥",
-					gemini = "",
-					Groq = "",
-					Openrouter = "󱂇",
-					Ollama = "󰳆",
-					["Llama.cpp"] = "󰳆",
-					Deepseek = "",
-				},
 			},
 
 			completion = {
@@ -175,7 +159,7 @@ return {
 				},
 			},
 			cmdline = {
-				enabled = false,
+				enabled = true,
 			},
 			fuzzy = {
 				sorts = {

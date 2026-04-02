@@ -1,6 +1,4 @@
-local gh = function(x)
-	return "https://github.com/" .. x
-end
+local gh = require("utils.gh")
 
 return {
 	specs = {
@@ -97,6 +95,23 @@ return {
 			},
 		})
 
+		Snacks.keymap.set({ "n", "v" }, "<leader>la", require("actions-preview").code_actions, {
+			lsp = { method = "textDocument/codeAction" },
+			desc = "Code actions (preview)",
+		})
+		Snacks.keymap.set("n", "K", vim.lsp.buf.hover, {
+			lsp = { method = "textDocument/hover" },
+			desc = "Hover documentation",
+		})
+		Snacks.keymap.set("n", "<leader>lc", vim.lsp.codelens.run, {
+			lsp = { method = "textDocument/codeLens" },
+			desc = "Run codelens",
+		})
+		Snacks.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {
+			lsp = { method = "textDocument/rename" },
+			desc = "Rename",
+		})
+
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(args)
 				local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -127,7 +142,7 @@ return {
 					vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
 						buffer = args.buf,
 						callback = function()
-							vim.lsp.codelens.refresh({ bufnr = args.buf })
+							vim.lsp.codelens.enable(true, { bufnr = args.buf })
 						end,
 					})
 				end

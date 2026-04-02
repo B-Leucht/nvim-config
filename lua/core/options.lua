@@ -26,10 +26,6 @@ opt.wrap = true
 opt.textwidth = 80
 opt.formatoptions = "tcqjrn1"
 opt.wrapmargin = 0
-opt.mousescroll = "ver:1,hor:1"
-opt.scrolloff = 8
-opt.sidescrolloff = 8
-opt.conceallevel = 2
 opt.concealcursor = ""
 
 opt.inccommand = "split"

@@ -38,11 +38,11 @@ for i = 1, 9 do
 end
 
 keymap("n", "<leader>bd", function()
-	Snacks.bufdelete()
+	require("snacks").bufdelete()
 end, { desc = "Delete buffer (keep window)" })
 
 keymap("n", "<leader>bD", function()
-	Snacks.bufdelete({ force = true })
+	require("snacks").bufdelete({ force = true })
 end, { desc = "Force delete buffer" })
 
 keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear highlights" })
@@ -72,28 +72,4 @@ keymap("n", "dd", function()
 	return "dd"
 end, { expr = true, desc = "Smart dd" })
 
--- LSP keymaps (deferred until Snacks loads)
-vim.api.nvim_create_autocmd("User", {
-	pattern = "VeryLazy",
-	callback = function()
-		Snacks.keymap.set({ "n", "v" }, "<leader>la", require("actions-preview").code_actions, {
-			lsp = { method = "textDocument/codeAction" },
-			desc = "Code actions (preview)",
-		})
-
-		Snacks.keymap.set("n", "K", vim.lsp.buf.hover, {
-			lsp = { method = "textDocument/hover" },
-			desc = "Hover documentation",
-		})
-
-		Snacks.keymap.set("n", "<leader>lc", vim.lsp.codelens.run, {
-			lsp = { method = "textDocument/codeLens" },
-			desc = "Run codelens",
-		})
-
-		Snacks.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {
-			lsp = { method = "textDocument/rename" },
-			desc = "Rename",
-		})
-	end,
-})
+-- LSP keymaps are registered in plugins/lsp/lsp.lua (after Snacks loads)

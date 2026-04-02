@@ -25,7 +25,6 @@ for _, mod in ipairs(modules) do
 		mod.init()
 	end
 end
-
 -- Build hooks for post-install/update actions
 vim.api.nvim_create_autocmd("PackChanged", {
 	callback = function(ev)
@@ -34,9 +33,13 @@ vim.api.nvim_create_autocmd("PackChanged", {
 			return
 		end
 		if name == "nvim-treesitter" then
-			vim.schedule(function() vim.cmd("TSUpdate") end)
+			vim.schedule(function()
+				vim.cmd("TSUpdate")
+			end)
 		elseif name == "mason.nvim" then
-			vim.schedule(function() vim.cmd("MasonUpdate") end)
+			vim.schedule(function()
+				vim.cmd("MasonUpdate")
+			end)
 		elseif name == "molten-nvim" then
 			vim.schedule(function()
 				if vim.fn.exists(":UpdateRemotePlugins") == 2 then
@@ -56,6 +59,10 @@ for _, mod in ipairs(modules) do
 end
 
 vim.pack.add(specs)
+
+vim.api.nvim_create_user_command("PackUpdate", function()
+	vim.pack.update()
+end, { desc = "Update all plugins" })
 
 -- Post-load setup
 for _, mod in ipairs(modules) do
