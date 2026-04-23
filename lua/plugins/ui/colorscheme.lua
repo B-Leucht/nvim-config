@@ -46,7 +46,10 @@ local function catppuccin_setup()
 end
 
 return {
-	specs = { { src = gh("catppuccin/nvim"), name = "catppuccin" } },
+	specs = {
+		{ src = gh("catppuccin/nvim"), name = "catppuccin" },
+		{ src = gh("arzg/vim-colors-xcode") },
+	},
 	setup = function()
 		catppuccin_setup()
 

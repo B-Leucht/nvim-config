@@ -72,4 +72,11 @@ keymap("n", "dd", function()
 	return "dd"
 end, { expr = true, desc = "Smart dd" })
 
+vim.cmd.packadd("nvim.undotree")
+keymap("n", "<leader>uu", "<cmd>Undotree<cr>", { desc = "Undotree" })
+
+keymap({ "n", "v" }, "<leader>cf", function()
+	vim.lsp.buf.format({ async = true })
+end, { desc = "Format buffer" })
+
 -- LSP keymaps are registered in plugins/lsp/lsp.lua (after Snacks loads)

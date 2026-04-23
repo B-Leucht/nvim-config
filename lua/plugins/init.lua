@@ -36,10 +36,6 @@ vim.api.nvim_create_autocmd("PackChanged", {
 			vim.schedule(function()
 				vim.cmd("TSUpdate")
 			end)
-		elseif name == "mason.nvim" then
-			vim.schedule(function()
-				vim.cmd("MasonUpdate")
-			end)
 		elseif name == "molten-nvim" then
 			vim.schedule(function()
 				if vim.fn.exists(":UpdateRemotePlugins") == 2 then

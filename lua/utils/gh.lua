@@ -1,1 +1,3 @@
-return function(x) return "https://github.com/" .. x end
+return function(x)
+	return "https://github.com/" .. x
+end

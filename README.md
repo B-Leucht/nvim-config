@@ -1,7 +1,9 @@
 # Neovim Configuration
 
 Personal Neovim setup for Lua, Haskell, Python, Java, Rust Development and Notes
-with WordNet integration and Google Translate.
+with WordNet integration.
+
+
 
 ## Key Bindings
 

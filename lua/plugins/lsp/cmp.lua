@@ -31,7 +31,7 @@ return {
 				accept = {
 					auto_brackets = { enabled = true },
 				},
-				trigger = { prefetch_on_insert = false },
+				trigger = { prefetch_on_insert = true },
 				documentation = {
 					auto_show = true,
 					auto_show_delay_ms = 200,
@@ -68,15 +68,15 @@ return {
 					"snippets",
 					"buffer",
 					"lazydev",
-					-- "minuet",
+					"minuet",
 					"dictionary",
 				},
 				per_filetype = {
-					markdown = { "lsp", "path", "snippets", "buffer", "dictionary", "lazydev", "git" },
-					text = { "lsp", "path", "snippets", "buffer", "dictionary" },
-					tex = { "lsp", "path", "snippets", "buffer", "dictionary" },
-					typst = { "lsp", "path", "snippets", "buffer", "dictionary" },
-					gitcommit = { "conventional_commits", "lsp", "path", "snippets", "buffer", "dictionary", "git" },
+					markdown = { "minuet", "lsp", "path", "snippets", "buffer", "dictionary", "lazydev", "git" },
+					text = { "minuet", "lsp", "path", "snippets", "buffer", "dictionary" },
+					tex = { "minuet", "lsp", "path", "snippets", "buffer", "dictionary" },
+					typst = { "minuet", "lsp", "path", "snippets", "buffer", "dictionary" },
+					gitcommit = { "conventional_commits", "minuet", "lsp", "path", "snippets", "buffer", "dictionary", "git" },
 				},
 				providers = {
 					lsp = {
@@ -144,13 +144,13 @@ return {
 						module = "blink-cmp-git",
 						score_offset = 150,
 					},
-					-- minuet = {
-					-- 	name = "Minuet",
-					-- 	module = "minuet.blink",
-					-- 	async = true,
-					-- 	timeout_ms = 3000,
-					-- 	score_offset = 50,
-					-- },
+					minuet = {
+						name = "Minuet",
+						module = "minuet.blink",
+						async = true,
+						timeout_ms = 10000,
+						score_offset = 50,
+					},
 					conventional_commits = {
 						name = "Commits",
 						module = "blink-cmp-conventional-commits",

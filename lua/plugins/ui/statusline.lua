@@ -6,73 +6,90 @@ return {
 	setup = function()
 		vim.o.laststatus = 3
 
-		local mode_colors = {
-			StlMode = "blue",
-			StlModeI = "green",
-			StlModeV = "mauve",
-			StlModeR = "red",
-			StlModeC = "peach",
-			StlModeT = "teal",
-		}
-
 		local function setup_highlights()
-			local ok, palette = pcall(function()
-				return require("catppuccin.palettes").get_palette()
-			end)
-			if not ok then
-				return
+			-- synIDtrans follows highlight links, synIDattr with "#" returns gui hex color
+			local function fg(name)
+				local color = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(name)), "fg#")
+				return color ~= "" and color or "NONE"
 			end
-			local c = palette
+			local function bg(name)
+				local color = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(name)), "bg#")
+				return color ~= "" and color or nil
+			end
+
+			-- Normal bg may be NONE in transparent themes — fall back by background tone
+			local base    = bg("Normal") or (vim.o.background == "light" and "#ffffff" or "#000000")
+			local surface = bg("CursorLine") or bg("Pmenu") or bg("StatusLine") or "NONE"
+			local text    = fg("Normal")
+			local overlay = fg("Comment")
+			local blue    = fg("Function")
+			local green   = fg("String")
+			local mauve   = fg("Keyword")
+			local red     = fg("DiagnosticError")
+			local peach   = fg("Number")
+			local teal    = fg("DiagnosticHint")
+			local flamingo = fg("Character")
+			local yellow  = fg("DiagnosticWarn")
+
+			local mode_colors = {
+				StlMode  = blue,
+				StlModeI = green,
+				StlModeV = mauve,
+				StlModeR = red,
+				StlModeC = peach,
+				StlModeT = teal,
+			}
 
 			-- Mode section
 			for hl, col in pairs(mode_colors) do
-				vim.api.nvim_set_hl(0, hl, { fg = c.base, bg = c[col], bold = true })
-				vim.api.nvim_set_hl(0, hl .. "SepL", { fg = c[col], bg = "NONE" }) -- outer left cap
-				vim.api.nvim_set_hl(0, hl .. "SepR", { fg = c[col], bg = c.surface0 }) -- mode→file transition
+				vim.api.nvim_set_hl(0, hl, { fg = base, bg = col, bold = true })
+				vim.api.nvim_set_hl(0, hl .. "SepL", { fg = col, bg = "NONE" })
+				vim.api.nvim_set_hl(0, hl .. "SepR", { fg = col, bg = surface })
 			end
 
 			-- File section (connected to mode)
-			vim.api.nvim_set_hl(0, "StlFile", { fg = c.text, bg = c.surface0 })
-			vim.api.nvim_set_hl(0, "StlFileSep", { fg = c.surface0, bg = "NONE" }) -- outer right cap
+			vim.api.nvim_set_hl(0, "StlFile", { fg = text, bg = surface })
+			vim.api.nvim_set_hl(0, "StlFileSep", { fg = surface, bg = "NONE" })
 
 			-- Middle (no bg)
-			vim.api.nvim_set_hl(0, "StlGit", { fg = c.flamingo, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlDiffAdd", { fg = c.green, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlDiffChange", { fg = c.yellow, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlDiffDelete", { fg = c.red, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlDiagError", { fg = c.red, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlDiagWarn", { fg = c.yellow, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlDiagInfo", { fg = c.blue, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlDiagHint", { fg = c.teal, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlGit", { fg = flamingo, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlDiffAdd", { fg = green, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlDiffChange", { fg = yellow, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlDiffDelete", { fg = red, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlDiagError", { fg = red, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlDiagWarn", { fg = yellow, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlDiagInfo", { fg = blue, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlDiagHint", { fg = teal, bg = "NONE" })
 
 			-- Progress → Position connected block (position uses mode color)
-			vim.api.nvim_set_hl(0, "StlProgressSepL", { fg = c.surface0, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlProgress", { fg = c.text, bg = c.surface0 })
+			vim.api.nvim_set_hl(0, "StlProgressSepL", { fg = surface, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlProgress", { fg = text, bg = surface })
 			for hl, col in pairs(mode_colors) do
-				vim.api.nvim_set_hl(0, "StlPos" .. hl, { fg = c.base, bg = c[col], bold = true })
-				vim.api.nvim_set_hl(0, "StlPos" .. hl .. "SepL", { fg = c[col], bg = c.surface0 })
-				vim.api.nvim_set_hl(0, "StlPos" .. hl .. "SepR", { fg = c[col], bg = "NONE" })
+				vim.api.nvim_set_hl(0, "StlPos" .. hl, { fg = base, bg = col, bold = true })
+				vim.api.nvim_set_hl(0, "StlPos" .. hl .. "SepL", { fg = col, bg = surface })
+				vim.api.nvim_set_hl(0, "StlPos" .. hl .. "SepR", { fg = col, bg = "NONE" })
 			end
 
-			-- Winbar
-			vim.api.nvim_set_hl(0, "WbActive", { fg = c.text, bg = c.surface0 })
-			vim.api.nvim_set_hl(0, "WbActiveSepL", { fg = c.surface0, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "WbActiveSepR", { fg = c.surface0, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "WbInactive", { fg = c.overlay0, bg = c.surface0 })
-			vim.api.nvim_set_hl(0, "WbInactiveSepL", { fg = c.surface0, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "WbInactiveSepR", { fg = c.surface0, bg = "NONE" })
+			-- Winbar: transparent bg (matches statusbar between-pill area), surface pill
+			vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE" })
+			vim.api.nvim_set_hl(0, "WinBarNC", { bg = "NONE" })
+			vim.api.nvim_set_hl(0, "WbActive", { fg = text, bg = surface })
+			vim.api.nvim_set_hl(0, "WbActiveSepL", { fg = surface, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "WbActiveSepR", { fg = surface, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "WbInactive", { fg = overlay, bg = surface })
+			vim.api.nvim_set_hl(0, "WbInactiveSepL", { fg = surface, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "WbInactiveSepR", { fg = surface, bg = "NONE" })
 
-			-- Tabline
-			vim.api.nvim_set_hl(0, "StlTabActive", { fg = c.base, bg = c.blue, bold = true })
-			vim.api.nvim_set_hl(0, "StlTabActiveSepL", { fg = c.blue, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlTabInactive", { fg = c.text, bg = c.surface0 })
-			vim.api.nvim_set_hl(0, "StlTabInactiveSepL", { fg = c.surface0, bg = "NONE" })
-			-- transitions between tabs
-			vim.api.nvim_set_hl(0, "StlTabA2I", { fg = c.blue, bg = c.surface0 }) -- active → inactive
-			vim.api.nvim_set_hl(0, "StlTabI2A", { fg = c.surface0, bg = c.blue }) -- inactive → active
-			vim.api.nvim_set_hl(0, "StlTabI2I", { fg = c.surface0, bg = c.surface0 }) -- inactive → inactive (invisible)
-			vim.api.nvim_set_hl(0, "StlTabActiveEnd", { fg = c.blue, bg = "NONE" })
-			vim.api.nvim_set_hl(0, "StlTabInactiveEnd", { fg = c.surface0, bg = "NONE" })
+			-- Tabline: outer bar is surface pill, active tab is blue pill inside
+			vim.api.nvim_set_hl(0, "StlTabBar", { fg = overlay, bg = surface })
+			vim.api.nvim_set_hl(0, "StlTabDiv", { fg = overlay, bg = surface })
+			vim.api.nvim_set_hl(0, "StlTabBarSepL", { fg = surface, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlTabBarSepR", { fg = surface, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlTabActive", { fg = base, bg = blue, bold = true })
+			vim.api.nvim_set_hl(0, "StlTabActiveSepL", { fg = blue, bg = surface })
+			vim.api.nvim_set_hl(0, "StlTabActiveSepR", { fg = blue, bg = surface })
+			vim.api.nvim_set_hl(0, "StlTabActiveEdgeL", { fg = blue, bg = "NONE" })
+			vim.api.nvim_set_hl(0, "StlTabActiveEdgeR", { fg = blue, bg = "NONE" })
 		end
 
 		setup_highlights()
@@ -118,6 +135,38 @@ return {
 
 		local stl = {}
 		_G._stl = stl
+
+		-- Click handlers (must be global for %@func@ syntax)
+		function _G._stl_click_buffers(_, _, btn)
+			if btn == "l" then
+				require("snacks").picker.buffers()
+			end
+		end
+		function _G._stl_click_diag(_, _, btn)
+			if btn == "l" then
+				vim.diagnostic.setloclist()
+			end
+		end
+		function _G._stl_click_git_branch(_, _, btn)
+			if btn == "l" then
+				require("snacks").picker.git_branches()
+			end
+		end
+		function _G._stl_click_git_status(_, _, btn)
+			if btn == "l" then
+				require("snacks").picker.git_status()
+			end
+		end
+		-- Store scope node start positions for click-to-jump
+		stl._scope_positions = {}
+		function _G._stl_click_scope(minwid, _, btn)
+			if btn == "l" then
+				local pos = stl._scope_positions[minwid]
+				if pos then
+					vim.api.nvim_win_set_cursor(0, { pos[1] + 1, pos[2] })
+				end
+			end
+		end
 
 		-- Check if any other listed buffer shares the same tail name
 		local function has_duplicate_name(tail)
@@ -172,7 +221,7 @@ return {
 			local icon = file_icon(tail, ext, "StlFile")
 			local modified = vim.bo.modified and " +" or ""
 			local readonly = (vim.bo.readonly or not vim.bo.modifiable) and " " or ""
-			return "%#StlFile# " .. icon .. name .. modified .. readonly .. " %#StlFileSep#" .. SEP_R
+			return "%@v:lua._stl_click_buffers@%#StlFile# " .. icon .. name .. modified .. readonly .. " %#StlFileSep#" .. SEP_R .. "%X"
 		end
 
 		function stl.git()
@@ -180,7 +229,7 @@ return {
 			if not head or head == "" then
 				return ""
 			end
-			return "%#StlGit#  " .. head
+			return "%@v:lua._stl_click_git_branch@%#StlGit#  " .. head .. "%X"
 		end
 
 		function stl.diff()
@@ -198,7 +247,11 @@ return {
 			if (s.removed or 0) > 0 then
 				table.insert(parts, "%#StlDiffDelete# " .. s.removed)
 			end
-			return table.concat(parts, " ")
+			local result = table.concat(parts, " ")
+			if result ~= "" then
+				result = "%@v:lua._stl_click_git_status@" .. result .. "%X"
+			end
+			return result
 		end
 
 		function stl.diag()
@@ -216,7 +269,11 @@ return {
 			if (d[4] or 0) > 0 then
 				table.insert(parts, "%#StlDiagHint#󰌶 " .. d[4])
 			end
-			return table.concat(parts, " ")
+			local result = table.concat(parts, " ")
+			if result ~= "" then
+				result = "%@v:lua._stl_click_diag@" .. result .. "%X"
+			end
+			return result
 		end
 
 		function stl.search()
@@ -233,71 +290,102 @@ return {
 				return ""
 			end
 			local cur = vim.fn.tabpagenr()
-			local s = ""
+			-- Build tab content, collect labels and widths
+			local tabs = {}
+			local total_width = 0
 			for i = 1, total do
 				local active = i == cur
-				local hl = active and "StlTabActive" or "StlTabInactive"
 				local bufnr = vim.fn.tabpagebuflist(i)[vim.fn.tabpagewinnr(i)]
 				local name = vim.fn.fnamemodify(vim.fn.bufname(bufnr), ":t")
 				if name == "" then
 					name = "[No Name]"
 				end
+				local label = " " .. i .. " " .. name .. " "
+				local w = #label + (active and 2 or 0) -- +2 for pill separators
+				if not active and i > 1 and not tabs[i - 1].active then
+					w = w + 1 -- divider
+				end
+				-- outer bar separators only on inactive edges
+				if i == 1 and not active then
+					w = w + 1 -- bar left sep
+				end
+				if i == total and not active then
+					w = w + 1 -- bar right sep
+				end
+				total_width = total_width + w
+				tabs[i] = { label = label, active = active }
+			end
 
-				if i == 1 then
-					s = s .. "%#" .. hl .. "SepL#" .. SEP_L
+			-- Distribute padding evenly across all tabs
+			local cols = vim.o.columns
+			local extra = math.max(0, cols - total_width)
+			local per_tab = math.floor(extra / total)
+			local remainder = extra - per_tab * total
+
+			local s = ""
+			local prev_active = false
+			for i = 1, total do
+				local t = tabs[i]
+				local is_first = i == 1
+				local is_last = i == total
+				local pad = per_tab + (i <= remainder and 1 or 0)
+				local lpad = math.floor(pad / 2)
+				local rpad = pad - lpad
+				s = s .. "%" .. i .. "T"
+				if t.active then
+					local sepl = is_first and "StlTabActiveEdgeL" or "StlTabActiveSepL"
+					local sepr = is_last and "StlTabActiveEdgeR" or "StlTabActiveSepR"
+					s = s .. "%#" .. sepl .. "#" .. SEP_L
+					s = s .. "%#StlTabActive#" .. string.rep(" ", lpad) .. t.label .. string.rep(" ", rpad)
+					s = s .. "%#" .. sepr .. "#" .. SEP_R
 				else
-					local prev_active = (i - 1) == cur
-					local trans
-					if prev_active and not active then
-						trans = "StlTabA2I"
-					elseif not prev_active and active then
-						trans = "StlTabI2A"
-					else
-						trans = "StlTabI2I"
+					if is_first then
+						s = s .. "%#StlTabBarSepL#" .. SEP_L
+					elseif not prev_active then
+						s = s .. "%#StlTabDiv#│"
 					end
-					s = s .. "%#" .. trans .. "#" .. SEP_R
+					s = s .. "%#StlTabBar#" .. string.rep(" ", lpad) .. t.label .. string.rep(" ", rpad)
+					if is_last then
+						s = s .. "%#StlTabBarSepR#" .. SEP_R
+					end
 				end
-
-				s = s .. "%#" .. hl .. "# " .. i .. " " .. name .. " "
-
-				if i == total then
-					local endhl = active and "StlTabActiveEnd" or "StlTabInactiveEnd"
-					s = s .. "%#" .. endhl .. "#" .. SEP_R
-				end
+				s = s .. "%T"
+				prev_active = t.active
 			end
 			return s
 		end
 
 		-- Scope breadcrumbs (cached per buffer + cursor row)
+		-- value = { hl, icon } or false to skip
 		local scope_kinds = {
 			-- generic
-			function_declaration = true,
-			function_definition = true,
-			method_declaration = true,
-			method_definition = true,
-			class_declaration = true,
-			class_definition = true,
-			class_specifier = true,
-			module = true,
+			function_declaration = { "@function", "󰊕" },
+			function_definition = { "@function", "󰊕" },
+			method_declaration = { "@function.method", "󰊕" },
+			method_definition = { "@function.method", "󰊕" },
+			class_declaration = { "@type", "" },
+			class_definition = { "@type", "" },
+			class_specifier = { "@type", "" },
+			module = { "@module", "󰅩" },
 			-- lua
-			function_declaration_statement = true,
+			function_declaration_statement = { "@function", "󰊕" },
 			-- rust
-			function_item = true,
-			struct_item = true,
-			impl_item = true,
-			enum_item = true,
-			trait_item = true,
-			mod_item = true,
+			function_item = { "@function", "󰊕" },
+			struct_item = { "@type", "" },
+			impl_item = { "@type", "" },
+			enum_item = { "@type", "" },
+			trait_item = { "@type", "" },
+			mod_item = { "@module", "󰅩" },
 			-- python
 			decorated_definition = false,
 			-- go
-			type_declaration = true,
+			type_declaration = { "@type", "" },
 			-- js/ts
-			interface_declaration = true,
+			interface_declaration = { "@type", "" },
 			lexical_declaration = false,
 			arrow_function = false,
 			-- c/cpp
-			namespace_definition = true,
+			namespace_definition = { "@module", "󰅩" },
 		}
 
 		local scope_cache = { bufnr = -1, row = -1, result = "" }
@@ -315,12 +403,16 @@ return {
 			end
 			local node = tree:root():named_descendant_for_range(row, col, row, col)
 			local crumbs = {}
+			stl._scope_positions = {}
 			while node do
 				local kind = node:type()
-				if scope_kinds[kind] then
+				local kind_info = scope_kinds[kind]
+				if kind_info then
+					local kind_hl, kind_icon = kind_info[1], kind_info[2]
 					local name_node = node:field("name")[1]
+					local label
 					if name_node then
-						table.insert(crumbs, 1, vim.treesitter.get_node_text(name_node, 0))
+						label = vim.treesitter.get_node_text(name_node, 0)
 					else
 						local parent = node:parent()
 						if parent then
@@ -328,15 +420,19 @@ return {
 							if pt == "field" or pt == "pair" then
 								local key = parent:field("name")[1] or parent:field("key")[1]
 								if key then
-									table.insert(crumbs, 1, vim.treesitter.get_node_text(key, 0))
+									label = vim.treesitter.get_node_text(key, 0)
 								end
 							elseif pt == "assignment_statement" or pt == "variable_declaration" then
 								local lhs = parent:named_child(0)
 								if lhs then
-									table.insert(crumbs, 1, vim.treesitter.get_node_text(lhs, 0))
+									label = vim.treesitter.get_node_text(lhs, 0)
 								end
 							end
 						end
+					end
+					if label then
+						local sr, sc = node:start()
+						table.insert(crumbs, 1, { label = label, row = sr, col = sc, hl = kind_hl, icon = kind_icon })
 					end
 				end
 				node = node:parent()
@@ -344,7 +440,12 @@ return {
 			if #crumbs == 0 then
 				return ""
 			end
-			return "%#NonText# " .. table.concat(crumbs, " %#Comment#›%#NonText# ")
+			local parts = {}
+			for idx, c in ipairs(crumbs) do
+				stl._scope_positions[idx] = { c.row, c.col }
+				table.insert(parts, "%" .. idx .. "@v:lua._stl_click_scope@%#" .. c.hl .. "#" .. c.icon .. " " .. c.label .. "%X")
+			end
+			return " " .. table.concat(parts, " %#Comment#› ")
 		end
 
 		function stl.scope()
@@ -376,7 +477,7 @@ return {
 			local ext = vim.fn.expand("%:e")
 			local icon = file_icon(tail, ext, hl)
 			local modified = vim.bo.modified and " +" or ""
-			local pill = "%#"
+			local pill = "%@v:lua._stl_click_buffers@%#"
 				.. hl
 				.. "SepL#"
 				.. SEP_L
@@ -390,8 +491,8 @@ return {
 				.. hl
 				.. "SepR#"
 				.. SEP_R
-			local scope = active and stl.scope() or ""
-			return scope .. "%=" .. pill
+				.. "%X"
+			return "%=" .. pill
 		end
 
 		function stl.ft()
@@ -400,6 +501,41 @@ return {
 				return ""
 			end
 			return "%#Comment#" .. ft .. " "
+		end
+
+		-- Minuet AI completion status
+		local minuet_state = { processing = false, name = "", spinner = 1 }
+		local spinners = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+		local minuet_group = vim.api.nvim_create_augroup("StlMinuet", { clear = true })
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "MinuetRequestStartedPre",
+			group = minuet_group,
+			callback = function(ev)
+				minuet_state.processing = false
+				minuet_state.name = ev.data.name
+			end,
+		})
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "MinuetRequestStarted",
+			group = minuet_group,
+			callback = function()
+				minuet_state.processing = true
+			end,
+		})
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "MinuetRequestFinished",
+			group = minuet_group,
+			callback = function()
+				minuet_state.processing = false
+			end,
+		})
+
+		function stl.minuet()
+			if not minuet_state.processing then
+				return ""
+			end
+			minuet_state.spinner = (minuet_state.spinner % #spinners) + 1
+			return "%#Comment#" .. minuet_state.name .. " " .. spinners[minuet_state.spinner] .. " "
 		end
 
 		function stl.pos()
@@ -434,9 +570,17 @@ return {
 			" %{%v:lua._stl.diff()%}",
 			"%=",
 			"%S ",
+			"%{%v:lua._stl.minuet()%}",
 			"%{%v:lua._stl.search()%} ",
 			"%{%v:lua._stl.diag()%} ",
 			"%{%v:lua._stl.pos()%}",
+		})
+
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = { "qf" },
+			callback = function()
+				vim.wo.statusline = "%{%v:lua._stl.mode()%} %#StlFile# Quickfix %#StlFileSep#" .. SEP_R .. "%=%{%v:lua._stl.pos()%}"
+			end,
 		})
 	end,
 }

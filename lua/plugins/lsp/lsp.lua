@@ -10,12 +10,55 @@ return {
 			capabilities = require("blink.cmp").get_lsp_capabilities(),
 		})
 
-		-- Ensure Mason path is set (cross-platform)
-		local mason_path = vim.fn.stdpath("data") .. "/mason/bin"
-		local path_separator = vim.fn.has("win32") == 1 and ";" or ":"
-		if not string.find(vim.env.PATH, mason_path, 1, true) then
-			vim.env.PATH = mason_path .. path_separator .. vim.env.PATH
-		end
+		vim.lsp.enable({
+			"basedpyright",
+			"ruff",
+			"bashls",
+			"clangd",
+			"cssls",
+			"docker_compose_language_service",
+			"dockerls",
+			"gradle_ls",
+			"gopls",
+			"html",
+			"jsonls",
+			"lua_ls",
+			"markdown_oxide",
+			"sqlls",
+			"texlab",
+			"tinymist",
+			"tailwindcss",
+			"ltex_plus",
+			"phpactor",
+			"emmet_language_server",
+			"taplo",
+			"ts_ls",
+			"yamlls",
+			"zls",
+		})
+
+		-- Re-trigger FileType after startup so LSPs attach to the initial buffer
+		vim.api.nvim_create_autocmd("UIEnter", {
+			once = true,
+			callback = function()
+				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+					if vim.api.nvim_buf_is_loaded(buf) then
+						local ft = vim.bo[buf].filetype
+						if ft and ft ~= "" then
+							vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
+						end
+					end
+				end
+			end,
+		})
+
+		vim.lsp.config("basedpyright", {
+			settings = {
+				basedpyright = {
+					typeCheckingMode = "standard",
+				},
+			},
+		})
 
 		vim.lsp.config("clangd", {
 			cmd = {
@@ -95,9 +138,9 @@ return {
 			},
 		})
 
-		Snacks.keymap.set({ "n", "v" }, "<leader>la", require("actions-preview").code_actions, {
+		Snacks.keymap.set({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, {
 			lsp = { method = "textDocument/codeAction" },
-			desc = "Code actions (preview)",
+			desc = "Code actions",
 		})
 		Snacks.keymap.set("n", "K", vim.lsp.buf.hover, {
 			lsp = { method = "textDocument/hover" },

@@ -28,7 +28,6 @@ return {
 		vim.keymap.set("n", "<leader>gD", MiniDiff.toggle_overlay, { desc = "Toggle diff overlay" })
 
 		require("mini.git").setup()
-		vim.keymap.set("n", "<leader>gB", MiniGit.show_at_cursor, { desc = "Git blame line" })
 		vim.keymap.set("v", "<leader>gB", MiniGit.show_at_cursor, { desc = "Git blame selection" })
 
 		require("mini.ai").setup({
