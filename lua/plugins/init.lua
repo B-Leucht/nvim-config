@@ -5,15 +5,13 @@ local modules = {
   require("plugins.which-key"),
   require("plugins.colorscheme"),
   require("plugins.statusline"),
-  require("plugins.lsp-config"),
+  require("plugins.lsp"),
   require("plugins.mason"),
   require("plugins.cmp"),
-  require("plugins.inlayhint-filler"),
   require("plugins.minuet"),
   require("plugins.treesitter"),
   require("plugins.autopairs"),
   require("plugins.dap"),
-  require("plugins.dap-view"),
   require("plugins.molten"),
   require("plugins.overseer"),
   require("plugins.neogen"),
@@ -39,7 +37,7 @@ for _, mod in ipairs(modules) do
     mod.init()
   end
 end
--- Build hooks for post-install/update actions
+-- Build hooks
 vim.api.nvim_create_autocmd("PackChanged", {
   callback = function(ev)
     local name, kind = ev.data.spec.name, ev.data.kind

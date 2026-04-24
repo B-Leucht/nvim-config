@@ -4,6 +4,7 @@ return {
 	specs = {
 		gh("neovim/nvim-lspconfig"),
 		gh("b0o/schemastore.nvim"),
+		gh("Davidyz/inlayhint-filler.nvim"),
 	},
 	setup = function()
 		vim.lsp.config("*", {
@@ -154,6 +155,8 @@ return {
 			lsp = { method = "textDocument/rename" },
 			desc = "Rename",
 		})
+
+		require("inlayhint-filler").setup({ force = true })
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(args)

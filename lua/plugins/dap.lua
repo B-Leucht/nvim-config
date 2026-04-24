@@ -6,6 +6,7 @@ return {
 		gh("mfussenegger/nvim-dap-python"),
 		gh("leoluz/nvim-dap-go"),
 		gh("theHamsta/nvim-dap-virtual-text"),
+		gh("igorlfs/nvim-dap-view"),
 	},
 	setup = function()
 		local dap = require("dap")
@@ -117,5 +118,14 @@ return {
 
 		-- Setup Go debugging with delve
 		require("dap-go").setup()
+
+		require("dap-view").setup({
+			winbar = {
+				controls = {
+					enabled = true,
+				},
+			},
+		})
+		vim.keymap.set("n", "<leader>du", "<cmd>DapViewToggle<cr>", { desc = "Toggle DAP-View" })
 	end,
 }
