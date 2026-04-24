@@ -5,6 +5,7 @@ local gh = require("utils.gh")
 -- LSP servers
 local lsp_servers = {
   "basedpyright",
+  "ruff",
   -- "ty",
   "bash-language-server",
   "clangd",
