@@ -188,7 +188,7 @@ return {
 		end, { desc = "Open Horizontal Terminal" })
 		vim.keymap.set("n", "<leader>tv", function()
 			Snacks.terminal.open(nil, {
-				win = { position = "right", width = 10 },
+				win = { position = "right", width = 0.4 },
 			})
 		end, { desc = "Open Vertical Terminal" })
 
@@ -392,9 +392,6 @@ return {
 		vim.keymap.set("n", "grr", function()
 			Snacks.picker.lsp_references()
 		end, { desc = "References" })
-		vim.keymap.set("n", "gI", function()
-			Snacks.picker.lsp_implementations()
-		end, { desc = "Goto Implementation" })
 		vim.keymap.set("n", "gy", function()
 			Snacks.picker.lsp_type_definitions()
 		end, { desc = "Goto T[y]pe Definition" })

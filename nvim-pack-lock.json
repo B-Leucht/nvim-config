@@ -9,7 +9,7 @@
       "src": "https://github.com/disrupted/blink-cmp-conventional-commits"
     },
     "blink-cmp-dictionary": {
-      "rev": "35142bba869b869715e91a99d2f46bcf93fca4ae",
+      "rev": "17ea03ba5c296310b9f74587b52fde1b04d84c1a",
       "src": "https://github.com/Kaiser-Yang/blink-cmp-dictionary"
     },
     "blink-cmp-git": {
@@ -30,11 +30,11 @@
       "src": "https://github.com/p00f/clangd_extensions.nvim"
     },
     "conjure": {
-      "rev": "2ddd752d43b35d72aa3e339c3ae051b8dbad8549",
+      "rev": "f7a375995a19fbf085707ea0fdb1f9c167e27e27",
       "src": "https://github.com/Olical/conjure"
     },
     "elixir-tools.nvim": {
-      "rev": "a554f526de7f4fc6ec50cc34b977dbaed68b3b04",
+      "rev": "547b6a444b80fa6ac14ed723a39474241133ba43",
       "src": "https://github.com/elixir-tools/elixir-tools.nvim"
     },
     "flash.nvim": {
@@ -46,7 +46,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "haskell-tools.nvim": {
-      "rev": "9ea030aa67f3875753e70e1eb59701f7020479a0",
+      "rev": "8e18fac440a0a5858e78605d0a30407ec45b51ef",
       "src": "https://github.com/mrcjkb/haskell-tools.nvim"
     },
     "inlayhint-filler.nvim": {
@@ -62,7 +62,7 @@
       "src": "https://github.com/folke/lazydev.nvim"
     },
     "markview.nvim": {
-      "rev": "86cf4bcede58e88497f7e5214efb281d4a6f633d",
+      "rev": "dbf74b6db11c1468d5128a38b26b6d99dc7316e9",
       "src": "https://github.com/OXY2DEV/markview.nvim"
     },
     "mason-tool-installer.nvim": {
@@ -70,15 +70,15 @@
       "src": "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim"
     },
     "mason.nvim": {
-      "rev": "12ddd182d9efbdc848b540f16484a583d52da0fb",
+      "rev": "e54f5bf5f12c560da31c17eee5b3e1bd369f3ff9",
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "5849ef04c32a6a8e55957b946c0a275801d87530",
+      "rev": "17c448b0f3f29c0857a3436fc64e1d7cb9267ec3",
       "src": "https://github.com/echasnovski/mini.nvim"
     },
     "minuet-ai.nvim": {
-      "rev": "2141046f480a4582072854faffbe507f202a3c55",
+      "rev": "b61ae30216f9cfe8630f4e21982aa98706665614",
       "src": "https://github.com/milanglacier/minuet-ai.nvim"
     },
     "molten-nvim": {
@@ -90,15 +90,15 @@
       "src": "https://github.com/danymat/neogen"
     },
     "neotest": {
-      "rev": "fd0b7986dd0ae04e38ec7dc0c78a432e3820839c",
+      "rev": "ad991822b7076b1d940b33a9d6d0d30416d5df81",
       "src": "https://github.com/nvim-neotest/neotest"
     },
     "neotest-golang": {
-      "rev": "48634bebbfa1fe63ed50f170916112c538d8e70d",
+      "rev": "84c1f3be59f85a2f5bbb9290040077bc8a68a00c",
       "src": "https://github.com/fredrikaverpil/neotest-golang"
     },
     "neotest-haskell": {
-      "rev": "cf7816eb183c8333b58abb63fd4cc156401d9d31",
+      "rev": "4cf659a36a319b25c384f94d0b0707a9dba14e22",
       "src": "https://github.com/mrcjkb/neotest-haskell"
     },
     "neotest-jest": {
@@ -114,7 +114,7 @@
       "src": "https://github.com/MunifTanjim/nui.nvim"
     },
     "nvim-autopairs": {
-      "rev": "59bce2eef357189c3305e25bc6dd2d138c1683f5",
+      "rev": "7b9923abad60b903ece7c52940e1321d39eccc79",
       "src": "https://github.com/windwp/nvim-autopairs"
     },
     "nvim-dap": {
@@ -130,7 +130,7 @@
       "src": "https://github.com/mfussenegger/nvim-dap-python"
     },
     "nvim-dap-view": {
-      "rev": "01ad4537bac9a0843e72c9615fa7fcaa69b119eb",
+      "rev": "b5cc6e1c4cd188478fdad2e0b58dbca08fd6d363",
       "src": "https://github.com/igorlfs/nvim-dap-view"
     },
     "nvim-dap-virtual-text": {
@@ -138,7 +138,7 @@
       "src": "https://github.com/theHamsta/nvim-dap-virtual-text"
     },
     "nvim-highlight-colors": {
-      "rev": "e2cb22089cc2358b2b995c09578224f142de6039",
+      "rev": "e4c7af0211866162d999ce0bdd6a029302e19139",
       "src": "https://github.com/brenoprata10/nvim-highlight-colors"
     },
     "nvim-jdtls": {
@@ -146,7 +146,7 @@
       "src": "https://github.com/mfussenegger/nvim-jdtls"
     },
     "nvim-lspconfig": {
-      "rev": "81878de76c0de4ce289513734ad80c31ec7871b8",
+      "rev": "4d9647d7b14dd2756578761f8cc2cf80f671b926",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-nio": {
@@ -158,11 +158,11 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-context": {
-      "rev": "b0c45cefe2c8f7b55fc46f34e563bc428ef99636",
+      "rev": "b311b30818951d01f7b4bf650521b868b3fece16",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
     "obsidian.nvim": {
-      "rev": "af9857e4993e0adddb897f09c2805b44a0d913ea",
+      "rev": "c9c2bcb3bc03b3b3e264e58d43289d8f8c2ee798",
       "src": "https://github.com/obsidian-nvim/obsidian.nvim"
     },
     "otter.nvim": {
@@ -182,11 +182,11 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "rustaceanvim": {
-      "rev": "07f0900627f1bb2fc9ee8b5e39bb96fe40c2e0a1",
+      "rev": "4798c7b584331d3c764369332a29a76d1c2d90f9",
       "src": "https://github.com/mrcjkb/rustaceanvim"
     },
     "schemastore.nvim": {
-      "rev": "0c303573345e710a233f5ba75f9aadc05852771b",
+      "rev": "5b319663792e537f0f6f36b449e6cb86da6b0f7f",
       "src": "https://github.com/b0o/schemastore.nvim"
     },
     "snacks.nvim": {
@@ -202,12 +202,16 @@
       "src": "https://github.com/arzg/vim-colors-xcode"
     },
     "vimtex": {
-      "rev": "0f42a5130432d4af2e6fd21fb93a76915ff1f090",
+      "rev": "182ad387e3f3107699483606c9a2b6648f8437b2",
       "src": "https://github.com/lervag/vimtex"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
       "src": "https://github.com/folke/which-key.nvim"
+    },
+    "zk-nvim": {
+      "rev": "dea1ee6cd6d07568c92ea8353063d4d85c58a964",
+      "src": "https://github.com/zk-org/zk-nvim"
     },
     "zotcite": {
       "rev": "fbd2dcc6b5c9261e91fde361ed43a0d817dc57d4",

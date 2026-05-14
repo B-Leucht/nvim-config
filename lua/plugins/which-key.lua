@@ -30,10 +30,8 @@ return {
 					return icon
 				end,
 			},
-			{ "<leader>c", group = "code", icon = "" },
-			{ "<leader>m", group = "molten", icon = "" },
-			{ "<leader>M", group = "makros", icon = "" },
-			{ "<leader>O", group = "overseer", icon = "" },
+			{ "<leader>m", group = "molten", icon = "" },
+			{ "<leader>O", group = "overseer", icon = "" },
 			{ "<leader>e", group = "conjure", icon = "" },
 			{ "<leader>el", group = "log", icon = "" },
 			{ "<leader>t", group = "terminal" },
@@ -43,7 +41,7 @@ return {
 			{ "<leader>p", group = "web", icon = "󰖟" },
 			{ "<leader>s", group = "search" },
 			{ "<leader>u", group = "ui" },
-			{ "<leader>v", group = "vimtex", icon = "" },
+			{ "<leader>v", group = "vimtex", icon = "" },
 			{ "<leader>w", group = "windows" },
 		})
 	end,

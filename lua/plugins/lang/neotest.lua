@@ -15,10 +15,11 @@ return {
 				overseer = require("neotest.consumers.overseer"),
 			},
 			adapters = {
-				require("neotest-python")({
-					dap = { justMyCode = false },
-					runner = "pytest",
-				}),
+			require("neotest-python")({
+				dap = { justMyCode = false },
+				runner = "pytest",
+				args = { "--doctest-modules" },
+			}),
 				require("neotest-jest")({
 					jestCommand = "npx jest",
 				}),

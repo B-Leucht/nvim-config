@@ -36,11 +36,22 @@ opt.ignorecase = true
 opt.smartcase = true
 
 opt.mousemodel = "popup"
+opt.mousemoveevent = true
 
 -- Override built-in right-click "Show All Diagnostics" to handle deleted buffers (otter.nvim)
 vim.cmd([[
   aunmenu PopUp.Show\ All\ Diagnostics
   amenu PopUp.Show\ All\ Diagnostics <cmd>lua pcall(vim.diagnostic.setqflist)<CR>
+
+  amenu PopUp.-sep-lsp-     <Nop>
+  amenu PopUp.Code\ Action  <cmd>lua vim.lsp.buf.code_action()<CR>
+  amenu PopUp.Rename        <cmd>lua vim.lsp.buf.rename()<CR>
+  amenu PopUp.Go\ to\ Def   <cmd>lua require('snacks').picker.lsp_definitions()<CR>
+  amenu PopUp.References    <cmd>lua require('snacks').picker.lsp_references()<CR>
+
+  amenu PopUp.-sep-git-       <Nop>
+  amenu PopUp.Blame\ Line     <cmd>lua require('snacks').git.blame_line()<CR>
+  amenu PopUp.Open\ in\ Git   <cmd>lua require('snacks').gitbrowse()<CR>
 ]])
 opt.clipboard = "unnamedplus"
 opt.undofile = true
@@ -126,47 +137,6 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 	end,
 })
 
--- Auto-save on focus lost / buffer leave
-vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave" }, {
-	group = vim.api.nvim_create_augroup("AutoSave", { clear = true }),
-	callback = function(ev)
-		local buf = ev.buf
-		if vim.bo[buf].modified and vim.bo[buf].buftype == "" and vim.bo[buf].modifiable then
-			local name = vim.api.nvim_buf_get_name(buf)
-			if name ~= "" then
-				vim.api.nvim_buf_call(buf, function()
-					vim.cmd("silent! write")
-				end)
-			end
-		end
-	end,
-})
 
--- Auto-close stale buffers (unvisited for 30+ minutes)
-local buf_last_used = {}
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-	group = vim.api.nvim_create_augroup("StaleBuffers", { clear = true }),
-	callback = function(ev)
-		buf_last_used[ev.buf] = vim.uv.now()
-	end,
-})
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-	group = "StaleBuffers",
-	callback = function()
-		local now = vim.uv.now()
-		local threshold = 30 * 60 * 1000 -- 30 minutes
-		for buf, last in pairs(buf_last_used) do
-			if
-				vim.api.nvim_buf_is_valid(buf)
-				and vim.bo[buf].buflisted
-				and vim.bo[buf].buftype == ""
-				and not vim.bo[buf].modified
-				and buf ~= vim.api.nvim_get_current_buf()
-				and (now - last) > threshold
-			then
-				vim.api.nvim_buf_delete(buf, {})
-				buf_last_used[buf] = nil
-			end
-		end
-	end,
-})
+
+

@@ -6,7 +6,7 @@ return {
 		require("neogen").setup({
 			snippet_engine = "nvim",
 		})
-		vim.keymap.set("n", "<leader>cn", function()
+		vim.keymap.set("n", "<leader>ln", function()
 			require("neogen").generate()
 		end, { desc = "Generate annotation" })
 	end,

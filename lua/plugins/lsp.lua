@@ -7,50 +7,10 @@ return {
 		gh("Davidyz/inlayhint-filler.nvim"),
 	},
 	setup = function()
+		-- Register all server configs BEFORE calling vim.lsp.enable() so the
+		-- FileType autocmd it installs sees full configs on first dispatch.
 		vim.lsp.config("*", {
 			capabilities = require("blink.cmp").get_lsp_capabilities(),
-		})
-
-		vim.lsp.enable({
-			"basedpyright",
-			"ruff",
-			"bashls",
-			"clangd",
-			"cssls",
-			"docker_compose_language_service",
-			"dockerls",
-			"gradle_ls",
-			"gopls",
-			"html",
-			"jsonls",
-			"lua_ls",
-			"markdown_oxide",
-			"sqlls",
-			"texlab",
-			"tinymist",
-			"tailwindcss",
-			"ltex_plus",
-			"phpactor",
-			"emmet_language_server",
-			"taplo",
-			"ts_ls",
-			"yamlls",
-			"zls",
-		})
-
-		-- Re-trigger FileType after startup so LSPs attach to the initial buffer
-		vim.api.nvim_create_autocmd("UIEnter", {
-			once = true,
-			callback = function()
-				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-					if vim.api.nvim_buf_is_loaded(buf) then
-						local ft = vim.bo[buf].filetype
-						if ft and ft ~= "" then
-							vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
-						end
-					end
-				end
-			end,
 		})
 
 		vim.lsp.config("basedpyright", {
@@ -139,21 +99,36 @@ return {
 			},
 		})
 
-		Snacks.keymap.set({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, {
-			lsp = { method = "textDocument/codeAction" },
-			desc = "Code actions",
+		vim.lsp.enable({
+			"basedpyright",
+			"ruff",
+			"bashls",
+			"clangd",
+			"cssls",
+			"docker_compose_language_service",
+			"dockerls",
+			"gradle_ls",
+			"gopls",
+			"html",
+			"jsonls",
+			"lua_ls",
+			"markdown_oxide",
+			"sqlls",
+			"texlab",
+			"tinymist",
+			"tailwindcss",
+			"ltex_plus",
+			"phpactor",
+			"emmet_language_server",
+			"taplo",
+			"ts_ls",
+			"yamlls",
+			"zls",
 		})
+
 		Snacks.keymap.set("n", "K", vim.lsp.buf.hover, {
 			lsp = { method = "textDocument/hover" },
 			desc = "Hover documentation",
-		})
-		Snacks.keymap.set("n", "<leader>lc", vim.lsp.codelens.run, {
-			lsp = { method = "textDocument/codeLens" },
-			desc = "Run codelens",
-		})
-		Snacks.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {
-			lsp = { method = "textDocument/rename" },
-			desc = "Rename",
 		})
 
 		require("inlayhint-filler").setup({ force = true })
@@ -167,7 +142,7 @@ return {
 
 				vim.keymap.set(
 					"n",
-					"<leader>cd",
+					"<leader>ld",
 					vim.diagnostic.open_float,
 					{ buffer = args.buf, desc = "Line diagnostics (float)" }
 				)

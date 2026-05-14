@@ -75,7 +75,7 @@ end, { expr = true, desc = "Smart dd" })
 vim.cmd.packadd("nvim.undotree")
 keymap("n", "<leader>uu", "<cmd>Undotree<cr>", { desc = "Undotree" })
 
-keymap({ "n", "v" }, "<leader>cf", function()
+keymap({ "n", "v" }, "<leader>lf", function()
 	vim.lsp.buf.format({ async = true })
 end, { desc = "Format buffer" })
 

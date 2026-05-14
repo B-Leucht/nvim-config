@@ -4,6 +4,7 @@ return {
 	specs = {
 		gh("nvim-treesitter/nvim-treesitter"),
 		gh("nvim-treesitter/nvim-treesitter-context"),
+		gh("windwp/nvim-autopairs"),
 	},
 	setup = function()
 		vim.api.nvim_create_autocmd("User", {
@@ -50,5 +51,10 @@ return {
 		vim.keymap.set("n", "<leader>uc", function()
 			require("treesitter-context").toggle()
 		end, { desc = "Toggle Treesitter Context" })
+
+		require("nvim-autopairs").setup({
+			check_ts = true,
+			fast_wrap = {},
+		})
 	end,
 }
